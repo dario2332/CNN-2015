@@ -2,7 +2,7 @@
 #define CONV_LAYER 
 #include <vector>
 #include "layer.hpp"
-#include "Util.hpp"
+#include "UtilI.hpp"
 
 class ConvolutionLayer : public Layer
 {
@@ -13,6 +13,8 @@ public:
     vvd& getOutput() { return output; }
     vvd& getPrevError() { return prevError; }
     vvvd& getKernel() { return kernelW; }
+    int getMapSize() { return mapSize; }
+    float getLearningRate() { return learningRate; }
     void printKernel();
 
 private:

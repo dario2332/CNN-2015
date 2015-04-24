@@ -1,5 +1,6 @@
 #include "PoolLayer.hpp"
 #include <cassert>
+#include <iostream>
 
 PoolLayer::PoolLayer(int kernelSize, int numFM, int inputMapSize) : kernelSize(kernelSize), 
               numFM(numFM), inMapSize(inputMapSize),

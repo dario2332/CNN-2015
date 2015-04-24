@@ -14,7 +14,7 @@ ConvolutionLayer::ConvolutionLayer(int mapSize, int inputFM,  int outputFM, int 
         bias(vd(outputFM, 0)), 
         output(vvd(outputFM, vd(mapSize*mapSize))),
         prevError(vvd(inputFM, vd(inputMapSize*inputMapSize, 0))),
-        kernelW(vvvd(outputFM, vvd(inputFM, vd(mapSize*mapSize))))
+        kernelW(vvvd(outputFM, vvd(inputFM, vd(kernelSize*kernelSize))))
 {
     for (int o = 0; o < outputFM; ++o)
     {
@@ -27,6 +27,9 @@ ConvolutionLayer::ConvolutionLayer(int mapSize, int inputFM,  int outputFM, int 
 
 vvd& ConvolutionLayer::forwardPass(const vvd &input) 
 {
+    assert(input.size() == inputFM);
+    assert(input.at(0).size() == inputMapSize * inputMapSize);
+
     this->input = &input;
     for (int fm = 0, o = output.size(); fm < o; ++fm)
     {

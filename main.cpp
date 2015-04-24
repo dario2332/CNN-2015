@@ -1,7 +1,9 @@
 #include <iostream>
 #include <cassert>
+#include "CNN.hpp"
 #include "layer.hpp"
 #include "Util.hpp"
+#include "UtilI.hpp"
 #include "ConvolutionLayer.hpp"
 #include "PoolLayer.hpp"
 #include "ActivationLayer.hpp"
@@ -165,14 +167,63 @@ void testSquareCost()
     assert(sc.getPrevError() == expectedPrevError);
 }
 
+void testCNN()
+{
+    std::vector<Layer*> layers;
+    std::vector<ConvolutionLayer*> convLayers;
+    MnistTestInputManager minstInput;
+    SquareCost sc(2);
+
+    TestInitializer init;
+    
+    ConvolutionLayer conv1(24, 1, 8, 5, init, 0.01);
+    SigmoidLayer sigm1(8, 24);
+    MaxPoolLayer pool1(2, 8, 24);
+    ConvolutionLayer conv2(10, 8, 20, 3, init, 0.01);
+    SigmoidLayer sigm2(20, 10);
+    MaxPoolLayer pool2(2, 20, 10);
+    ConvolutionLayer conv3(1, 20, 80, 5, init, 0.01);
+    SigmoidLayer sigm3(80, 1);
+    FullyConnectedLayer full1(80, 40, init, 0.01);
+    SigmoidLayer sigmFC1(40);
+    FullyConnectedLayer full2(40, 2, init, 0.01);
+    
+    layers.push_back(&conv1);
+    layers.push_back(&sigm1);
+    layers.push_back(&pool1);
+    layers.push_back(&conv2);
+    layers.push_back(&sigm2);
+    layers.push_back(&pool2);
+    layers.push_back(&conv3);
+    layers.push_back(&sigm3);
+    layers.push_back(&full1);
+    layers.push_back(&sigmFC1);
+    layers.push_back(&full2);
+
+    ConvolutionNeuralNetwork cnn(layers, sc, minstInput);
+    
+    convLayers.push_back(&conv1);
+    convLayers.push_back(&conv2);
+    convLayers.push_back(&conv3);
+    convLayers.push_back(&full1);
+    convLayers.push_back(&full2);
+
+    WeightRecorder wr(convLayers, "MNIST");
+
+    cnn.registerSupervisor(&wr);
+    cnn.train(2, true);
+
+
+}
 int main(int argc, char *argv[])
 {
-    testForwardPass();
-    testBackPropagation();
+    //testForwardPass();
+    //testBackPropagation();
     //testForwardPassTime(100);
-    testMaxPool();
-    testSigmoidLayer();
+    //testMaxPool();
+    //testSigmoidLayer();
     //testActivationLayerTime(1000000);
-    testSquareCost();
+    //testSquareCost();
+    testCNN();
     return 0;
 }

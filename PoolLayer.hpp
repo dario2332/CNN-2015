@@ -9,12 +9,12 @@ public:
     PoolLayer (int kernelSize, int numFM, int inputMapSize); 
     virtual vvd& forwardPass(const vvd &input) = 0;
     virtual vvd& backPropagate(const vvd &error) = 0;
-    vvd getPrevError() { return prevError; }
-    vvd getOutput() { return output; }
+    vvd& getPrevError() { return prevError; }
+    vvd& getOutput() { return output; }
 protected:
     int kernelSize;
     const vvd *input;
-    int numFM, inMapSize, outMapSize;
+    const int numFM, inMapSize, outMapSize;
     vvd output, prevError;
 
 

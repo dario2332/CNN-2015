@@ -211,7 +211,7 @@ void testCNN()
     WeightRecorder wr(convLayers, "MNIST");
 
     cnn.registerSupervisor(&wr);
-    cnn.train(2, true);
+    cnn.train(2);
 
 
 }

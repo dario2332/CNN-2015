@@ -5,6 +5,7 @@
 #include "layer.hpp"
 #include "UtilI.hpp"
 #include "ConvolutionLayer.hpp"
+#include "CNN.hpp"
 
 
 class ReLUInitializer : public Initializer
@@ -62,5 +63,14 @@ private:
     std::string datasetName;
 };
 
+class Validator : public TrainingSupervisor
+{
+public:
+    Validator (ConvolutionNeuralNetwork &cnn) : cnn(cnn) {}
+    virtual void monitor(int epoch);
+
+private:
+    ConvolutionNeuralNetwork &cnn;
+};
 
 #endif

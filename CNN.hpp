@@ -9,9 +9,10 @@ public:
     ConvolutionNeuralNetwork (const std::vector<Layer*> &layers, CostFunction &costFunction, InputManager &inputManager);
     void forwardPass(vvd &input);
     void backPropagate(vvd &error);
-    void train(int numEpochs, bool supervized = false);
+    void train(int numEpochs);
     void registerSupervisor(TrainingSupervisor *s) { supervisers.push_back(s); }
     void notifySupervisors(int epoch);
+    InputManager& getInputManager() { return inputManager; }
     
 private:
     std::vector<Layer*> layers;

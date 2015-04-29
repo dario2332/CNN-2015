@@ -3,8 +3,10 @@
 #include <cmath>
 #include <cassert>
 #include <random>
+#include <string>
 #include "Util.hpp"
 #include "ConvolutionLayer.hpp"
+#include <opencv2/opencv.hpp>
 
 void ReLUInitializer::init(vd &weights) const
 {
@@ -45,24 +47,32 @@ vvd& SquareCost::calculate(const vvd &output, const vd& expectedOutput)
 MnistTestInputManager::MnistTestInputManager(std::string path) : InputManager(20, 20, 20), inputs(vvvd(20, vvd(1, vd(28*28)))),
                                                                  expectedOutputs(vvd(20, vd(2)))
 {
+    int x = 0;
     int zeros = 0, ones = 0;
     std::ifstream inImages, inLabels;
-    inImages.open(path + "/train-images-idx3-ubyte.gz", std::ios::binary);
-    inLabels.open(path + "/train-labels-idx1-ubyte.gz", std::ios::binary);
+    inImages.open(path + "/train-images.idx3-ubyte", std::fstream::binary | std::fstream::in);
+    inLabels.open(path + "/train-labels.idx1-ubyte", std::fstream::binary | std::fstream::in);
+
+    assert(inLabels.is_open());
+    assert(inImages.is_open());
+
     inImages.ignore(4*sizeof(int));
     inLabels.ignore(2*sizeof(int));
 
-    while (zeros < 10 && ones < 10)
+    while (zeros < 10 || ones < 10)
     {
         int label = 0;
         inLabels.read((char*)&label, sizeof(char));
         if (label == 0 && zeros < 10 || label == 1 && ones < 10)
         {
+            static int a = 0;
+            cv::Mat image(28, 28, CV_8UC1);
             for (int i = 0; i < 28*28; ++i)
             {
                 int x = 0;
                 inImages.read((char*)&x, sizeof(char));
                 inputs.at(zeros+ones).at(0).at(i) = x;
+                image.at<unsigned char>(i/28, i%28) = x;
             }
             if (label == 0)
             {
@@ -74,6 +84,7 @@ MnistTestInputManager::MnistTestInputManager(std::string path) : InputManager(20
                 expectedOutputs.at(zeros+ones) = {0, 1};
                 ones++;
             }
+            cv::imwrite(path + "/image" + std::to_string(a++) + ".jpg", image);
         }
         else 
         {
@@ -116,4 +127,10 @@ void WeightRecorder::monitor(int epoch)
         }
         out.close();
     }
+}
+
+
+void Validator::monitor(int epoch)
+{
+    
 }

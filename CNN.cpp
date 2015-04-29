@@ -28,7 +28,7 @@ void ConvolutionNeuralNetwork::backPropagate(vvd &error)
     }
 }
 
-void ConvolutionNeuralNetwork::train(int numEpochs, bool supervized)
+void ConvolutionNeuralNetwork::train(int numEpochs)
 {
     for (int epoch = 0; epoch < numEpochs; ++epoch)
     {
@@ -38,17 +38,12 @@ void ConvolutionNeuralNetwork::train(int numEpochs, bool supervized)
             backPropagate(costFunction.calculate(layers.at(layers.size()-1)->getOutput(), inputManager.getExpectedOutput(i)));
 
         }
-        if (supervized)
-        {
-            notifySupervisors(epoch);
-            // sto god cemo pratiti tijekom ucenja
-            // ispisati tezine 
+        notifySupervisors(epoch);
             // proci kroz validation test i ispisati tocnost
             // takoder tocnost training seta
             // updates of weights
             // gradient check jos nemam u konvolucijskim i aktivacijskim slojevima
             // varijanca aktivacija i gradijenata svakog sloja
-        }
         inputManager.reset();
     }
 }

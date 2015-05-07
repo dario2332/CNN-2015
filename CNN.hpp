@@ -12,6 +12,7 @@ public:
     void train(int numEpochs);
     void registerSupervisor(TrainingSupervisor *s) { supervisers.push_back(s); }
     void notifySupervisors(int epoch);
+    float getCost(vd &expectedOutput);
     InputManager& getInputManager() { return inputManager; }
     
 private:

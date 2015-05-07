@@ -171,22 +171,24 @@ void testCNN()
 {
     std::vector<Layer*> layers;
     std::vector<ConvolutionLayer*> convLayers;
-    MnistTestInputManager minstInput;
+    MnistSmallInputManager minstInput;
     SquareCost sc(2);
+    const float learningRate = 0.001;
 
-    TestInitializer init;
+    //TestInitializer init;
+    SigmoidInitializer init;
     
-    ConvolutionLayer conv1(24, 1, 8, 5, init, 0.01);
+    ConvolutionLayer conv1(24, 1, 8, 5, init, learningRate);
     SigmoidLayer sigm1(8, 24);
     MaxPoolLayer pool1(2, 8, 24);
-    ConvolutionLayer conv2(10, 8, 20, 3, init, 0.01);
+    ConvolutionLayer conv2(10, 8, 20, 3, init, learningRate);
     SigmoidLayer sigm2(20, 10);
     MaxPoolLayer pool2(2, 20, 10);
-    ConvolutionLayer conv3(1, 20, 80, 5, init, 0.01);
+    ConvolutionLayer conv3(1, 20, 80, 5, init, learningRate);
     SigmoidLayer sigm3(80, 1);
-    FullyConnectedLayer full1(80, 40, init, 0.01);
+    FullyConnectedLayer full1(80, 40, init, learningRate);
     SigmoidLayer sigmFC1(40);
-    FullyConnectedLayer full2(40, 2, init, 0.01);
+    FullyConnectedLayer full2(40, 2, init, learningRate);
     
     layers.push_back(&conv1);
     layers.push_back(&sigm1);
@@ -209,12 +211,20 @@ void testCNN()
     convLayers.push_back(&full2);
 
     WeightRecorder wr(convLayers, "MNIST");
+    Validator val(cnn, minstInput, "MNIST/train", 2);
 
+    cnn.registerSupervisor(&val);
     cnn.registerSupervisor(&wr);
+    cnn.train(20);
+    conv1.loadWeights("MNIST/Weights_E19_CL1");
+    conv2.loadWeights("MNIST/Weights_E19_CL2");
+    conv3.loadWeights("MNIST/Weights_E19_CL3");
+    full1.loadWeights("MNIST/Weights_E19_CL4");
+    full2.loadWeights("MNIST/Weights_E19_CL5");
     cnn.train(2);
-
-
+    
 }
+
 int main(int argc, char *argv[])
 {
     //testForwardPass();

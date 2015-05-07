@@ -7,12 +7,13 @@
 #include "ConvolutionLayer.hpp"
 #include "CNN.hpp"
 
+class ConvolutionNeuralNetwork;
 
 class ReLUInitializer : public Initializer
 {
 public:
     ReLUInitializer(int n) : n(n) {};
-    virtual void init(vd &weights) const;
+    virtual void init(vd &weights, int n_in, int n_out) const;
 private:
     int n;
 };
@@ -20,7 +21,13 @@ private:
 class TestInitializer : public Initializer
 {
 public:
-    virtual void init(vd &weights) const;
+    virtual void init(vd &weights, int n_in, int n_out) const;
+};
+
+class SigmoidInitializer : public Initializer
+{
+public:
+    virtual void init(vd &weights, int n_in, int n_out) const;
 };
 
 class SquareCost : public CostFunction
@@ -30,11 +37,11 @@ public:
     virtual vvd& calculate(const vvd &output, const vd& expectedOutput);
 };
 
-class MnistTestInputManager : public InputManager
+class MnistSmallInputManager : public InputManager
 {
 public:
-    MnistTestInputManager(std::string path = "MNIST");
-    virtual vvd& getTrainInput(int i) { return inputs.at(i); }
+    MnistSmallInputManager(std::string path = "MNIST");
+    virtual vvd& getInput(int i) { return inputs.at(i); }
     virtual vd& getExpectedOutput(int i) { return expectedOutputs.at(i); }
     virtual void reset() {}
 
@@ -49,28 +56,29 @@ private:
  *  int - number of input feature maps (2. dimension of kernel)
  *  int - kernel size
  *  int - output map size
- *  int - learning rate
  *  float(outputFM x inputFM x kernelSize x kernelSize) - weights
 ******************/
 class WeightRecorder : public TrainingSupervisor
 {
 public:
-    WeightRecorder (std::vector<ConvolutionLayer*> layers, std::string datasetName) : layers(layers), datasetName(datasetName) {}
+    WeightRecorder (std::vector<ConvolutionLayer*> layers, std::string path) :TrainingSupervisor(path), layers(layers) {}
     virtual void monitor(int epoch);
 
 private:
     std::vector<ConvolutionLayer*> layers;
-    std::string datasetName;
 };
 
 class Validator : public TrainingSupervisor
 {
 public:
-    Validator (ConvolutionNeuralNetwork &cnn) : cnn(cnn) {}
+    Validator (ConvolutionNeuralNetwork &cnn, InputManager& im, std::string path, int numClasses);
     virtual void monitor(int epoch);
 
 private:
+    InputManager &im;
     ConvolutionNeuralNetwork &cnn;
+    vvd possibleOutputs;
+
 };
 
 #endif

@@ -5,6 +5,7 @@
 #include <random>
 #include <vector>
 #include <cassert>
+#include <fstream>
 #include "ConvolutionLayer.hpp"
 
 
@@ -20,7 +21,7 @@ ConvolutionLayer::ConvolutionLayer(int mapSize, int inputFM,  int outputFM, int 
     {
         for (int i = 0; i < inputFM; ++i)
         {
-            init.init(kernelW.at(o).at(i));
+            init.init(kernelW.at(o).at(i), inputFM*inputMapSize*inputMapSize, outputFM * mapSize * mapSize);
         }
     }
 }    
@@ -79,20 +80,24 @@ vvd& ConvolutionLayer::backPropagate(const vvd &error)
     {
         for (int oRow = 0; oRow < mapSize; ++oRow)
         {
-            for (int oCol = 0; oCol < mapSize; ++oCol)
+            for (int ifm = 0; ifm < inputFM; ++ifm)
             {
-                for (int ifm = 0; ifm < inputFM; ++ifm)
+                for (int iRow = oRow; iRow < oRow + kernelSize; ++iRow)
                 {
-                    for (int iRow = oRow; iRow < oRow + kernelSize; ++iRow)
+                    for (int oCol = 0; oCol < mapSize; ++oCol)
                     {
                         cblas_saxpy(kernelSize, error.at(ofm).at(oRow*mapSize + oCol),
                                     (float*) &kernelW.at(ofm).at(ifm).at((iRow-oRow)*kernelSize), 1,
                                     (float*) &prevError.at(ifm).at(iRow*inputMapSize + oCol), 1);
+                        //std::cout << prevError.at(ifm).at(iRow*inputMapSize + oCol) << " ";
                     }
+                //std::cout << std::endl;
                 }
             }
         }
     }
+    
+    //std::cout <<  std::endl;
     update(error);
     return prevError;
 }
@@ -110,16 +115,19 @@ void ConvolutionLayer::update(const vvd &error)
                     for (int inRow = kRow; inRow < kRow+mapSize; ++inRow)
                     {
                             //promjene ako cemo probavati mini batch
-                            kernelW.at(ofm).at(ifm).at(kRow*kernelSize + kCol) -= learningRate * cblas_dsdot(
+                            float update = learningRate * cblas_dsdot(
                                         mapSize, 
                                         (float*) &(input->at(ifm).at(inRow*inputMapSize+kCol)), 1,
                                         (float*) &error.at(ofm).at((inRow-kRow)*mapSize), 1
                             );
-                            std::cout << kernelW.at(ofm).at(ifm).at(kRow*kernelSize + kCol) << std::endl;
+                            kernelW.at(ofm).at(ifm).at(kRow*kernelSize + kCol) -= update;
+                            //std::cout << update/ kernelW.at(ofm).at(ifm).at(kRow*kernelSize + kCol) << std::endl;
+                            //std::cout << kernelW.at(ofm).at(ifm).at(kRow*kernelSize + kCol) << std::endl;
                     }
                 }
             }
         }
+        //printKernel();
         //promjena biasa
         bias.at(ofm) -= learningRate * std::accumulate(error.at(ofm).begin(), error.at(ofm).end(), 0);
         //std::cout << bias.at(ofm) << std::endl;
@@ -144,3 +152,33 @@ void ConvolutionLayer::printKernel()
         }
     }
 }
+
+void ConvolutionLayer::loadWeights(std::string file)
+{
+    std::ifstream in(file, std::fstream::binary);
+    int oFM, iFM, kernelSize;
+    int outMapSize;
+    
+    in.read((char*) &oFM, sizeof(int));
+    in.read((char*) &iFM, sizeof(int));
+    in.read((char*) &kernelSize, sizeof(int));
+    in.read((char*) &outMapSize, sizeof(int));
+    
+    assert(oFM == outputFM);
+    assert(iFM == inputFM);
+    assert(kernelSize == this->kernelSize);
+    assert(outMapSize == mapSize);
+
+    for (oFM = 0; oFM < outputFM; ++oFM)
+    {
+        for (iFM = 0; iFM < inputFM; ++iFM)
+        {
+            for (int k = 0; k < kernelW.at(0).at(0).size(); ++k)
+            {
+                in.read((char*) &kernelW.at(oFM).at(iFM).at(k), sizeof(float));
+            }
+        }
+    }
+    in.close();
+}
+

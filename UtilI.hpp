@@ -1,11 +1,12 @@
 #ifndef UTIL_I
 #define UTIL_I 
 #include "layer.hpp"
+#include <string>
 
 class Initializer
 {
 public:
-    virtual void init(vd &weights) const = 0;
+    virtual void init(vd &weights, int n_in, int n_out) const = 0;
 };
 
 class CostFunction
@@ -25,24 +26,25 @@ protected:
 class InputManager
 {
 public:
-    InputManager (int train, int validate, int test) : train(train), test(test), validate(validate) {}
-    virtual vvd& getTrainInput(int i) = 0;
+    InputManager (int n) : numOfInputs(n) {}
+    virtual vvd& getInput(int i) = 0;
     virtual vd& getExpectedOutput(int i) = 0;
-    int getTrainNum() { return train; }
-    int getTestNum() { return test; }
-    int getValNum() { return validate; }
+    int getInputNum() { return numOfInputs; }
     virtual void reset() = 0;
     //virtual void preProcess() = 0;
    
-private:
+protected:
     // number of images in each set
-    int train, test, validate;
+    int numOfInputs;
 };
 
 class TrainingSupervisor
 {
 public:
+    TrainingSupervisor(std::string path) : path(path) {}
     virtual void monitor(int epoch) = 0;
+protected:
+    std::string path;
 };
 
 

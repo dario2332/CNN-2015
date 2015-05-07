@@ -16,6 +16,7 @@ public:
     int getMapSize() { return mapSize; }
     float getLearningRate() { return learningRate; }
     void printKernel();
+    void loadWeights(std::string file);
 
 private:
     int mapSize, inputMapSize;

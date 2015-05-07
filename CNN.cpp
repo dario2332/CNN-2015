@@ -21,7 +21,7 @@ void ConvolutionNeuralNetwork::forwardPass(vvd &input)
 void ConvolutionNeuralNetwork::backPropagate(vvd &error)
 {
     vvd *currentError = &error;
-    for (int layer = layers.size(); layer < 0; --layer)
+    for (int layer = layers.size() - 1; layer >= 0; --layer)
     {
         layers.at(layer)->backPropagate(*currentError);
         currentError = &layers.at(layer)->getPrevError();
@@ -32,11 +32,10 @@ void ConvolutionNeuralNetwork::train(int numEpochs)
 {
     for (int epoch = 0; epoch < numEpochs; ++epoch)
     {
-        for (int i = 0, n = inputManager.getTrainNum(); i < n; ++i)
+        for (int i = 0, n = inputManager.getInputNum(); i < n; ++i)
         {
-            forwardPass(inputManager.getTrainInput(i));
+            forwardPass(inputManager.getInput(i));
             backPropagate(costFunction.calculate(layers.at(layers.size()-1)->getOutput(), inputManager.getExpectedOutput(i)));
-
         }
         notifySupervisors(epoch);
             // proci kroz validation test i ispisati tocnost
@@ -48,6 +47,12 @@ void ConvolutionNeuralNetwork::train(int numEpochs)
     }
 }
 
+float ConvolutionNeuralNetwork::getCost(vd &expectedOutput)
+{
+    costFunction.calculate(layers.at(layers.size()-1)->getOutput(), expectedOutput);
+    return costFunction.getError();
+}
+
 void ConvolutionNeuralNetwork::notifySupervisors(int epoch)
 {
     for (int i = 0; i < supervisers.size(); ++i)
@@ -55,3 +60,4 @@ void ConvolutionNeuralNetwork::notifySupervisors(int epoch)
         supervisers.at(i) -> monitor(epoch);
     }
 }
+

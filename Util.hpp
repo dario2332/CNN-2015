@@ -1,6 +1,7 @@
 #ifndef CNN_UTIL
 #define CNN_UTIL 
 #include <string>
+#include <algorithm>
 #include <vector>
 #include "layer.hpp"
 #include "UtilI.hpp"
@@ -37,17 +38,40 @@ public:
     virtual vvd& calculate(const vvd &output, const vd& expectedOutput);
 };
 
-class MnistSmallInputManager : public InputManager
+class MnistInputManager : public InputManager
+{
+public:
+    MnistInputManager (int num, std::string path = "MNIST") : InputManager(num), inputs(vvvd(num, vvd(1, vd(32*32)))),
+                                                                 expectedOutputs(vvd(num, vd(10, 0))) {}
+    virtual vvd& getInput(int i) { return inputs.at(i); }
+    virtual vd& getExpectedOutput(int i) { return expectedOutputs.at(i); }
+    virtual void reset() { std::random_shuffle( inputs.begin(), inputs.end()); }
+
+protected:
+    vvvd inputs;
+    vvd expectedOutputs;
+    virtual void preprocess();
+};
+
+class MnistSmallInputManager : public MnistInputManager
 {
 public:
     MnistSmallInputManager(std::string path = "MNIST");
-    virtual vvd& getInput(int i) { return inputs.at(i); }
-    virtual vd& getExpectedOutput(int i) { return expectedOutputs.at(i); }
-    virtual void reset() {}
 
-private:
-    vvvd inputs;
-    vvd expectedOutputs;
+};
+
+class MnistTrainInputManager : public MnistInputManager
+{
+public:
+    MnistTrainInputManager(std::string path = "MNIST");
+
+};
+
+class MnistValidateInputManager : public MnistInputManager
+{
+public:
+    MnistValidateInputManager(std::string path = "MNIST");
+
 };
 
 /*****************
@@ -57,6 +81,7 @@ private:
  *  int - kernel size
  *  int - output map size
  *  float(outputFM x inputFM x kernelSize x kernelSize) - weights
+ *  float(outputFM) - bias
 ******************/
 class WeightRecorder : public TrainingSupervisor
 {
@@ -79,6 +104,26 @@ private:
     ConvolutionNeuralNetwork &cnn;
     vvd possibleOutputs;
 
+};
+
+class ActivationVariance : public TrainingSupervisor
+{
+public:
+    ActivationVariance (std::vector<Layer*> layers, std::string path) : TrainingSupervisor(path), layers(layers) {}
+    virtual void monitor(int epoch);
+
+private:
+    std::vector<Layer*> layers;
+};
+
+class GradientVariance : public TrainingSupervisor
+{
+public:
+    GradientVariance (std::vector<Layer*> layers, std::string path) : TrainingSupervisor(path), layers(layers) {}
+    virtual void monitor(int epoch);
+
+private:
+    std::vector<Layer*> layers;
 };
 
 #endif

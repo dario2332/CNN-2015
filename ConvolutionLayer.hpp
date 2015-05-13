@@ -13,9 +13,11 @@ public:
     vvd& getOutput() { return output; }
     vvd& getPrevError() { return prevError; }
     vvvd& getKernel() { return kernelW; }
+    vd& getBias() { return bias; }
     int getMapSize() { return mapSize; }
     float getLearningRate() { return learningRate; }
     void printKernel();
+    void writeKernel(std::string path);
     void loadWeights(std::string file);
 
 private:

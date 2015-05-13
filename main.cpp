@@ -178,17 +178,17 @@ void testCNN()
     //TestInitializer init;
     SigmoidInitializer init;
     
-    ConvolutionLayer conv1(24, 1, 8, 5, init, learningRate);
-    SigmoidLayer sigm1(8, 24);
-    MaxPoolLayer pool1(2, 8, 24);
-    ConvolutionLayer conv2(10, 8, 20, 3, init, learningRate);
-    SigmoidLayer sigm2(20, 10);
-    MaxPoolLayer pool2(2, 20, 10);
-    ConvolutionLayer conv3(1, 20, 80, 5, init, learningRate);
-    SigmoidLayer sigm3(80, 1);
-    FullyConnectedLayer full1(80, 40, init, learningRate);
-    SigmoidLayer sigmFC1(40);
-    FullyConnectedLayer full2(40, 2, init, learningRate);
+    ConvolutionLayer conv1(28, 1, 6, 5, init, learningRate);
+    SigmoidLayer sigm1(6, 28);
+    MaxPoolLayer pool1(2, 6, 28);
+    ConvolutionLayer conv2(10, 6, 16, 5, init, learningRate);
+    SigmoidLayer sigm2(16, 10);
+    MaxPoolLayer pool2(2, 16, 10);
+    ConvolutionLayer conv3(1, 16, 100, 5, init, learningRate);
+    SigmoidLayer sigm3(100, 1);
+    FullyConnectedLayer full1(100, 80, init, learningRate);
+    SigmoidLayer sigmFC1(80);
+    FullyConnectedLayer full2(80, 2, init, learningRate);
     
     layers.push_back(&conv1);
     layers.push_back(&sigm1);
@@ -212,17 +212,96 @@ void testCNN()
 
     WeightRecorder wr(convLayers, "MNIST");
     Validator val(cnn, minstInput, "MNIST/train", 2);
+    ActivationVariance avar(layers, "MNIST/");
+    GradientVariance gvar(layers, "MNIST/");
 
+    cnn.registerSupervisor(&avar);
+    cnn.registerSupervisor(&gvar);
     cnn.registerSupervisor(&val);
     cnn.registerSupervisor(&wr);
+
     cnn.train(20);
+
     conv1.loadWeights("MNIST/Weights_E19_CL1");
     conv2.loadWeights("MNIST/Weights_E19_CL2");
     conv3.loadWeights("MNIST/Weights_E19_CL3");
     full1.loadWeights("MNIST/Weights_E19_CL4");
     full2.loadWeights("MNIST/Weights_E19_CL5");
     cnn.train(2);
+    conv1.writeKernel("MNIST/");
     
+}
+
+void trainMnist()
+{
+    std::vector<Layer*> layers;
+    std::vector<ConvolutionLayer*> convLayers;
+    MnistTrainInputManager minstInput;
+    MnistValidateInputManager validateMnist;
+    SquareCost sc(10);
+    const float learningRate = 0.001;
+
+    //TestInitializer init;
+    SigmoidInitializer init;
+    
+    ConvolutionLayer conv1(28, 1, 6, 5, init, learningRate);
+    SigmoidLayer sigm1(6, 28);
+    MaxPoolLayer pool1(2, 6, 28);
+    ConvolutionLayer conv2(10, 6, 16, 5, init, learningRate);
+    SigmoidLayer sigm2(16, 10);
+    MaxPoolLayer pool2(2, 16, 10);
+    ConvolutionLayer conv3(1, 16, 100, 5, init, learningRate);
+    SigmoidLayer sigm3(100, 1);
+    FullyConnectedLayer full1(100, 80, init, learningRate);
+    SigmoidLayer sigmFC1(80);
+    FullyConnectedLayer full2(80, 10, init, learningRate);
+    
+    layers.push_back(&conv1);
+    layers.push_back(&sigm1);
+    layers.push_back(&pool1);
+    layers.push_back(&conv2);
+    layers.push_back(&sigm2);
+    layers.push_back(&pool2);
+    layers.push_back(&conv3);
+    layers.push_back(&sigm3);
+    layers.push_back(&full1);
+    layers.push_back(&sigmFC1);
+    layers.push_back(&full2);
+
+    ConvolutionNeuralNetwork cnn(layers, sc, minstInput);
+    
+    convLayers.push_back(&conv1);
+    convLayers.push_back(&conv2);
+    convLayers.push_back(&conv3);
+    convLayers.push_back(&full1);
+    convLayers.push_back(&full2);
+
+    WeightRecorder wr(convLayers, "MNIST");
+    Validator trainVal(cnn, minstInput, "MNIST/train", 10);
+    Validator valVal(cnn, validateMnist, "MNIST/validate", 10);
+    ActivationVariance avar(layers, "MNIST/");
+    GradientVariance gvar(layers, "MNIST/");
+
+    cnn.registerSupervisor(&avar);
+    cnn.registerSupervisor(&gvar);
+    cnn.registerSupervisor(&trainVal);
+    cnn.registerSupervisor(&valVal);
+    cnn.registerSupervisor(&wr);
+    //15.5s je svo potrebno ucitavanje
+
+    //32.05s je 1000 backward passova
+    //cnn.forwardPass(minstInput.getInput(0));
+    //for (int i = 0; i < 1000; ++i)
+    //{
+    //    cnn.backPropagate(sc.calculate(layers.at(layers.size()-1)->getOutput(), minstInput.getExpectedOutput(0)));
+    //}
+
+    //14.75s je 1000 forward passova
+    //for (int i = 0; i < 1000; ++i)
+    //{
+    //    cnn.forwardPass(minstInput.getInput(0));
+    //}
+    cnn.train(10);
 }
 
 int main(int argc, char *argv[])
@@ -234,6 +313,7 @@ int main(int argc, char *argv[])
     //testSigmoidLayer();
     //testActivationLayerTime(1000000);
     //testSquareCost();
-    testCNN();
+    //testCNN();
+    trainMnist();
     return 0;
 }

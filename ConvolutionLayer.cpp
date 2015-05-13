@@ -6,6 +6,7 @@
 #include <vector>
 #include <cassert>
 #include <fstream>
+#include <opencv2/opencv.hpp>
 #include "ConvolutionLayer.hpp"
 
 
@@ -179,6 +180,25 @@ void ConvolutionLayer::loadWeights(std::string file)
             }
         }
     }
+    for (int i = 0; i < bias.size(); ++i)
+    {
+        in.read((char*) &bias.at(i), sizeof(float));
+    }
     in.close();
 }
 
+void ConvolutionLayer::writeKernel(std::string path)
+{
+    cv::Mat image(kernelSize, kernelSize, CV_8UC1);
+    for (int ofm = 0; ofm < outputFM; ++ofm)
+    {
+        for (int ifm = 0; ifm < inputFM; ++ifm)
+        {
+            for (int i = 0; i < kernelSize * kernelSize; ++i)
+            {
+                image.at<unsigned char>(i/kernelSize, i%kernelSize) = kernelW.at(ofm).at(ifm).at(i);
+            }
+            cv::imwrite(path + "Kernel" + std::to_string(ofm) + "_" + std::to_string(ifm) + ".jpg", image);
+        }
+    }
+}

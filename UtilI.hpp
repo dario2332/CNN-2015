@@ -42,7 +42,7 @@ class TrainingSupervisor
 {
 public:
     TrainingSupervisor(std::string path) : path(path) {}
-    virtual void monitor(int epoch) = 0;
+    virtual void monitor(int epoch = 0) = 0;
 protected:
     std::string path;
 };

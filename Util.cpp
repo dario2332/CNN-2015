@@ -57,9 +57,9 @@ vvd& SquareCost::calculate(const vvd &output, const vd& expectedOutput)
 }
 
 
-MnistSmallInputManager::MnistSmallInputManager(std::string path) : InputManager(20), inputs(vvvd(20, vvd(1, vd(28*28)))),
-                                                                 expectedOutputs(vvd(20, vd(2)))
+MnistSmallInputManager::MnistSmallInputManager(std::string path) : MnistInputManager(20)
 {
+    expectedOutputs = vvd(20, vd(2));
     int x = 0;
     int zeros = 0, ones = 0;
     std::ifstream inImages, inLabels;
@@ -79,13 +79,19 @@ MnistSmallInputManager::MnistSmallInputManager(std::string path) : InputManager(
         if (label == 0 && zeros < 10 || label == 1 && ones < 10)
         {
             static int a = 0;
-            cv::Mat image(28, 28, CV_8UC1);
-            for (int i = 0; i < 28*28; ++i)
+            cv::Mat image(32, 32, CV_8UC1);
+            for (int j = 0; j < 32; ++j)
             {
-                int x = 0;
-                inImages.read((char*)&x, sizeof(char));
-                inputs.at(zeros+ones).at(0).at(i) = x;
-                image.at<unsigned char>(i/28, i%28) = x;
+                for (int k = 0; k < 32; ++k)
+                {
+                    int x = 0;
+                    if (j > 1 && j < 30 && k > 1 && k < 30)
+                    {
+                        inImages.read((char*)&x, sizeof(char));
+                    }
+                    image.at<unsigned char>(j, k) = x;
+                    inputs.at(zeros+ones).at(0).at(j*32+k) = x;
+                }
             }
             if (label == 0)
             {
@@ -107,8 +113,134 @@ MnistSmallInputManager::MnistSmallInputManager(std::string path) : InputManager(
     }
     inImages.close();
     inLabels.close();
+    preprocess();
 }
 
+void MnistInputManager::preprocess()
+{
+    for (int image = 0; image < inputs.size(); ++image)
+    {
+        float sum = 0, mean, variance = 0;
+        for (int i = 0; i < 32; ++i)
+        {
+            for (int j = 0; j < 32; ++j)
+            {
+                if (j > 1 && j < 30 && i > 1 && i < 30)
+                {
+                    sum += inputs.at(image).at(0).at(i*32+j);
+                } 
+            }
+        }
+        mean = sum / (28*28);
+        for (int i = 0; i < 32; ++i)
+        {
+            for (int j = 0; j < 32; ++j)
+            {
+                if (j > 1 && j < 30 && i > 1 && i < 30)
+                {
+                    float x = (inputs.at(image).at(0).at(i*32+j)-mean);
+                    variance += x*x;
+                } 
+            }
+        }
+        variance /= (28*28);
+        for (int i = 0; i < 32; ++i)
+        {
+            for (int j = 0; j < 32; ++j)
+            {
+                if (j > 1 && j < 30 && i > 1 && i < 30)
+                {
+                    inputs.at(image).at(0).at(i*32+j) -= mean;
+                    inputs.at(image).at(0).at(i*32+j) /= std::sqrt(variance);
+                } 
+            }
+        }
+    }
+}
+
+MnistTrainInputManager::MnistTrainInputManager(std::string path) : MnistInputManager(50000) 
+{
+    std::ifstream inImages, inLabels;
+    inImages.open(path + "/train-images.idx3-ubyte", std::fstream::binary | std::fstream::in);
+    inLabels.open(path + "/train-labels.idx1-ubyte", std::fstream::binary | std::fstream::in);
+
+    assert(inLabels.is_open());
+    assert(inImages.is_open());
+
+    inImages.ignore(4*sizeof(int));
+    inLabels.ignore(2*sizeof(int));
+    
+    for (int i = 0; i < numOfInputs; ++i)
+    {
+        int label = 0;
+        inLabels.read((char*)&label, sizeof(char));
+        //static int a = 0;
+        //cv::Mat image(32, 32, CV_8UC1);
+        for (int j = 0; j < 32; ++j)
+        {
+            for (int k = 0; k < 32; ++k)
+            {
+                int x = 0;
+                if (j > 1 && j < 30 && k > 1 && k < 30)
+                {
+                    inImages.read((char*)&x, sizeof(char));
+
+                }
+                //image.at<unsigned char>(j, k) = x;
+                inputs.at(i).at(0).at(j*32+k) = x;
+            }
+        }
+        expectedOutputs.at(i).at(label) = 1;
+        //if (a < 10) cv::imwrite(path + "/image" + std::to_string(a++) + ".jpg", image);
+        //else exit(1);
+    }
+    inImages.close();
+    inLabels.close();
+    preprocess();
+}
+
+MnistValidateInputManager::MnistValidateInputManager(std::string path) : MnistInputManager(10000) 
+{
+    std::ifstream inImages, inLabels;
+    inImages.open(path + "/train-images.idx3-ubyte", std::fstream::binary | std::fstream::in);
+    inLabels.open(path + "/train-labels.idx1-ubyte", std::fstream::binary | std::fstream::in);
+
+    assert(inLabels.is_open());
+    assert(inImages.is_open());
+
+    inImages.ignore(4*sizeof(int));
+    inLabels.ignore(2*sizeof(int));
+    inLabels.ignore(50000*sizeof(char));
+    inImages.ignore(28*28*50000*sizeof(char));
+    
+    for (int i = 0; i < numOfInputs; ++i)
+    {
+        int label = 0;
+        inLabels.read((char*)&label, sizeof(char));
+        //static int a = 0;
+        //cv::Mat image(32, 32, CV_8UC1);
+        for (int j = 0; j < 32; ++j)
+        {
+            for (int k = 0; k < 32; ++k)
+            {
+                int x = 0;
+                if (j > 1 && j < 30 && k > 1 && k < 30)
+                {
+                    inImages.read((char*)&x, sizeof(char));
+
+                }
+                //image.at<unsigned char>(j, k) = x;
+                inputs.at(i).at(0).at(j*32+k) = x;
+            }
+        }
+        expectedOutputs.at(i).at(label) = 1;
+        //if (a < 10) cv::imwrite(path + "/image" + std::to_string(a++) + ".jpg", image);
+        //else exit(1);
+    }
+    inImages.close();
+    inLabels.close();
+    preprocess();
+}
 
 void WeightRecorder::monitor(int epoch)
 {
@@ -117,7 +249,8 @@ void WeightRecorder::monitor(int epoch)
     for (int i = 0; i < layers.size(); ++i)
     {
         std::ofstream out(file + "_CL" + std::to_string(i+1), std::fstream::binary | std::fstream::out | std::fstream::trunc);
-        vvvd kernel = layers.at(i) -> getKernel();
+        vvvd &kernel = layers.at(i) -> getKernel();
+        vd &bias = layers.at(i) -> getBias();
         int oFM = kernel.size(), iFM = kernel.at(0).size(), kernelSize = std::sqrt(kernel.at(0).at(0).size());
         int outMapSize = layers.at(i) -> getMapSize();
         
@@ -135,6 +268,10 @@ void WeightRecorder::monitor(int epoch)
                     out.write((char*) &kernel.at(i).at(j).at(k), sizeof(float));
                 }
             }
+        }
+        for (int i = 0; i < bias.size(); ++i)
+        {
+            out.write((char*) &bias.at(i), sizeof(float));
         }
         out.close();
     }
@@ -181,5 +318,73 @@ void Validator::monitor(int epoch)
     std::ofstream os(path + "cost", std::ofstream::app); 
 
     os << epoch << " " << error << " " << correct << "/" << im.getInputNum() << std::endl;
+    std::cout << epoch << " " << error << " " << correct << "/" << im.getInputNum() << std::endl;
+    os.close();
+}
+
+
+void ActivationVariance::monitor(int epoch)
+{
+    std::ofstream os(path + "ActivationVariance", std::ofstream::app); 
+    os << "Epoch: " << epoch << std::endl;
+    for (int i = 0; i < layers.size(); ++i)
+    {
+        float mean = 0;
+        float variance = 0;
+        vvd& output = layers.at(i)->getOutput();
+
+        for (int j = 0; j < output.size(); ++j)
+        {
+            for (int k = 0; k < output.at(0).size(); ++k)
+            {
+                mean += output.at(j).at(k);
+            }
+        }
+        int n = output.size() * output.at(0).size();
+        mean /= n;
+        for (int j = 0; j < output.size(); ++j)
+        {
+            for (int k = 0; k < output.at(0).size(); ++k)
+            {
+                variance += (output.at(j).at(k) - mean) * (output.at(j).at(k) - mean);
+            }
+        }
+        variance /= n;
+        
+        os << "Layer: " << i << " Variance: " << variance << std::endl;
+    }
+    os.close();
+}
+
+void GradientVariance::monitor(int epoch)
+{
+    std::ofstream os(path + "GradientVariance", std::ofstream::app); 
+    os << "Epoch: " << epoch << std::endl;
+    for (int i = 0; i < layers.size(); ++i)
+    {
+        float mean = 0;
+        float variance = 0;
+        vvd& error = layers.at(i)->getPrevError();
+
+        for (int j = 0; j < error.size(); ++j)
+        {
+            for (int k = 0; k < error.at(0).size(); ++k)
+            {
+                mean += error.at(j).at(k);
+            }
+        }
+        int n = error.size() * error.at(0).size();
+        mean /= n;
+        for (int j = 0; j < error.size(); ++j)
+        {
+            for (int k = 0; k < error.at(0).size(); ++k)
+            {
+                variance += (error.at(j).at(k) - mean) * (error.at(j).at(k) - mean);
+            }
+        }
+        variance /= n;
+        
+        os << "Layer: " << i << " Variance: " << variance << std::endl;
+    }
     os.close();
 }

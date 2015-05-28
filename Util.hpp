@@ -41,15 +41,15 @@ public:
 class MnistInputManager : public InputManager
 {
 public:
-    MnistInputManager (int num, std::string path = "MNIST") : InputManager(num), inputs(vvvd(num, vvd(1, vd(32*32)))),
-                                                                 expectedOutputs(vvd(num, vd(10, 0))) {}
-    virtual vvd& getInput(int i) { return inputs.at(i); }
-    virtual vd& getExpectedOutput(int i) { return expectedOutputs.at(i); }
-    virtual void reset() { std::random_shuffle( inputs.begin(), inputs.end()); }
+    MnistInputManager (int num, std::string path = "MNIST");    
+    virtual vvd& getInput(int i) { return inputs.at(indexes.at(i)); }
+    virtual vd& getExpectedOutput(int i) { return expectedOutputs.at(indexes.at(i)); }
+    virtual void reset() { std::random_shuffle( indexes.begin(), indexes.end()); }
 
 protected:
     vvvd inputs;
     vvd expectedOutputs;
+    std::vector<int> indexes;
     virtual void preprocess();
 };
 

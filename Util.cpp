@@ -49,6 +49,7 @@ vvd& SquareCost::calculate(const vvd &output, const vd& expectedOutput)
     error = 0;
     for (int i = 0; i < numOutputs; ++i)
     {
+        //std::cout << expectedOutput.at(i) << std::endl;
         assert(output.at(i).size() == 1);
         prevError.at(i).at(0) = output.at(i).at(0) - expectedOutput.at(i);
         error += 0.5 * std::pow(output.at(i).at(0) - expectedOutput.at(i), 2);
@@ -114,6 +115,15 @@ MnistSmallInputManager::MnistSmallInputManager(std::string path) : MnistInputMan
     inImages.close();
     inLabels.close();
     preprocess();
+}
+
+MnistInputManager::MnistInputManager (int num, std::string path) : InputManager(num), inputs(vvvd(num, vvd(1, vd(32*32)))),
+                                        expectedOutputs(vvd(num, vd(10, 0))), indexes(std::vector<int>(num))
+{
+    for (int i = 0; i < num; ++i)
+    {
+        indexes.at(i) = i;
+    }
 }
 
 void MnistInputManager::preprocess()
@@ -289,7 +299,6 @@ Validator::Validator (ConvolutionNeuralNetwork &cnn, InputManager& im, std::stri
 
 void Validator::monitor(int epoch)
 {
-    InputManager& im = cnn.getInputManager();
     float error = 0;
     int correct = 0;
     

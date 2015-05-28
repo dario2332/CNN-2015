@@ -1,0 +1,14 @@
+\select@language {croatian}
+\contentsline {chapter}{\numberline {1}Uvod}{1}
+\contentsline {chapter}{\numberline {2}Neuronske mre\IeC {\v z}e}{2}
+\contentsline {section}{\numberline {2.1}Neuron}{2}
+\contentsline {subsection}{\numberline {2.1.1}Aktivacijske funkcije}{3}
+\contentsline {subsection}{\numberline {2.1.2}Duboke neuronske mre\IeC {\v z}e}{4}
+\contentsline {subsection}{\numberline {2.1.3}Algoritam backpropagation}{4}
+\contentsline {chapter}{\numberline {3}Konvolucijske neuronske mre\IeC {\v z}e}{5}
+\contentsline {subsection}{\numberline {3.0.4}Struktura mre\IeC {\v z}e}{5}
+\contentsline {subsubsection}{Konvolucijski slojevi}{5}
+\contentsline {subsubsection}{Slojevi sa\IeC {\v z}imanja}{5}
+\contentsline {subsection}{\numberline {3.0.5}Hiperparametri mre\IeC {\v z}e}{5}
+\contentsline {chapter}{\numberline {4}Zaklju\IeC {\v c}ak}{6}
+\contentsline {chapter}{Literatura}{7}

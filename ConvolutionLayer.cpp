@@ -116,11 +116,13 @@ void ConvolutionLayer::update(const vvd &error)
                     for (int inRow = kRow; inRow < kRow+mapSize; ++inRow)
                     {
                             //promjene ako cemo probavati mini batch
-                            float update = learningRate * cblas_dsdot(
+                            float update = learningRate * cblas_sdot(
                                         mapSize, 
                                         (float*) &(input->at(ifm).at(inRow*inputMapSize+kCol)), 1,
                                         (float*) &error.at(ofm).at((inRow-kRow)*mapSize), 1
                             );
+                            
+                            //std::cout << update << std::endl;
                             kernelW.at(ofm).at(ifm).at(kRow*kernelSize + kCol) -= update;
                             //std::cout << update/ kernelW.at(ofm).at(ifm).at(kRow*kernelSize + kCol) << std::endl;
                             //std::cout << kernelW.at(ofm).at(ifm).at(kRow*kernelSize + kCol) << std::endl;

@@ -255,6 +255,7 @@ void trainMnist()
     FullyConnectedLayer full1(100, 80, init, learningRate);
     SigmoidLayer sigmFC1(80);
     FullyConnectedLayer full2(80, 10, init, learningRate);
+    //SigmoidLayer sigmFC2(10);
     
     layers.push_back(&conv1);
     layers.push_back(&sigm1);
@@ -267,6 +268,7 @@ void trainMnist()
     layers.push_back(&full1);
     layers.push_back(&sigmFC1);
     layers.push_back(&full2);
+    //layers.push_back(&sigmFC2);
 
     ConvolutionNeuralNetwork cnn(layers, sc, minstInput);
     
@@ -301,6 +303,14 @@ void trainMnist()
     //{
     //    cnn.forwardPass(minstInput.getInput(0));
     //}
+    //trainVal.monitor(0);
+    //valVal.monitor(0);
+    conv1.loadWeights("MNIST/Weights_E9_CL1");
+    conv2.loadWeights("MNIST/Weights_E9_CL2");
+    conv3.loadWeights("MNIST/Weights_E9_CL3");
+    full1.loadWeights("MNIST/Weights_E9_CL4");
+    full2.loadWeights("MNIST/Weights_E9_CL5");
+
     cnn.train(10);
 }
 

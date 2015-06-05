@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.5.25)  3 JUN 2015 02:47
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.5.25)  5 JUN 2015 19:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -496,6 +496,31 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 \@float@every@algorithm=\toks27
 \c@algorithm=\count120
 )
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count121
+\lst@gtempboxa=\box31
+\lst@token=\toks28
+\lst@length=\count122
+\lst@currlwidth=\dimen146
+\lst@column=\count123
+\lst@pos=\count124
+\lst@lostspace=\dimen147
+\lst@width=\dimen148
+\lst@newlines=\count125
+\lst@lineno=\count126
+\lst@maxwidth=\dimen149
+
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2013/08/26 1.5b (Carsten Heinz)
+\c@lstnumber=\count127
+\lst@skipnumbers=\count128
+\lst@framebox=\box32
+)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2013/08/26 1.5b listings configuration
+))
+Package: listings 2013/08/26 1.5b (Carsten Heinz)
+
 (/usr/share/texlive/texmf-dist/tex/latex/algorithmicx/algpseudocode.sty
 Package: algpseudocode 
 
@@ -503,38 +528,289 @@ Package: algpseudocode
 Package: algorithmicx 2005/04/27 v1.2 Algorithmicx
 
 Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
-\c@ALG@line=\count121
-\c@ALG@rem=\count122
-\c@ALG@nested=\count123
+\c@ALG@line=\count129
+\c@ALG@rem=\count130
+\c@ALG@nested=\count131
 \ALG@tlm=\skip54
 \ALG@thistlm=\skip55
-\c@ALG@Lnr=\count124
-\c@ALG@blocknr=\count125
-\c@ALG@storecount=\count126
-\c@ALG@tmpcounter=\count127
+\c@ALG@Lnr=\count132
+\c@ALG@blocknr=\count133
+\c@ALG@storecount=\count134
+\c@ALG@tmpcounter=\count135
 \ALG@tmplength=\skip56
 )
 Document Style - pseudocode environments for use with the `algorithmicx' style
-) (./zavrsni.aux
+) (/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
+Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package color Info: Driver file: pdftex.def on input line 130.
+)
+(/usr/share/texmf/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/share/texmf/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/share/texmf/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texmf/tex/generic/pgf/utilities/pgfutil-common.tex
+\pgfutil@everybye=\toks29
+)
+(/usr/share/texmf/tex/generic/pgf/utilities/pgfutil-latex.def
+\pgfutil@abb=\box33
+
+(/usr/share/texlive/texmf-dist/tex/latex/ms/everyshi.sty
+Package: everyshi 2001/05/15 v3.00 EveryShipout Package (MS)
+))
+(/usr/share/texmf/tex/generic/pgf/utilities/pgfrcs.code.tex
+Package: pgfrcs 2010/10/25 v2.10 (rcs-revision 1.24)
+))
+Package: pgf 2008/01/15 v2.10 (rcs-revision 1.12)
+
+(/usr/share/texmf/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texmf/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texmf/tex/generic/pgf/systemlayer/pgfsys.code.tex
+Package: pgfsys 2010/06/30 v2.10 (rcs-revision 1.37)
+
+(/usr/share/texmf/tex/generic/pgf/utilities/pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks30
+\pgfkeys@temptoks=\toks31
+
+(/usr/share/texmf/tex/generic/pgf/utilities/pgfkeysfiltered.code.tex
+\pgfkeys@tmptoks=\toks32
+))
+\pgf@x=\dimen150
+\pgf@y=\dimen151
+\pgf@xa=\dimen152
+\pgf@ya=\dimen153
+\pgf@xb=\dimen154
+\pgf@yb=\dimen155
+\pgf@xc=\dimen156
+\pgf@yc=\dimen157
+\w@pgf@writea=\write3
+\r@pgf@reada=\read1
+\c@pgf@counta=\count136
+\c@pgf@countb=\count137
+\c@pgf@countc=\count138
+\c@pgf@countd=\count139
+
+(/usr/share/texmf/tex/generic/pgf/systemlayer/pgf.cfg
+File: pgf.cfg 2008/05/14  (rcs-revision 1.7)
+)
+Package pgfsys Info: Driver file for pgf: pgfsys-pdftex.def on input line 900.
+
+(/usr/share/texmf/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+File: pgfsys-pdftex.def 2009/05/22  (rcs-revision 1.26)
+
+(/usr/share/texmf/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def
+File: pgfsys-common-pdf.def 2008/05/19  (rcs-revision 1.10)
+)))
+(/usr/share/texmf/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex
+File: pgfsyssoftpath.code.tex 2008/07/18  (rcs-revision 1.7)
+\pgfsyssoftpath@smallbuffer@items=\count140
+\pgfsyssoftpath@bigbuffer@items=\count141
+)
+(/usr/share/texmf/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex
+File: pgfsysprotocol.code.tex 2006/10/16  (rcs-revision 1.4)
+))
+(/usr/share/texmf/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+LaTeX Info: Redefining \color on input line 702.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1341.
+Package xcolor Info: Model `RGB' extended on input line 1353.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcore.code.tex
+Package: pgfcore 2010/04/11 v2.10 (rcs-revision 1.7)
+
+(/usr/share/texmf/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathcalc.code.tex
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathparser.code.tex
+\pgfmath@dimen=\dimen158
+\pgfmath@count=\count142
+\pgfmath@box=\box34
+\pgfmath@toks=\toks33
+\pgfmath@stack@operand=\toks34
+\pgfmath@stack@operation=\toks35
+)
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathfunctions.code.tex
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathfunctions.basic.code.tex)
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathfunctions.trigonometric.code.tex)
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathfunctions.random.code.tex)
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathfunctions.comparison.code.tex)
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathfunctions.base.code.tex)
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathfunctions.round.code.tex)
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathfunctions.misc.code.tex)))
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count143
+))
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex
+File: pgfcorepoints.code.tex 2010/04/09  (rcs-revision 1.20)
+\pgf@picminx=\dimen159
+\pgf@picmaxx=\dimen160
+\pgf@picminy=\dimen161
+\pgf@picmaxy=\dimen162
+\pgf@pathminx=\dimen163
+\pgf@pathmaxx=\dimen164
+\pgf@pathminy=\dimen165
+\pgf@pathmaxy=\dimen166
+\pgf@xx=\dimen167
+\pgf@xy=\dimen168
+\pgf@yx=\dimen169
+\pgf@yy=\dimen170
+\pgf@zx=\dimen171
+\pgf@zy=\dimen172
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorepathconstruct.code.tex
+File: pgfcorepathconstruct.code.tex 2010/08/03  (rcs-revision 1.24)
+\pgf@path@lastx=\dimen173
+\pgf@path@lasty=\dimen174
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorepathusage.code.tex
+File: pgfcorepathusage.code.tex 2008/04/22  (rcs-revision 1.12)
+\pgf@shorten@end@additional=\dimen175
+\pgf@shorten@start@additional=\dimen176
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorescopes.code.tex
+File: pgfcorescopes.code.tex 2010/09/08  (rcs-revision 1.34)
+\pgfpic=\box35
+\pgf@hbox=\box36
+\pgf@layerbox@main=\box37
+\pgf@picture@serial@count=\count144
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcoregraphicstate.code.tex
+File: pgfcoregraphicstate.code.tex 2008/04/22  (rcs-revision 1.9)
+\pgflinewidth=\dimen177
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcoretransformations.code.tex
+File: pgfcoretransformations.code.tex 2009/06/10  (rcs-revision 1.11)
+\pgf@pt@x=\dimen178
+\pgf@pt@y=\dimen179
+\pgf@pt@temp=\dimen180
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
+File: pgfcorequick.code.tex 2008/10/09  (rcs-revision 1.3)
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcoreobjects.code.tex
+File: pgfcoreobjects.code.tex 2006/10/11  (rcs-revision 1.2)
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorepathprocessing.code.tex
+File: pgfcorepathprocessing.code.tex 2008/10/09  (rcs-revision 1.8)
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorearrows.code.tex
+File: pgfcorearrows.code.tex 2008/04/23  (rcs-revision 1.11)
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
+File: pgfcoreshade.code.tex 2008/11/23  (rcs-revision 1.13)
+\pgf@max=\dimen181
+\pgf@sys@shading@range@num=\count145
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+File: pgfcoreimage.code.tex 2010/03/25  (rcs-revision 1.16)
+
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcoreexternal.code.tex
+File: pgfcoreexternal.code.tex 2010/09/01  (rcs-revision 1.17)
+\pgfexternal@startupbox=\box38
+))
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorelayers.code.tex
+File: pgfcorelayers.code.tex 2010/08/27  (rcs-revision 1.2)
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcoretransparency.code.tex
+File: pgfcoretransparency.code.tex 2008/01/17  (rcs-revision 1.2)
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorepatterns.code.tex
+File: pgfcorepatterns.code.tex 2009/07/02  (rcs-revision 1.3)
+)))
+(/usr/share/texmf/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
+File: pgfmoduleshapes.code.tex 2010/09/09  (rcs-revision 1.13)
+\pgfnodeparttextbox=\box39
+)
+(/usr/share/texmf/tex/generic/pgf/modules/pgfmoduleplot.code.tex
+File: pgfmoduleplot.code.tex 2010/10/22  (rcs-revision 1.8)
+)
+(/usr/share/texmf/tex/latex/pgf/compatibility/pgfcomp-version-0-65.sty
+Package: pgfcomp-version-0-65 2007/07/03 v2.10 (rcs-revision 1.7)
+\pgf@nodesepstart=\dimen182
+\pgf@nodesepend=\dimen183
+)
+(/usr/share/texmf/tex/latex/pgf/compatibility/pgfcomp-version-1-18.sty
+Package: pgfcomp-version-1-18 2007/07/23 v2.10 (rcs-revision 1.1)
+))
+(/usr/share/texmf/tex/latex/pgf/utilities/pgffor.sty
+(/usr/share/texmf/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/share/texmf/tex/generic/pgf/utilities/pgfkeys.code.tex))
+(/usr/share/texmf/tex/generic/pgf/utilities/pgffor.code.tex
+Package: pgffor 2010/03/23 v2.10 (rcs-revision 1.18)
+\pgffor@iter=\dimen184
+\pgffor@skip=\dimen185
+\pgffor@stack=\toks36
+\pgffor@toks=\toks37
+))
+(/usr/share/texmf/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+Package: tikz 2010/10/13 v2.10 (rcs-revision 1.76)
+
+(/usr/share/texmf/tex/generic/pgf/libraries/pgflibraryplothandlers.code.tex
+File: pgflibraryplothandlers.code.tex 2010/05/31 v2.10 (rcs-revision 1.15)
+\pgf@plot@mark@count=\count146
+\pgfplotmarksize=\dimen186
+)
+\tikz@lastx=\dimen187
+\tikz@lasty=\dimen188
+\tikz@lastxsaved=\dimen189
+\tikz@lastysaved=\dimen190
+\tikzleveldistance=\dimen191
+\tikzsiblingdistance=\dimen192
+\tikz@figbox=\box40
+\tikz@tempbox=\box41
+\tikztreelevel=\count147
+\tikznumberofchildren=\count148
+\tikznumberofcurrentchild=\count149
+\tikz@fig@count=\count150
+
+(/usr/share/texmf/tex/generic/pgf/modules/pgfmodulematrix.code.tex
+File: pgfmodulematrix.code.tex 2010/08/24  (rcs-revision 1.4)
+\pgfmatrixcurrentrow=\count151
+\pgfmatrixcurrentcolumn=\count152
+\pgf@matrix@numberofcolumns=\count153
+)
+\tikz@expandcount=\count154
+
+(/usr/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarytopat
+hs.code.tex
+File: tikzlibrarytopaths.code.tex 2008/06/17 v2.10 (rcs-revision 1.2)
+))) (./zavrsni.aux
 
 LaTeX Warning: Label `eq:htan' multiply defined.
+
+
+LaTeX Warning: Label `alg:backpropagation' multiply defined.
 
 )
 \openout1 = `zavrsni.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 6.
-LaTeX Font Info:    ... okay on input line 6.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 6.
-LaTeX Font Info:    ... okay on input line 6.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 6.
-LaTeX Font Info:    ... okay on input line 6.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 6.
-LaTeX Font Info:    ... okay on input line 6.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 6.
-LaTeX Font Info:    ... okay on input line 6.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 6.
-LaTeX Font Info:    ... okay on input line 6.
-LaTeX Font Info:    Try loading font information for T1+ptm on input line 6.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 10.
+LaTeX Font Info:    ... okay on input line 10.
+LaTeX Font Info:    Try loading font information for T1+ptm on input line 10.
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 )
@@ -574,17 +850,17 @@ File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count128
-\scratchdimen=\dimen146
-\scratchbox=\box31
-\nofMPsegments=\count129
-\nofMParguments=\count130
-\everyMPshowfont=\toks28
-\MPscratchCnt=\count131
-\MPscratchDim=\dimen147
-\MPnumerator=\count132
-\makeMPintoPDFobject=\count133
-\everyMPtoPDFconversion=\toks29
+\scratchcounter=\count155
+\scratchdimen=\dimen193
+\scratchbox=\box42
+\nofMPsegments=\count156
+\nofMParguments=\count157
+\everyMPshowfont=\toks38
+\MPscratchCnt=\count158
+\MPscratchDim=\dimen194
+\MPnumerator=\count159
+\makeMPintoPDFobject=\count160
+\everyMPtoPDFconversion=\toks39
 ) (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
 )
@@ -632,33 +908,37 @@ e
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: subfig package v1.3 is loaded.
 Package caption Info: float package is loaded.
+Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Try loading font information for T1+phv on input line 17.
+\c@lstlisting=\count161
+
+ABD: EveryShipout initializing macros
+LaTeX Font Info:    Try loading font information for T1+phv on input line 21.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
 )
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 17.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 21.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 17.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 21.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <24.88> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 17.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 21.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <24.88> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 17.
-LaTeX Font Info:    Try loading font information for U+msa on input line 17.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 21.
+LaTeX Font Info:    Try loading font information for U+msa on input line 21.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 17.
+LaTeX Font Info:    Try loading font information for U+msb on input line 21.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 20.
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 24.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
@@ -666,73 +946,133 @@ File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
 (./zavrsni.toc
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <12> not available
 (Font)              Font shape `T1/ptm/b/n' tried instead on input line 2.
-)
-\tf@toc=\write3
-\openout3 = `zavrsni.toc'.
-
  [4
 
-]
+])
+\tf@toc=\write4
+\openout4 = `zavrsni.toc'.
+
+ [5]
 Poglavlje 1.
 [1
 
 ]
 Poglavlje 2.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <17.28> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 38.
-<img/bio-neuron.png, id=25, 707.64375pt x 335.2525pt>
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 42.
+<img/bio-neuron.png, id=31, 707.64375pt x 335.2525pt>
 File: img/bio-neuron.png Graphic file (type png)
  <use img/bio-neuron.png>
-Package pdftex.def Info: img/bio-neuron.png used on input line 42.
+Package pdftex.def Info: img/bio-neuron.png used on input line 46.
 (pdftex.def)             Requested size: 341.43306pt x 161.75832pt.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 43.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 47.
 
-<img/umj-neuron.png, id=26, 695.59875pt x 340.27126pt>
+<img/umj-neuron.png, id=32, 695.59875pt x 340.27126pt>
 File: img/umj-neuron.png Graphic file (type png)
 
 <use img/umj-neuron.png>
-Package pdftex.def Info: img/umj-neuron.png used on input line 50.
+Package pdftex.def Info: img/umj-neuron.png used on input line 54.
 (pdftex.def)             Requested size: 341.43306pt x 167.01993pt.
  [2
 
- <./img/bio-neuron.png>]
+ <./img/bio-neuron.png>] [3 <./img/umj-neuron.png>]
+[4]
 
-LaTeX Warning: Reference `fig:aktivacijske-funkcije' on page 3 undefined on inp
-ut line 64.
-
-[3 <./img/umj-neuron.png>]
-
-LaTeX Warning: Reference `fig:slojevi' on page 4 undefined on input line 96.
+LaTeX Warning: Reference `fig:slojevi' on page 5 undefined on input line 113.
 
 
-LaTeX Warning: Reference `fig:slojevi' on page 4 undefined on input line 96.
+LaTeX Warning: Reference `fig:slojevi' on page 5 undefined on input line 113.
 
-[4] [5] [6] [7] [8]
+[5] [6] [7] [8] [9]
 Poglavlje 3.
 
-LaTeX Warning: Reference `fig:konvolucijska-mreza' on page 9 undefined on input
- line 201.
+LaTeX Warning: Reference `fig:konvolucijska-mreza' on page 10 undefined on inpu
+t line 218.
 
-[9
+[10
 
-] [10]
-Overfull \hbox (24.74568pt too wide) in paragraph at lines 228--242
+] [11]
+Overfull \hbox (24.74568pt too wide) in paragraph at lines 245--259
 \T1/ptm/m/n/12 sre-dine vri-jed-nosti unu-tar ok-vira sa-ºi-ma-nja. Npr ako ima
 mo mapu $\OML/cmm/m/it/12 M \OT1/cmr/m/n/12 = []$
  []
 
-[11] [12]
+[12]
+Overfull \hbox (3.33469pt too wide) in paragraph at lines 281--283
+[]\T1/ptm/m/n/12 Radi kom-pa-ti-bil-nosti sa pro-gram-skom im-ple-men-ta-ci-jom
+ in-dek-si-ra-nje lo-ka-cija $\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 x; y\OT1/cmr/m/
+n/12 )$
+ []
+
+[13] [14] [15] [16] [17] [18]
 Poglavlje 4.
-(./zavrsni.bbl [13
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2013/08/26 1.5b listings language file
+)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2013/08/26 1.5b (Carsten Heinz)
+)
+LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10.95> not available
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 480.
+LaTeX Font Info:    Font shape `T1/phv/m/it' in size <10.95> not available
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 496.
+LaTeX Font Info:    Try loading font information for OMS+phv on input line 499.
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/omsphv.fd
+File: omsphv.fd 
+)
+LaTeX Font Info:    Font shape `OMS/phv/m/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 499.
+ [19
+
+]
+Overfull \hbox (30.4931pt too wide) in paragraph at lines 515--516
+[]\T1/ptm/b/n/12 backPropagate \T1/ptm/m/n/12 - me-toda koja obav-lja al-gor-ti
+am bac-k-pro-pa-ga-tion na tom sloju(ra£una
+ []
+
+
+Overfull \hbox (120.87935pt too wide) in paragraph at lines 525--526
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+LaTeX Font Info:    Font shape `OMS/phv/m/it' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 537.
+[20]
+Overfull \hbox (7.25258pt too wide) in paragraph at lines 573--574
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (0.24509pt too wide) in paragraph at lines 574--575
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+[21] [22]
+Overfull \hbox (210.74496pt too wide) in paragraph at lines 635--636
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+[23] [24] [25] [26]
+Poglavlje 5.
+
+LaTeX Warning: Reference `fig:MNIST' on page 27 undefined on input line 724.
+
+[27
+
+] [28]
+Poglavlje 6.
+(./zavrsni.bbl [29
 
 ]
 
 Package natbib Warning: Empty `thebibliography' environment on input line 8.
 
-) [14
+) [30
 
-] [15] (./zavrsni.aux)
+] [31] (./zavrsni.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -741,31 +1081,34 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 6541 strings out of 493304
- 91437 string characters out of 6139871
- 171520 words of memory out of 5000000
- 9836 multiletter control sequences out of 15000+600000
- 62724 words of font info for 82 fonts, out of 8000000 for 9000
+ 16832 strings out of 493304
+ 283720 string characters out of 6139871
+ 359584 words of memory out of 5000000
+ 19904 multiletter control sequences out of 15000+600000
+ 71617 words of font info for 89 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 43i,12n,40p,2114b,362s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 56i,17n,55p,2114b,1633s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist
-/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/
-type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cms
-y8.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrro8a.pfb></usr
-/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texli
-ve/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/urw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
-rw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a
-.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on zavrsni.pdf (19 pages, 287200 bytes).
+/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
+ublic/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy1
+0.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/urw/courier/ucrro8a.pfb></usr/share/texlive/
+texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
+rw/helvetic/uhvro8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/ut
+mb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on zavrsni.pdf (36 pages, 348967 bytes).
 PDF statistics:
- 129 PDF objects out of 1000 (max. 8388607)
- 90 compressed objects within 1 object stream
+ 198 PDF objects out of 1000 (max. 8388607)
+ 138 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 23 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -2,7 +2,11 @@
 \usepackage{booktabs}
 \usepackage{subfig}
 \usepackage{algorithm}
+\usepackage{listings}
 \usepackage{algpseudocode}
+\usepackage{color}
+\usepackage{tikz}
+
 \begin{document}
 
 % TODO: Navedite broj rada.
@@ -54,14 +58,27 @@ U modelu umjetnog neurona signali koji putuju aksonom (npr. \textbf{$x_{0}$}) se
 
 Označimo ulaze sa $x_{1},x_{2},...,x_{n}$ te njihove pripadne težine sa $w_{1},w_{2},...,w_{n}$, i prag sa $\theta$. Onda možemo izlaz neurona zapisati kao:
 \begin{equation}
-y = f(\displaystyle\sum_{i=1}^{n}(x_i*w_i) + \theta)
+y = f(\displaystyle\sum_{i=1}^{n}x_iw_i + \theta)
 \end{equation}
-Radi pojednostavljenja se često uzima oznaka $w_0$ umjesto $\theta$ te se dodaje jedan ulaz $x_0$ koji je stalno jednak 1. Sa ovom modifikacijom izlaz se može izraziti kao:
+
+Radi pojednostavljenja se često uzima oznaka $w_0$ umjesto $\theta$ te se dodaje jedan ulaz $x_0$ koji je stalno jednak 1. Sa ovom modifikacijom izlaz neurona se može izraziti kao:
 \begin{equation}
-y = f(\displaystyle\sum_{i=0}^{n}(x_i*w_i))
+y = f(\displaystyle\sum_{i=0}^{n}x_iw_i)
 \end{equation}
-\subsection{Aktivacijske funkcije}
+\subsection{Aktivacijske funkcije}\label{Aktivacijske funkcije}
 Postoje veliki izbor aktivacijskih funkcija no u praksi se koriste samo neke koje su se pokazale korisnima. Spomenuti ćemo četiri različite aktivacijske funkcije (slika ~\ref{fig:aktivacijske-funkcije}) te njihove karakteristike.
+
+\begin{figure}
+\centering
+\begin{tikzpicture}
+  \draw[->] (-3,0) -- (4.2,0) node[right] {$x$};
+  \draw[->] (0,-3) -- (0,4.2) node[above] {$y$};
+  \draw[scale=0.5,domain=-3:3,smooth,variable=\x,blue] plot ({\x},{\x*\x});
+  \draw[scale=0.5,domain=-3:3,smooth,variable=\y,red]  plot ({\y*\y},{\y});
+\end{tikzpicture}
+\caption{Umjetni neuron}
+\label{fig:aktivacijske-funkcije}
+\end{figure}
 
 Najobičnija aktivacijska funkcija je linearna aktivacijska funkcija koja je preslikava svoj ulaz na izlaz. Ovakav tip aktivacijske funkcije ne koristimo u dubokim neuronskim mrežama zato što onemogućava učenje mreže. 
 
@@ -217,12 +234,12 @@ y' = y*S
 
 Označimo sa $M^j_k$ k-tu mapu j-tog sloja te sa $w^j_{ik}$ jezgru koja povezuje k-tu mapu j-tog sloja sa i-tom mapom prethodnog sloja. Svaka mapa značajki ima po jedan prag $b^j_k$. Pošto su mape značajki i njihove jezgre dvodimenzionalne njihove elemente indeksiramo sa zagradama. Tako će vrijednost mape značajki na lokaciji $(x, y)$ biti jednaka $M^j_k (x, y)$ a jezgre $w^j_{ik} (x, y)$. Uz ovaj sustav oznaka vrijednost mape k u sloju j na lokaciji $(x, y)$ možemo prikazati sa sljedećim izrazom:
 \begin{equation}\label{eq:neuron-conv}
-M^j_k (x, y) = f(\sum_i \sum_{x'=0}^K \sum_{y'=0}^K M^{j-1}_i (x' + x, y' + y) w^j_{ik} (x', y') + b^j_k )
+M^j_k (x, y) = f(\sum_i \sum_{x'=0}^{K-1} \sum_{y'=0}^{K-1} M^{j-1}_i (x' + x, y' + y) w^j_{ik} (x', y') + b^j_k )
 \end{equation}
 
 Funkcija u jednadžbi je aktivacijska funkcija te je podrazumijevani pomak okvira $S$ jednak 1. Naravno pričati ćemo samo o potpuno povezanim mrežama gdje je svaka mapa značajki trenutnog sloja povezana sa svim mapama značajki prethodnog sloja. Vrijednosti mapa značajki prilikom unaprijedne propagacije se računaju prema formuli ~\ref{eq:neuron-conv}.
 
-\subsection{Slojevi sažimanja}
+\subsection{Slojevi sažimanja}\label{Slojevi sažimanja}
 Slojevi sažimanja (engl. \textit{pooling}) nemaju parametre koji se mogu učiti i služe za smanjenje dimenzija mapi značajki i uklanjanje varijance što znači da će se slični izlazi dobiti za male translacije ulaza. U ovim slojevima također imamo okvire sa kojima prolazimo po ulaznoj mapi značajki. Mapa se sažima na taj način da okvir predstavimo sa jednom vrijednošću. Na primjer okvir veličine $2 \times 2$ (najčešća veličina okvira koju ćemo i mi koristiti) se reprezentira sa jednom vrijednoću dobivenom iz 4 vrijednosti unutar okvira čime smanjujemo mapu 4 puta. Okvir se najčešće pomiče na način da se svaka vrijednost iz mape značajki koristi u samo jednom sažimanju. Pomak okvira bi za navedeni primjer bio jednak 2 u horizontalnom i vertikalnom smijeru.
 \subsubsection{Sažimanje usrednjavanjem}
 Sažimanje usrednjavanjem (engl. \textit{mean pooling}) se ostvarije uzimanjem aritmetičke sredine vrijednosti unutar okvira sažimanja. Npr ako imamo mapu $M = \left[
@@ -249,36 +266,482 @@ Sažimanje maksimalnom vrijednošću (engl. \textit{max pooling}) se ostvaruje u
 $
 
 \subsection{Backpropagation u konvolucijskim mrežama}
-Potrebno je definirati izmijenjeni algoritam backpropagation za primjenu u konvolucijskim slojevima i slojevima sažimanja. Pošto su zadnji slojevi mreže potpuno povezani slojevi kao u običnim dubokim neuronskim mrežama unazadna propagacija pogreške i ažuriranje težina se u tim slojevima obavlja na već opisani način iz prethodnog poglavlja. Također ćemo radi lakšeg razumijevanja i unazadne propagacije iz konvolucijskog sloja izdvojiti primjenu aktivacijskih funkcija u posebni sloj. Nazovimo ga aktivacijski sloj. To znači da se u konvolucijskom sloju rade samo sva potrebna sumiranja a u aktivacijskom sloju se na svaku vrijednost prethodne mape značajki (konvolucijskog sloja) primjenjuje aktivacijska funkcija. Također držati ćemo se sljedeće konvencije imenovanja: $\delta_k^j (x, y)$ je pogreška k-te mape značajki u sloju j na lokaciji $(x, y)$, $w^j_{ik} (x, y)$ je vrijednost jezgre j-tog sloja između k-te mape značajki j-tog sloja i i-te mape značajki prethodnog sloja na lokaciji $(x, y)$, $b^j_k$ je prag k-te mape značajki j-tog sloja te $M_k^j (x, y)$ je izlaz neurona k-te mape j-tog sloja koji se nalazi na lokaciji $(x, y)$. Za svaki sloj posebno ćemo objasniti računanje greške prethodnog sloja pod uvjetom da imamo izračunatu grešku trenutnog sloja.
+Potrebno je definirati izmijenjeni algoritam backpropagation za primjenu u konvolucijskim slojevima i slojevima sažimanja. Pošto su zadnji slojevi mreže potpuno povezani slojevi kao u običnim dubokim neuronskim mrežama unazadna propagacija pogreške i ažuriranje težina se u tim slojevima obavlja na već opisani način iz prethodnog poglavlja. Također ćemo radi lakšeg razumijevanja i unazadne propagacije iz konvolucijskog sloja izdvojiti primjenu aktivacijskih funkcija u posebni sloj. Nazovimo ga aktivacijski sloj. To znači da se u konvolucijskom sloju rade samo sva potrebna sumiranja a u aktivacijskom sloju se na svaku vrijednost prethodne mape značajki (konvolucijskog sloja) primjenjuje aktivacijska funkcija. Također držati ćemo se sljedeće konvencije imenovanja:
+\begin{itemize}
+  \item $M_k^j (x, y)$ - izlaz neurona k-te mape j-tog sloja koji se nalazi na lokaciji $(x, y)$
+  \item $w^j_{ik} (x, y)$ - vrijednost jezgre j-tog sloja između k-te mape značajki j-tog sloja i i-te mape značajki prethodnog sloja na lokaciji $(x, y)$
+  \item $b^j_k$ - prag k-te mape značajki j-tog sloja
+  \item $K^j$ - veličina jezgri između j-tog i prethodnog sloja
+  \item $M^j$ - veličina mape značajki trenutnog sloja
+  \item $z^j_k (x, y)$ - ulaz neurona k-te mape značajki u sloju j koji se nalazi na lokaciji $(x, y)$
+  \item $\dfrac{\partial E}{\partial M^j_k (x, y)}$ - pogreška izlaza k-te mape značajki u sloju j na lokaciji $(x, y)$
+  \item $\dfrac{\partial E}{z^j_k (x, y)}$ - pogreška k-te mape značajki u sloju j na lokaciji $(x, y)$
+\end{itemize}
+
+Radi kompatibilnosti sa programskom implementacijom indeksiranje lokacija $(x, y)$ započinje sa 0 a ne sa 1 što znači da bismo gornji lijevi kut indeksirali sa $(0, 0)$.
+Za svaki sloj posebno ćemo objasniti računanje greške izlaza prethodnog sloja pod uvjetom da imamo izračunatu grešku izlaza trenutnog sloja (primjetimo razliku u definiciji greške izlaza sloja i greške sloja).
 
 \subsubsection{Konvolucijski slojevi}
-Označimo sa $z_k^j$:
+U konvolucijskim slojevima $z_k^j$ možemo napisati kao:
 \begin{equation}
-z^j_k (x, y) = \sum_i \sum_{x'=0}^K \sum_{y'=0}^K M^{j-1}_i (x' + x, y' + y) w^j_{ik} (x', y') + b^j_k
-\end{equation}
-\begin{equation}\label{eq:m=z}
-M^j_k (x, y) = z^j_i
+z^j_k (x, y) = \sum_i \sum_{x'=0}^{K-1} \sum_{y'=0}^{K-1} M^{j-1}_i (x' + x, y' + y) w^j_{ik} (x', y') + b^j_k
 \end{equation}
 
-Poznato nam je $\dfrac{\partial E}{\partial M^j_k (x, y)}$ za svaki neuron mape značajki trenutnog sloja (tu informaciju smo dobili od idućeg sloja). Prvo moramo dobiti grešku trenutnog sloja. Greška pojedinog neurona trenutnog sloja je jednaka: 
+Pošto smo aktivacijsku funkciju izdvojili u poseban sloj onda vrijedi sljedeći izraz:
+\begin{equation}\label{eq:m=z}
+M^j_k (x, y) = z^j_k (x, y)
+\end{equation}
+
+Poznata nam je greška izlaza za svaki neuron mape značajki trenutnog sloja (tu informaciju smo dobili od idućeg sloja). Prvo moramo dobiti grešku trenutnog sloja. Greška pojedinog neurona trenutnog sloja je jednaka: 
 \begin{equation}
 \dfrac{\partial E}{z^j_k (x, y)} = \dfrac{\partial E}{\partial M^j_k (x, y)} \dfrac{\partial M^j_k (x, y)}{\partial z^j_k (x, y)}
 \end{equation}
 
 Uvrštavanjem ~\ref{eq:m=z} dobivamo:
 \begin{equation}
-\dfrac{\partial E}{z^j_k (x, y)} = \dfrac{\partial E}{\partial M^j_k (x, y)} \dfrac{\partial M^j_k (x, y)}{\partial z^j_k (x, y)} = \dfrac{\partial E}{\partial M^j_k (x, y)}
+\dfrac{\partial E}{z^j_k (x, y)} = \dfrac{\partial E}{\partial M^j_k (x, y)} \dfrac{\partial z^j_k (x, y)}{\partial z^j_k (x, y)} = \dfrac{\partial E}{\partial M^j_k (x, y)}
 \end{equation}
 
-Potrebno je izračunati  $\dfrac{\partial E}{\partial M^{j-1}_k (x, y)}$ tako da sumiramo utjecaj neurona na sve neurone trenutnog sloja. Sumiranje obavljamo po mapama značajki trenutnog sloja i po lokacijama u tim mapama na koje utječe izlaz neurona $M^{j-1}_k (x, y)$: INDEKSIRANJE LOKACIJA
-\begin{equation}
-\dfrac{\partial E}{\partial M^{j-1}_k (x, y)} = \sum_{i} \sum_{x'=max(x-K+1, 0)}^{x} \sum_{y'=max(y-K+1, 0)}^{y} \dfrac{\partial E}{z^j_{i} (x', y')} \dfrac{z^j_{i} (x', y')}{\partial M^{j-1}_k (x, y)}
+Potrebno je izračunati  grešku izlaza prethondog sloja tako da sumiramo utjecaj neurona prethodnog sloja na sve neurone trenutnog sloja. Sumiranje obavljamo po mapama značajki trenutnog sloja i po lokacijama u tim mapama na koje utječe izlaz neurona $M^{j-1}_k (x, y)$:
+\begin{equation}\label{eq:conv-sloj-err}
+\begin{split}
+\dfrac{\partial E}{\partial M^{j-1}_k (x, y)} &= \sum_i \sum_{x'=0}^{K^j-1} \sum_{y'=0}^{K^j-1} \dfrac{\partial E}{\partial z^j_{i} (x - x',y - y')} \dfrac{\partial z^j_{i} (x - x',y - y')}{\partial M^{j-1}_k (x, y)} \\
+ &= \sum_i \sum_{x'=0}^{K^j-1} \sum_{y'=0}^{K^j-1} \dfrac{\partial E}{\partial z^j_{i} (x - x', y - y')} w^j_{ki}(x', y')
+\end{split}
 \end{equation}
+
+Nakon računanja greške prethodnog sloja potrebno je izračunati parcijalne derivacije greške po težinama i pragovima:
+\begin{equation}\label{eq:conv-sloj-derw}
+\begin{split}
+\dfrac{\partial E}{\partial w^j_{ik}(x, y)} &= \sum_{x'=0}^{M^j-1} \sum_{y'=0}^{M^j-1} \dfrac{\partial E}{\partial z^j_k (x', y')} \dfrac{\partial z^j_k (x', y')}{\partial w^j_{ik}(x, y)} \\
+&= \sum_{x'=0}^{M^j-1} \sum_{y'=0}^{M^j-1} \dfrac{\partial E}{\partial z^j_k (x', y')} M^{j-1}_i (x+x', y+y')
+\end{split}
+\end{equation}
+\begin{equation}\label{eq:conv-sloj-derb}
+\begin{split}
+\dfrac{\partial E}{\partial b^j_k} &= \sum_{x'=0}^{M^j-1} \sum_{y'=0}^{M^j-1} \dfrac{\partial E}{\partial z^j_k (x', y')} \dfrac{\partial z^j_k (x', y')}{\partial b^j_k} \\
+&= \sum_{x'=0}^{M^j-1} \sum_{y'=0}^{M^j-1} \dfrac{\partial E}{\partial z^j_k (x', y')}
+\end{split}
+\end{equation}
+
+Na kraju se ažuriraju težine i pragovi prema sljedećim izrazima:
+\begin{equation}\label{eq:conv-azuriraj-w}
+w^j_{ik}(x, y) \leftarrow w^j_{ik}(x, y) - \eta\dfrac{\partial E}{\partial w^j_{ik}(x, y)}
+\end{equation}
+\begin{equation}\label{eq:conv-azuriraj-b}
+b^j_k \leftarrow b^j_k - \eta\dfrac{\partial E}{\partial b^j_k}
+\end{equation}
+
+\subsubsection{Slojevi sažimanja}
+Pošto u slojevima sažimanja nemamo težine ni pragove koje treba ažurirati potrebno je samo odrediti pogrešku izlaza prethodnog sloja. Promatrajmo mapu veličine $2 \times 2$ za koju nam je poznata pogreška izlaza. Označimo mapu pogreške izlaza sloja j sa $\delta^j$:
+\begin{equation}
+\delta^j = \left[
+\begin{matrix}
+\delta_{00} & \delta_{01} \\
+\delta_{10} & \delta_{11}
+\end{matrix}
+\right]
+\end{equation}
+
+Za promatrani primjer se podrazumijeva da je okvir sažimanja veličine $2 \times 2$ što znači da je mapa značajki prethodnog sloja dimenzija $4 \times 4$.
+
+Za slojeve sažimanja možemo definirati funkcije koje za dani broj elemenata unutar okvira daju neki iznos. Za sažimanje maksimumom i sažimanje srednjom vrijednošću možemo definirati te funkcije kao:
+\begin{equation}
+f_{max}(x_{00}, x_{01}, x_{10}, x_{11}) = max(x_{00}, x_{01}, x_{10}, x_{11})
+\end{equation}
+\begin{equation}
+f_{med}(x_{00}, x_{01}, x_{10}, x_{11}) = \frac{x_{00} + x_{01} + x_{10} + x_{11})}{4}
+\end{equation}
+
+Definirajmo parcijalne derivacije funkcija sažimanja:
+\begin{equation}
+\dfrac{\partial f_{max}}{\partial x_{ij}} = \begin{cases}
+    0, & \text{ako $x_{ij}$ nije maksimalna vrijednost}\\
+    1, & \text{ako $x_{ij}$ je maksimalna vrijednost}
+  \end{cases}
+\end{equation}
+\begin{equation}
+\dfrac{\partial f_{med}}{\partial x_{ij}} = \frac{1}{4}
+\end{equation}
+
+Sada pogrešku izlaza prethodnog sloja možemo dobiti sa umnoškom parcijalne derivacije funkcije sažimanja sa odgovarajućom pogreškom izlaza trenutnog sloja. Rezultati tih operacija za sloj sažimanja maksimumom i sloj sažimanja aritmetičkom sredinom su:
+\begin{equation}
+\delta^{j-1}_{max} = \left[
+\begin{matrix}
+\delta_{00} & 0 & 0 & 0 \\
+0 & 0 & 0 & \delta_{01} \\
+0 & 0 & \delta_{11} & 0\\
+0 & \delta_{10} & 0 & 0 
+\end{matrix}
+\right]
+\end{equation}
+\begin{equation}
+\delta^{j-1}_{med} = \left[
+\begin{matrix}
+\frac{\delta_{00}}{4} & \frac{\delta_{00}}{4} & \frac{\delta_{01}}{4} & \frac{\delta_{01}}{4} & \\
+\frac{\delta_{00}}{4} & \frac{\delta_{00}}{4} & \frac{\delta_{01}}{4} & \frac{\delta_{01}}{4} & \\
+\frac{\delta_{10}}{4} & \frac{\delta_{10}}{4} & \frac{\delta_{11}}{4} & \frac{\delta_{11}}{4} & \\
+\frac{\delta_{10}}{4} & \frac{\delta_{10}}{4} & \frac{\delta_{11}}{4} & \frac{\delta_{11}}{4} &
+\end{matrix}
+\right]
+\end{equation}
+
+Za sloj sažimanja maksimumom se pretpostavlja da se na mjestima različitima od 0 nalaze maksimalni izlazi unutar okvira. Za drugačije dimenzija okvira sažimanja primjenjuje se ista logika. Napišimo općenitu formulu za pogrešku neurona prethodnog sloja uz funkciju sažimanja $f$ čije su varijable $x_{ij}, i, j \in (0 .. K-1)$ uz veličinu okvira sažimanja $K$.
+\begin{align}\label{eq:pool-sloj-err}
+\dfrac{\partial E}{M^{j-1}_k (x, y)} = \dfrac{\partial E}{\partial M^j_k (\lfloor \frac{x}{K} \rfloor, \lfloor \frac{y}{K} \rfloor)} \dfrac{\partial f}{\partial x_{ij}}, && i = x\ mod\ K,\ j = y\ mod\ K
+\end{align}  
+
+\subsubsection{Aktivacijski slojevi}
+Kao i za slojeve sažimanja u aktivacijskim slojevima je isto samo potrebno odrediti pogrešku izlaza prethednog sloja. Označimo aktivacijsku funkciju sa $f(x)$. Sada pogrešku izlaza prethodnog sloja možemo pisati kao umnožak greške izlaza trenutnog sloja i derivacije aktivacijske funkcije:
+\begin{equation}\label{eq:act-sloj-err}
+\dfrac{\partial E}{M^{j-1}_k (x, y)} = \dfrac{\partial E}{\partial M^j_k (x, y)} \dfrac{\partial M^j_k (x, y)}{\partial M^{j-1}_k (x, y)} = \dfrac{\partial E}{\partial M^j_k (x, y)} f'(M^{j-1}_k (x, y))
+\end{equation}
+
+\subsubsection{Pseudokod algoritma backpropagation}
+Sada možemo napisati pseudokod izmijenjenog algoritma backpropagation za konvolucijske neuronske mreže:
+\begin{algorithm}
+\caption{Backpropagation}
+\label{alg:backpropagation}
+Ulaz: D(skup za učenje), $\eta$ stopa učenja
+
+Inicijaliziraj težine u konvolucijskim i potpuno povezanim slojevima na male slučajno generirane vrijednosti\;
+
+Dok nije ispunjen uvjet zaustavljanja:\;
+
+Za svaki (x, t) iz D:
+
+Izračunaj izlaz svakog sloja mreže za ulaz x
+
+Izračunaj pogrešku izlaznog sloja prema formulama ~\ref{eq:error} i ~\ref{eq:sr-kv-pogr-der}
+
+Za svaki sloj od izlaznog do ulaznog:
+
+Ako je sloj potpuno povezani:
+
+Izračunaj pogrešku izlaza prethodnog sloja prema formulama ~\ref{eq:error-prethodni} i ~\ref{eq:dE/yi2}
+
+Inače ako je sloj aktivacijski:
+
+Izračunaj pogrešku izlaza prethodnog sloja prema formuli ~\ref{eq:act-sloj-err}
+
+Inače ako je sloj sloj sažimanja:
+
+Izračunaj pogrešku izlaza prethodnog sloja prema formuli ~\ref{eq:pool-sloj-err}
+
+Inače ako je sloj konvolucijski:
+
+Izračunaj pogrešku izlaza prethodnog sloja prema formuli ~\ref{eq:conv-sloj-err}
+
+Izračunaj parcijalne derivacije pogreške po težinama i pragovima prema formulama ~\ref{eq:conv-sloj-derw} i ~\ref{eq:conv-sloj-derb}
+
+Ažuriraj težine i pragove prema formulama ~\ref{eq:conv-azuriraj-w} i ~\ref{eq:conv-azuriraj-b}
+ 	
+\end{algorithm}
 
 
 \subsection{Hiperparametri mreže}
+Definiramo hiperparametar algoritma učenja kao varijablu koju je potrebno postaviti prije aplikacije algoritma na skupu podataka.[REFERENCA] Dakle to su svi parametri koje trebamo odabrati i odrediti prije nego što mreži damo podatke za učenje. Optimiziranje hiperparametara je postupak pronalaženja optimalnih (ili dovoljno dobrih) hiperparametara mreže. Hiperparametri u konvolucijskim neuronskim mrežama su:
+\begin{itemize}
+\renewcommand\labelitemi{$\bullet$}
+\item \textbf{Stopa učenja $\eta$} je jedan od najvažnijih parametara neuronske mreže. Konvergencija mreže ovisi o pronalasku dobre stope učenja. Obično je vrijednost ovog parametra između $10^{-6}$ i 1. Stopa učenja se određuje isprobava različite vrijednosti i prateći konvergenciju mreže. Ako nemamo vremena optimizirati više hiperparametara i ako se koristi stohastički gradijentni spust onda je definitivno najbolje optimizirati ovaj hiperparametar.
+
+\item \textbf{Broj epoha} je hiperparametar kojeg je lako optimizirati tehnikom ranog stajanja(engl. \textit{early stop}). Prateći prosječnu grešku na validacijskom skupu nakon svake epohe može se odlučiti koliko dugo trenirati mrežu za proizvoljnu konfiguraciju ostalih hiperparametara.
+
+\item \textbf{Arhitektura mreže} kao hiperparametar je skup odluka na koji način oblikovati mrežu: broj slojeva u mreži i redoslijed tih slojeva, broj mapi značajki u svakom sloju, dimenzije mapi značajki,
+dimenzije jezgri u konvolucijskim slojevima i dimenzije okvira sažimanja u slojevima sažimanja. Kod izgradnje arhitekture mreže važno je odabrati mrežu koja je dovoljno velika. Obično veličine veće od optimalne generalno ne štete performansama mreže osim što ju usporavaju. Potrebno je modelirati mrežu na taj način da je dovoljno velika za klasifikacijski problem a da nije toliko velika da bude jako spora.
+
+\item \textbf{Aktivacijska funkcija} je najčešće ista za cijelu neuronsku mrežu. Aktivacijske funkcije smo već obradili u poglavlju ~\ref{Aktivacijske funkcije}. 
+
+\item \textbf{Inicijalizacija težina}. Pragovi se mogu inicijalizirati na 0 ali se težine moraju inicijalizirati oprezno kako nebismo usporili konvergenciju mreže odmah na početku. Preporučena incijalizacija u [REFERENCA] je da se uzimaju vrijednosti iz uniformne distribucije u rasponu $(-r, r)$ gdje je $r = 4\sqrt{6/(n_{in} + n_{out})}$ za aktivacijsku funkciju hiperbolnog tangensa odnosno $r = \sqrt{6/(n_{in} + n_{out})}$ za logističku funkciju gdje $n_{in}$ i $n_{out}$ predstavlja broj ulaznih i izlaznih neurona za određeni sloj.
+
+\item \textbf{Predobrada ulaza} se koristi kako bi se obradili ulazi prije nego što se daju kao ulaz neuronskoj mreži. Najčešći oblici predobrade ulaza su standardizacija i dodavanje okvira za konvolucijske neuronske mreže. Standardizacija se radi tako da od svakog piksela oduzmemo srednju vrijednost cijele slike te dobivenu vrijednost podijelimo sa standardnom devijacijom svih piksela u slici. Dodavanjem okvira slici se slika proširi za nekoliko piksela sa svake strane a ova predobrada se koristi kako konvolucijska mreža nebi zanemarila i rubne podatke slike (tj. da ih uzima sa jednakim značajem).
+
+\item \textbf{Slojevi sažimanja} su obrađeni u poglavlju ~\ref{Slojevi sažimanja}.
+
+\item \textbf{Funkcija pogreške} je također bitan hiperparametar o kojem može ovisiti mogućnost i brzina konvergencije mreže. Spomenuli smo funkciju srednje kvadratne pogreške (formula ~\ref{eq:sr-kv-pogr}). Još jedna funkcija pogreške koja se često koristi je \textit{cross-entropy loss}.
+
+\end{itemize}
+
+\chapter{Programska izvedba}
+Za programsku izvedbu odabran je programski jezik C++. Izbor se temeljio na tome što je jezik pogodan za pisanje brzih programa (što nam je potrebno zbog dugotranog treniranja mreže), a također je pogodan za oblikovanje složenijih sustava i ovisnosti među elementima. Programski je mreža organizirana po slojevima kao što je navedeno u poglavlju o algoritmu backpropagation (aktivacijska funkcija je u posebnom sloju). Sljedeći programski kod pokazuje apstraktni razred Layer koji modelira jedan općeniti sloj konvolucijske neuronske mreže:
+
+\lstset{
+language=C,
+basicstyle=\linespread{1}\small\sffamily,
+numbers=left,
+numbersep=15pt, 
+frame=tb,
+columns=fullflexible,
+showstringspaces=false
+}
+\renewcommand{\lstlistingname}{Programski kod}
+\begin{lstlisting}[caption=Razred Layer,
+  label=Layer]
+typedef std::vector<float> vf;
+typedef std::vector<vf> vvf;
+typedef std::vector<vvf> vvvf;
+
+class Layer
+{
+public:
+    Layer(int prevMapSize, int mapSize, int prevFM,  int numFM);
+    virtual vvf& forwardPass(const vvf &input) = 0;
+    virtual vvf& backPropagate(const vvf &error) = 0;
+    vvf& getOutput() { return output; }
+    vvf& getPrevError() { return prevError; }
+    int getMapSize() { return mapSize; }
+
+protected:
+    const int mapSize, prevMapSize;
+    // number of feature maps
+    const int prevFM, numFM;
+    vvf output, prevError;
+    const vvf *input;
+
+};
+\end{lstlisting}
+
+Konstruktoru razreda Layer potrebno je specificirati sljedeće parametre:
+\begin{itemize}
+\item \textbf{prevMapSize} - veličina mapi značajki prethodnog sloja ili ulaza ako je ulazni sloj
+\item \textbf{mapSize} - veličina mapi značajki trenutnog sloja
+\item \textbf{prevFM} - broj mapi značajki prethodnog sloja
+\item \textbf{numFM} - broj mapi značajki trenutnog sloja
+\end{itemize}
+
+Također možemo vidjeti da je svaki sloj zadužen za stvaranje svog izlaza (\textbf{output}) kao i za stvaranje greške izlaza prethodnog sloja (\textbf{prevError}) dok za potrebe algoritma backpropagation čuva pokazivač na zadnji primljeni ulaz (\textbf{input}). Također je određeno da svaki sloj mora definirati dvije metode koje su različite za različite tipove slojeva a to su:
+\begin{itemize}
+\item \textbf{forwardPass} - metoda koja računa izlaz(output) sloja za zadani ulaz(input)
+\item \textbf{backPropagate} - metoda koja obavlja algortiam backpropagation na tom sloju(računa grešku prethodnog sloja i updatea težine ako one postoje)
+\end{itemize}
+
+\subsection{Konvolucijski sloj}
+Razred ConvolutionLayer modelira konvolucijski sloj neuronske mreže te je prikazan sa sljedećim kodom:
+\begin{lstlisting}[caption=Razred ConvolutionLayer,
+  label=ConvLayer]
+class ConvolutionLayer : public Layer
+{
+public:
+    ConvolutionLayer(int mapSize, int prevFM,  int numFM, int kernelSize, Initializer &init, float learningRate); 
+    virtual vvf& forwardPass(const vvf &input);
+    virtual vvf& backPropagate(const vvf &error);
+    vvvf& getKernel() { return kernelW; }
+    vf& getBias() { return bias; }
+    float getLearningRate() { return learningRate; }
+    void printKernel();
+    void writeKernel(std::string path);
+    void loadWeights(std::string file);
+
+private:
+    const int kernelSize;
+    //kernelw[numFM][prevFM][i*kernelSize + j]
+    vvvf kernelW;
+    vf bias;
+    float learningRate;
+
+    void update(const vvf &error);
+    double convolve(int w, int h, const vvf &input, int numFM);
+};
+\end{lstlisting}
+
+Konstruktoru predajemo sljedeće parametre:
+\begin{itemize}
+\item \textbf{mapSize} - veličina mapi značajki trunutnog sloja
+\item \textbf{prevFM} - broj mapi značajki prethodnog sloja
+\item \textbf{numFM} - broj mapi značajki trenutnog sloja
+\item \textbf{kernelSize} - veličina jezgri
+\item \textbf{init} - inicijalizator težina kojime specificiramo na koji način ćemo inicijalizirati težine prije učenja (pomoćna klasa Initializer)
+\item \textbf{learningRate} - stopa učenja $\eta$
+\end{itemize}
+
+Konvolucijski slojevi su dodatno zaduženi za stvaranje jezgri koje povezuju trenutni sloj sa prethodnim(\textbf{kernelW}) i pragova (\textbf{bias}). Dodatne metode koje je potrebno objasniti su:
+\begin{itemize}
+\item \textbf{update} - metoda koja ažurira težine i pragove, a poziva se iz metode backpropagate
+\item \textbf{convolve} - metoda koja obavlja konvolucija ulaza(input) i jezgri te sprema rezultat u mapu značajki numeriranu sa \textit{numFM} na kordinatama $(w, h)$, ova metoda se poziva iz metode forwardPass
+\item \textbf{printKernel} - ispisuje jezgre na standardni izlaz
+\item \textbf{writeKernel} - iscrtava jezgre u .jpg formatu u zadanu lokaciju(path)
+\item \textbf{loadWeights} - učitava težine i pragove iz datoteke (file), koristi se za učitavanje naučenih parametara
+\end{itemize}
+
+\subsection{Potpuno povezani slojevi}
+Potpuno povezane slojeve možemo gledati kao specijalizacije konvolucijskih slojeva gdje su sve mape značajki i sve jezgre veličine $1 \times 1$. Sa obzirom na veličinu mreže mali postotak operacija se obavlja u potpuno povezanim slojevi (najveći postotak je u konvolucijskim slojevima) pa nije bilo potrebno posebno modelirati potpuno povezane slojeve već su oni napravljeni kao podtip konvolucijskih slojeva modelirani sa razredom FullyConnectedLayer:
+\begin{lstlisting}[caption=Razred FullyConnectedLayer,
+  label=FullLayer]
+class FullyConnectedLayer : public ConvolutionLayer
+{
+public:
+    FullyConnectedLayer (int prevFM,  int numFM, Initializer &init, float learningRate) :
+                        ConvolutionLayer(1, prevFM, numFM, 1, init, learningRate) {}
+};
+\end{lstlisting}
+
+Parametri u konstruktoru su istih naziva i značenja kao i kod konvolucijskih slojeva.
+
+\subsection{Aktivacijski slojevi}
+Aktivacijski slojevi su modelirani sa razredom ActivationLayer:
+\begin{lstlisting}[caption=Razred ActivationLayer,
+  label=ActivationLayer]
+class ActivationLayer : public Layer
+{
+public:
+    ActivationLayer(int numFM, int mapSize = 1);
+    virtual vvf& forwardPass(const vvf &input);
+    virtual vvf& backPropagate(const vvf &error);
+
+protected:
+    virtual float activationFunction(float x) = 0;
+    virtual float activationFunctionDerivative(float x) = 0;
+};
+\end{lstlisting}
+
+Konstruktor razreda prima dva parametra: broj mapi značajki (numFM) i veličinu mapi značajki(mapSize). Pošto su aktivacijske funkcije samo izdvojene u poseban sloj broj prethodnih mapi značajki i veličine prethodnih mapi značajki su jednake trenutnima. ActivationLayer je i dalje apstraktni razred jer ima dvije čiste virtualne funkcije koje zahtjevaju implementaciju od razreda koji ga nasljeđuju:
+\begin{itemize}
+\item \textbf{activationFunction} - aktivacijska funkcija u točki x
+\item \textbf{activationFunctionDerivative} - derivacija aktivacijske funkcije u točki x
+\end{itemize}
+Na ovaj način je lako dodavati različite aktivacijske funkcije. Potrebno je samo definirati ove dvije navedene metode.
 
 
+\subsection{Slojevi sažimanja}
+Slojevi sažimanja su modelirani sa razredom PoolLayer:
+\begin{lstlisting}[caption=Razred PoolLayer,
+  label=PoolLayer]
+class PoolLayer : public Layer
+{
+public:
+    PoolLayer (int frameSize, int numFM, int prevMapSize); 
+
+protected:
+    const int frameSize;
+};
+\end{lstlisting}
+
+Konstruktor razreda prima sljedeće parametre:
+\begin{itemize}
+\item \textbf{frameSize} - veličina okvira sažimanja
+\item \textbf{numFm} - broj mapi značajki
+\item \textbf{prevMapSize} - veličina mapi značakji prethodnog sloja (veličina mapi značajki trenutnog sloja se računa kao $prevMapSize/frameSize$
+\end{itemize}
+
+Razred je i dalje apstraktan a od razreda koji ga nasljeđuju se očekuje da implementiraju funkcije forwardPass i backPropagate.
+
+\subsection{Konvolucijska neuronska mreža}
+Cijela konvolucijska neuronska mreže enkapsulirana je sa razredom ConvolutionNeuralNetwork:
+\begin{lstlisting}[caption=Razred ConvolutionNeuralNetwork,
+  label=CNN]
+class ConvolutionNeuralNetwork
+{
+public:
+    ConvolutionNeuralNetwork (const std::vector<Layer*> &layers, CostFunction &costFunction, InputManager &inputManager);
+    void feedForward(vvf &input);
+    void backPropagate(vvf &error);
+    void train(int numEpochs);
+    void registerSupervisor(TrainingSupervisor *s) { supervisers.push_back(s); }
+    void notifySupervisors(int epoch);
+    float getCost(vf &expectedOutput);
+    InputManager& getInputManager() { return inputManager; }
+    
+private:
+    std::vector<Layer*> layers;
+    CostFunction &costFunction;
+    InputManager &inputManager;
+    std::vector<TrainingSupervisor*> supervisers;
+};
+\end{lstlisting}
+
+Konstruktor razreda prima sljedeće parametre:
+\begin{itemize}
+\item \textbf{layers} - vektor slojeva mreže, slojevi se kreiraju i organiziraju prije predavanja konstruktoru
+\item \textbf{costFunction} - funkcija pogreške (pomoćni razred CostFunction)
+\item \textbf{inputManager} - objekt zadužen za organiziranje i dohvaćanje ulaza mreže (pomoćni razred InputManager)
+
+Metode razreda su:
+\item \textbf{feedForward} - za određeni ulaz(input) računa izlaze svih slojeva
+\item \textbf{backPropagate} - propagira grešku unazad po svim slojevima
+\item \textbf{train} - trenira mrežu određen broj epoha(epoch), ulaze dohvaća pomoću inputManagera a pogrešku izlaza računa pomoću costFunctiona
+\item \textbf{registerSupervisor} - ova metoda omogućuje da se registriraju promatrači (izvedeni iz razreda TrainingSupervisor) prema oblikovnom obrascu promatrač koji nakon svake epohe obavljaju različite analize i na taj način omogućuju nadziranje procesa učenja mreže
+\item \textbf{notifySupervisors} - obaviještava sve promatrače da je kraj određene epohe (epoch)
+\item \textbf{getCost} - računa pogrešku za zadani očekivani izlaz, očekuje se da se prije poziva ove metode pozove metoda feedForward sa odgovarajućim ulazom
+\end{itemize}
+
+\subsection{Pomoćni razredi}
+Imamo četiri osnovna pomoćna razreda iz kojih se izvode ostali. To su:
+\begin{itemize}
+\item \textbf{Initializer} određuje način na koji inicijalizira težine u konvolucijskim slojevima. Predaje se konstruktoru konvolucijskog sloja. Razredi koji nasljeđuju Initializer moraju implementirati jednu metodu init koja kao parametre prima težine(weights) te broj ulaznih(n\_in) i broj izlaznih (n\_out) neurona.
+\item \textbf{CostFunction} određuje funkciju pogreške izlaza neuronske mreže. Zadužena je za stvaranje i pohranjivanje greške izlaza neurona izlaznog sloja (prevError) kao i greške klasifikacije (error). Razredi koji nasljeđuju ovaj razred moraju implementirati metodu calculate koja kao parametre prima izlaz mreže (output) i očekivani izlaz (expectedOutput) te računa pogrešku izlaza izlaznog sloja i pogrešku klasifikacije.
+\item \textbf{InputManager} je zadužen za upravljanjem ulaznim podatcima za mrežu. Razredi koji ga nasljeđuju trebaju implementirati tri metode a to su getInput koja dohvaća ulaz na zadanom indeksu (i), getExpectedOutput koja dohvaća očekivani izlaz za ulaz označen sa zadanim indeksom (i), i funkcija reset() koja se poziva na kraju svake epohe. U funkciji reset se obično očekuje nasumično miješanje podataka radi veće generalizacije tijekom učenja ali nije nužno da se išta radi.
+\item \textbf{TrainingSupervisor} je osnovni razred zadužen za razrede koji nam pomažu u praćenju procesa učenja mreže. Razredi koji nasljeđuju ovaj razred trebaji implementirat funkciju monitor koja se poziva na kraju svake epohe. Primjeri konkretnih razreda koji nasljeđuju TrainingSupervisor su razredi WeightRecorder (sprema trenutne težine i pragove na disk), Validator (provjerava točnost klasifikacije na proizvoljnom skupu), ActivationVariance (računa varijancu aktivacija i sprema ju u datoteku na disku), GradientVariance (računa varijancu gradijenata i sprema ju u datoteku na disku).
+\end{itemize}
+
+\begin{lstlisting}[caption=Pomoćni razredi,
+  label=util]
+class Initializer
+{
+public:
+    virtual void init(vf &weights, int n_in, int n_out) const = 0;
+};
+
+class CostFunction
+{
+public:
+    CostFunction(int numOutputs);
+    virtual vvf& calculate(const vvf &output, const vf& expectedOutput) = 0;
+    vvf& getPrevError() { return prevError; }
+    float getError() { return error; }
+protected:
+    vvf prevError;
+    float error;
+    int numOutputs;
+};
+
+class InputManager
+{
+public:
+    InputManager (int n) : numOfInputs(n) {}
+    virtual vvf& getInput(int i) = 0;
+    virtual vf& getExpectedOutput(int i) = 0;
+    int getInputNum() { return numOfInputs; }
+    virtual void reset() = 0;
+protected:
+    int numOfInputs;
+};
+
+class TrainingSupervisor
+{
+public:
+    TrainingSupervisor(std::string path) : path(path) {}
+    virtual void monitor(int epoch = 0) = 0;
+protected:
+    std::string path;
+};
+\end{lstlisting}
+
+\chapter{Eksperimentalni rezultati}
+
+\section{Ispitni skup MNIST}
+Skup MNIST (engl. Mixed National Institute of Standards and Technology) [9] sadrži
+10 klasa rukom pisanih brojeva (od nule do devet). Nekoliko takvih znakova prikazano
+je na slici ~\ref{fig:MNIST}. Takav se skup najviše koristio za testiranje ranih sustava automatskog
+prepoznavanja rukom pisanih brojki kod bankovnih čekova. Slike su monokromatske
+(8 bitne) te veličine $28 \times 28$ točki. Skup je nadalje podijeljen u:
+\begin{itemize}
+\item skup za treniranje - sadrži 60 000 znakova
+\item skup za ispitivanje - sadrži 10 000 znakova
+\end{itemize}
+
+Radi mogućnosti praćenja učenja te praćenja generalizacije mreže tijekom učenja potreban nam je jedan skup koji nije u skupu za učenje. Ispitni skup nemožemo uzeti u obzir zato što on služi za konačno ispitivanje kvalitet mreže i nesmije se koristiti tijekom učenja, čak ni za praćenje pogreške jer može utjecati na konačne rezultate, tj. moglo bi se desiti da podešavama hiperparametre mreže na taj način da pogodoju baš tom skupu a da ne mreža ne generalizira općenito. Zato ćemo podijeliti originalni skup za treniranje u dva skupa, jedan za treniranje a drugi za validaciju. Skup za validaciju se neće koristiti u treniranju ali će biti od koristi prilikom praćenja učenja i generalizacije mreže. Dakle naša podjela skupa je:
+\begin{itemize}
+\item \textbf{skup za treniranje} - sadrži prvih 50 000 znakova originalnog skupa za treniranje
+\item \textbf{skup za validaciju} - sadrži zadnjih 10 000 znakova originalnog skupa za treniranje
+\item \textbf{skup za ispitivanje} - sadrži 10 000 znakova
+\end{itemize}
+
+\subsection{Predobrada ulaza}
+Za uspješno učenje mreže, važno je da je aritmetička sredina skupa približno nula (da
+bi učenje težina moglo krenuti u zahtjevanom smjeru) te da varijanca bude
+približno jednaka jedan (da bi se zadržao opseg u sredini aktivacijske funkcije).
+Za izvorni skup ne vrijedi ovo svojstvo. Stoga je svaki uzorak obrađen oduzimanjem 
+aritmetičke sredine (samog uzorka) i normaliziranjem njegove varijance. Ujedno je i svakom uzorku dodan rub širine 2 te je time veličina ulaza proširena na dimenzije $32 \times 32$.
 
 
 \chapter{Zaključak}

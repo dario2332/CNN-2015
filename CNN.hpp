@@ -7,12 +7,12 @@ class ConvolutionNeuralNetwork
 {
 public:
     ConvolutionNeuralNetwork (const std::vector<Layer*> &layers, CostFunction &costFunction, InputManager &inputManager);
-    void forwardPass(vvd &input);
-    void backPropagate(vvd &error);
+    void feedForward(vvf &input);
+    void backPropagate(vvf &error);
     void train(int numEpochs);
     void registerSupervisor(TrainingSupervisor *s) { supervisers.push_back(s); }
     void notifySupervisors(int epoch);
-    float getCost(vd &expectedOutput);
+    float getCost(vf &expectedOutput);
     InputManager& getInputManager() { return inputManager; }
     
 private:

@@ -2,16 +2,13 @@
 #include <cassert>
 #include <iostream>
 
-PoolLayer::PoolLayer(int kernelSize, int numFM, int inputMapSize) : kernelSize(kernelSize), 
-              numFM(numFM), inMapSize(inputMapSize),
-              outMapSize(inputMapSize/kernelSize),  
-              output(vvd(numFM, vd(outMapSize*outMapSize))),
-              prevError(vvd(numFM, vd(inMapSize*inMapSize, 0)))
+PoolLayer::PoolLayer(int frameSize, int numFM, int prevMapSize) : Layer(prevMapSize, prevMapSize/frameSize, numFM, numFM),
+              frameSize(frameSize)
 {
-    assert(inMapSize % kernelSize == 0);
+    assert(prevMapSize % frameSize == 0);
 }
 
-vvd& MaxPoolLayer::forwardPass(const vvd &input)
+vvf& MaxPoolLayer::forwardPass(const vvf &input)
 {
     //reset prevError
     for (int i = 0; i < numFM; ++i)
@@ -19,18 +16,18 @@ vvd& MaxPoolLayer::forwardPass(const vvd &input)
         std::fill(prevError.at(i).begin(), prevError.at(i).end(), 0);
     }
 
-    assert(input.at(0).size() == inMapSize*inMapSize);
+    assert(input.at(0).size() == prevMapSize*prevMapSize);
     assert(input.size() == numFM);
     
     this->input = &input;
     
     for (int fm = 0; fm < numFM; ++fm)
     {
-        for (int oRow = 0; oRow < outMapSize; oRow++)
+        for (int oRow = 0; oRow < mapSize; oRow++)
         {
-            for (int oCol = 0; oCol < outMapSize; oCol++)
+            for (int oCol = 0; oCol < mapSize; oCol++)
             {
-                output.at(fm).at(oRow*outMapSize+oCol) = max(fm, oRow*kernelSize, oCol*kernelSize);
+                output.at(fm).at(oRow*mapSize+oCol) = max(fm, oRow*frameSize, oCol*frameSize);
             }
         }
     }
@@ -40,36 +37,36 @@ vvd& MaxPoolLayer::forwardPass(const vvd &input)
 
 float MaxPoolLayer::max(int fm, int iRow, int iCol)
 {
-    float max = input->at(fm).at(iRow*inMapSize+iCol);
+    float max = input->at(fm).at(iRow*prevMapSize+iCol);
     int row = iRow, col = iCol;
-    for (int i = iRow; i < iRow+kernelSize; ++i)
+    for (int i = iRow; i < iRow+frameSize; ++i)
     {
-        for (int j = iCol; j < iCol+kernelSize; ++j)
+        for (int j = iCol; j < iCol+frameSize; ++j)
         {
-            if (input->at(fm).at(i*inMapSize + j) > max)
+            if (input->at(fm).at(i*prevMapSize + j) > max)
             {
-                max = input->at(fm).at(i*inMapSize + j);
+                max = input->at(fm).at(i*prevMapSize + j);
                 row = i; 
                 col = j;
             }
         }
     }
-    prevError.at(fm).at(row*inMapSize+col) = 1;
+    prevError.at(fm).at(row*prevMapSize+col) = 1;
     return max;
 }
 
-vvd& MaxPoolLayer::backPropagate(const vvd &error)
+vvf& MaxPoolLayer::backPropagate(const vvf &error)
 {
     assert(error.size() == numFM);
-    assert(error.at(0).size() == outMapSize*outMapSize);
+    assert(error.at(0).size() == mapSize*mapSize);
 
     for (int fm = 0; fm < numFM; ++fm)
     {
-        for (int iRow = 0; iRow < inMapSize; iRow++)
+        for (int iRow = 0; iRow < prevMapSize; iRow++)
         {
-            for (int iCol = 0; iCol < inMapSize; iCol++)
+            for (int iCol = 0; iCol < prevMapSize; iCol++)
             {
-                prevError.at(fm).at(iRow*inMapSize+iCol) *= error.at(fm).at(iRow/kernelSize * outMapSize + iCol/kernelSize);
+                prevError.at(fm).at(iRow*prevMapSize+iCol) *= error.at(fm).at(iRow/frameSize * mapSize + iCol/frameSize);
             }
         }
     }

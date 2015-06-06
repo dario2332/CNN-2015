@@ -6,26 +6,22 @@ class ActivationLayer : public Layer
 {
 public:
     ActivationLayer(int numFM, int mapSize = 1);
-    virtual vvd& forwardPass(const vvd &input) = 0;
-    virtual vvd& backPropagate(const vvd &error) = 0;
-    vvd& getOutput() { return output; }
-    vvd& getPrevError() { return prevError; }
-    
+    virtual vvf& forwardPass(const vvf &input);
+    virtual vvf& backPropagate(const vvf &error);
+
 protected:
-    int numFM, mapSize;
-    vvd prevError, output;
-    const vvd *input;
+    virtual float activationFunction(float x) = 0;
+    virtual float activationFunctionDerivative(float x) = 0;
 };
 
-class SigmoidLayer : public ActivationLayer 
+class TanhLayer : public ActivationLayer 
 {
 public:
-    SigmoidLayer(int numFM, int mapSize = 1) : ActivationLayer(numFM, mapSize) {}
-    virtual vvd& forwardPass(const vvd &input);
-    virtual vvd& backPropagate(const vvd &error);
-private:
-    static float sigmoid(float x);
-    static float sigmoidDerivative(float x);
+    TanhLayer(int numFM, int mapSize = 1) : ActivationLayer(numFM, mapSize) {}
+
+protected:
+    virtual float activationFunction(float x);
+    virtual float activationFunctionDerivative(float x);
 };
 
 #endif

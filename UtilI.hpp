@@ -6,19 +6,19 @@
 class Initializer
 {
 public:
-    virtual void init(vd &weights, int n_in, int n_out) const = 0;
+    virtual void init(vf &weights, int n_in, int n_out) const = 0;
 };
 
 class CostFunction
 {
 public:
-    CostFunction(int numOutputs) : numOutputs(numOutputs), error(0), prevError(vvd(numOutputs, vd(1))) {}
-    virtual vvd& calculate(const vvd &output, const vd& expectedOutput) = 0;
-    vvd& getPrevError() { return prevError; }
+    CostFunction(int numOutputs) : numOutputs(numOutputs), error(0), prevError(vvf(numOutputs, vf(1))) {}
+    virtual vvf& calculate(const vvf &output, const vf& expectedOutput) = 0;
+    vvf& getPrevError() { return prevError; }
     float getError() { return error; }
 
 protected:
-    vvd prevError;
+    vvf prevError;
     float error;
     int numOutputs;
 };
@@ -27,14 +27,12 @@ class InputManager
 {
 public:
     InputManager (int n) : numOfInputs(n) {}
-    virtual vvd& getInput(int i) = 0;
-    virtual vd& getExpectedOutput(int i) = 0;
+    virtual vvf& getInput(int i) = 0;
+    virtual vf& getExpectedOutput(int i) = 0;
     int getInputNum() { return numOfInputs; }
     virtual void reset() = 0;
-    //virtual void preProcess() = 0;
    
 protected:
-    // number of images in each set
     int numOfInputs;
 };
 

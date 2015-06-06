@@ -7,41 +7,32 @@
 class ConvolutionLayer : public Layer
 {
 public:
-    ConvolutionLayer(int mapSize, int inputFM,  int outputFM, int kernelSize, Initializer &init, float learningRate); 
-    virtual vvd& forwardPass(const vvd &input);
-    virtual vvd& backPropagate(const vvd &error);
-    vvd& getOutput() { return output; }
-    vvd& getPrevError() { return prevError; }
-    vvvd& getKernel() { return kernelW; }
-    vd& getBias() { return bias; }
-    int getMapSize() { return mapSize; }
+    ConvolutionLayer(int mapSize, int prevFM,  int numFM, int kernelSize, Initializer &init, float learningRate); 
+    virtual vvf& forwardPass(const vvf &input);
+    virtual vvf& backPropagate(const vvf &error);
+    vvvf& getKernel() { return kernelW; }
+    vf& getBias() { return bias; }
     float getLearningRate() { return learningRate; }
     void printKernel();
     void writeKernel(std::string path);
     void loadWeights(std::string file);
 
 private:
-    int mapSize, inputMapSize;
-    // kernelSize x kernelSize
-    int kernelSize;
-    // number of feature maps
-    int inputFM, outputFM;
-    //kernelw[outputFM][inputFM][i*kernelSize + j]
-    vvvd kernelW;
-    vvd output, prevError;
-    vd bias;
-    const vvd *input;
+    const int kernelSize;
+    //kernelw[numFM][prevFM][i*kernelSize + j]
+    vvvf kernelW;
+    vf bias;
     float learningRate;
 
-    void update(const vvd &error);
-    double convolve(int w, int h, const vvd &input, int outputFM);
+    void update(const vvf &error);
+    double convolve(int w, int h, const vvf &input, int numFM);
 };
 
 class FullyConnectedLayer : public ConvolutionLayer
 {
 public:
-    FullyConnectedLayer (int inputFM,  int outputFM, Initializer &init, float learningRate) :
-                        ConvolutionLayer(1, inputFM, outputFM, 1, init, learningRate) {}
+    FullyConnectedLayer (int prevFM,  int numFM, Initializer &init, float learningRate) :
+                        ConvolutionLayer(1, prevFM, numFM, 1, init, learningRate) {}
 };
 
 #endif

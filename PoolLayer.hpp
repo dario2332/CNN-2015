@@ -6,26 +6,18 @@
 class PoolLayer : public Layer
 {
 public:
-    PoolLayer (int kernelSize, int numFM, int inputMapSize); 
-    virtual vvd& forwardPass(const vvd &input) = 0;
-    virtual vvd& backPropagate(const vvd &error) = 0;
-    vvd& getPrevError() { return prevError; }
-    vvd& getOutput() { return output; }
+    PoolLayer (int frameSize, int numFM, int prevMapSize); 
+
 protected:
-    int kernelSize;
-    const vvd *input;
-    const int numFM, inMapSize, outMapSize;
-    vvd output, prevError;
-
-
+    const int frameSize;
 };
 
 class MaxPoolLayer : public PoolLayer
 {
 public:
-    MaxPoolLayer(int kernelSize, int numFM, int inMapSize) : PoolLayer(kernelSize, numFM, inMapSize) {}
-    virtual vvd& forwardPass(const vvd &input);
-    virtual vvd& backPropagate(const vvd &error);
+    MaxPoolLayer(int frameSize, int numFM, int inMapSize) : PoolLayer(frameSize, numFM, inMapSize) {}
+    virtual vvf& forwardPass(const vvf &input);
+    virtual vvf& backPropagate(const vvf &error);
 
 private:
     float max(int fm, int iRow, int iCol);

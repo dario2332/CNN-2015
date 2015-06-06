@@ -8,9 +8,9 @@ ConvolutionNeuralNetwork::ConvolutionNeuralNetwork (const std::vector<Layer*> &l
                                                     costFunction(costFunction),
                                                     inputManager(inputManager) {}
 
-void ConvolutionNeuralNetwork::forwardPass(vvd &input)
+void ConvolutionNeuralNetwork::feedForward(vvf &input)
 {
-    vvd *currentInput = &input;
+    vvf *currentInput = &input;
     for (int layer = 0; layer < layers.size(); ++layer)
     {
         layers.at(layer)->forwardPass(*currentInput);
@@ -18,9 +18,9 @@ void ConvolutionNeuralNetwork::forwardPass(vvd &input)
     }
 }
 
-void ConvolutionNeuralNetwork::backPropagate(vvd &error)
+void ConvolutionNeuralNetwork::backPropagate(vvf &error)
 {
-    vvd *currentError = &error;
+    vvf *currentError = &error;
     for (int layer = layers.size() - 1; layer >= 0; --layer)
     {
         layers.at(layer)->backPropagate(*currentError);
@@ -34,20 +34,15 @@ void ConvolutionNeuralNetwork::train(int numEpochs)
     {
         for (int i = 0, n = inputManager.getInputNum(); i < n; ++i)
         {
-            forwardPass(inputManager.getInput(i));
+            feedForward(inputManager.getInput(i));
             backPropagate(costFunction.calculate(layers.at(layers.size()-1)->getOutput(), inputManager.getExpectedOutput(i)));
         }
         notifySupervisors(epoch);
-            // proci kroz validation test i ispisati tocnost
-            // takoder tocnost training seta
-            // updates of weights
-            // gradient check jos nemam u konvolucijskim i aktivacijskim slojevima
-            // varijanca aktivacija i gradijenata svakog sloja
         inputManager.reset();
     }
 }
 
-float ConvolutionNeuralNetwork::getCost(vd &expectedOutput)
+float ConvolutionNeuralNetwork::getCost(vf &expectedOutput)
 {
     costFunction.calculate(layers.at(layers.size()-1)->getOutput(), expectedOutput);
     return costFunction.getError();

@@ -8,7 +8,7 @@
 #include "ConvolutionLayer.hpp"
 #include <opencv2/opencv.hpp>
 
-void ReLUInitializer::init(vd &weights, int n_in, int n_out) const
+void ReLUInitializer::init(vf &weights, int n_in, int n_out) const
 {
     std::random_device rd;
     std::mt19937 gen(rd());
@@ -20,7 +20,7 @@ void ReLUInitializer::init(vd &weights, int n_in, int n_out) const
 }
 
 
-void TestInitializer::init(vd &weights, int n_prev, int n_curr) const
+void TestInitializer::init(vf &weights, int n_prev, int n_curr) const
 {
     for (int i = 0; i < weights.size(); ++i)
     {
@@ -28,7 +28,7 @@ void TestInitializer::init(vd &weights, int n_prev, int n_curr) const
     }
 }
 
-void SigmoidInitializer::init(vd &weights, int n_in, int n_out) const
+void TanhInitializer::init(vf &weights, int n_in, int n_out) const
 {
     float l = -4 * sqrt(6.0 / (n_in + n_out));
     float r = 4 * sqrt(6.0 / (n_in + n_out));
@@ -41,7 +41,7 @@ void SigmoidInitializer::init(vd &weights, int n_in, int n_out) const
     }
 }
 
-vvd& SquareCost::calculate(const vvd &output, const vd& expectedOutput)
+vvf& SquareCost::calculate(const vvf &output, const vf& expectedOutput)
 {
     assert(output.size() == numOutputs);
     assert(expectedOutput.size() == numOutputs);
@@ -60,7 +60,7 @@ vvd& SquareCost::calculate(const vvd &output, const vd& expectedOutput)
 
 MnistSmallInputManager::MnistSmallInputManager(std::string path) : MnistInputManager(20)
 {
-    expectedOutputs = vvd(20, vd(2));
+    expectedOutputs = vvf(20, vf(2));
     int x = 0;
     int zeros = 0, ones = 0;
     std::ifstream inImages, inLabels;
@@ -117,8 +117,8 @@ MnistSmallInputManager::MnistSmallInputManager(std::string path) : MnistInputMan
     preprocess();
 }
 
-MnistInputManager::MnistInputManager (int num, std::string path) : InputManager(num), inputs(vvvd(num, vvd(1, vd(32*32)))),
-                                        expectedOutputs(vvd(num, vd(10, 0))), indexes(std::vector<int>(num))
+MnistInputManager::MnistInputManager (int num, std::string path) : InputManager(num), inputs(vvvf(num, vvf(1, vf(32*32)))),
+                                        expectedOutputs(vvf(num, vf(10, 0))), indexes(std::vector<int>(num))
 {
     for (int i = 0; i < num; ++i)
     {
@@ -259,8 +259,8 @@ void WeightRecorder::monitor(int epoch)
     for (int i = 0; i < layers.size(); ++i)
     {
         std::ofstream out(file + "_CL" + std::to_string(i+1), std::fstream::binary | std::fstream::out | std::fstream::trunc);
-        vvvd &kernel = layers.at(i) -> getKernel();
-        vd &bias = layers.at(i) -> getBias();
+        vvvf &kernel = layers.at(i) -> getKernel();
+        vf &bias = layers.at(i) -> getBias();
         int oFM = kernel.size(), iFM = kernel.at(0).size(), kernelSize = std::sqrt(kernel.at(0).at(0).size());
         int outMapSize = layers.at(i) -> getMapSize();
         
@@ -288,7 +288,7 @@ void WeightRecorder::monitor(int epoch)
 }
 
 Validator::Validator (ConvolutionNeuralNetwork &cnn, InputManager& im, std::string path, int numClasses) : 
-               TrainingSupervisor(path), cnn(cnn), im(im), possibleOutputs(vvd(numClasses, vd(numClasses, 0)))
+               TrainingSupervisor(path), cnn(cnn), im(im), possibleOutputs(vvf(numClasses, vf(numClasses, 0)))
 {
     for (int i = 0; i < numClasses; ++i)
     {
@@ -304,7 +304,7 @@ void Validator::monitor(int epoch)
     
     for (int i = 0, n = im.getInputNum(); i < n; ++i)
     {
-        cnn.forwardPass(im.getInput(i));
+        cnn.feedForward(im.getInput(i));
         error += cnn.getCost(im.getExpectedOutput(i));
         float min = cnn.getCost(possibleOutputs.at(0));
         int result = 0;
@@ -340,7 +340,7 @@ void ActivationVariance::monitor(int epoch)
     {
         float mean = 0;
         float variance = 0;
-        vvd& output = layers.at(i)->getOutput();
+        vvf& output = layers.at(i)->getOutput();
 
         for (int j = 0; j < output.size(); ++j)
         {
@@ -373,7 +373,7 @@ void GradientVariance::monitor(int epoch)
     {
         float mean = 0;
         float variance = 0;
-        vvd& error = layers.at(i)->getPrevError();
+        vvf& error = layers.at(i)->getPrevError();
 
         for (int j = 0; j < error.size(); ++j)
         {

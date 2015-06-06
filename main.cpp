@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unistd.h>
 #include <cassert>
 #include "CNN.hpp"
 #include "layer.hpp"
@@ -12,7 +13,7 @@ void testForwardPass()
 {
     TestInitializer init;
     ConvolutionLayer l(28, 3, 10, 5, init, 1);
-    vvd input(3, vd(32*32, 1));
+    vvf input(3, vf(32*32, 1));
     l.forwardPass(input);
     
     for (int i = 0; i < l.getOutput().size(); ++i)
@@ -29,9 +30,9 @@ void testBackPropagation()
 {
     TestInitializer init;
     ConvolutionLayer l(6, 3, 1, 3, init, 1);
-    vvd input(3, vd(8*8, 1));
+    vvf input(3, vf(8*8, 1));
     l.forwardPass(input);
-    vvd error(1, vd(6*6, 2));
+    vvf error(1, vf(6*6, 2));
     l.backPropagate(error);
     
     
@@ -59,7 +60,7 @@ void testForwardPassTime(int n)
     // za n = 100 48x48 trajalo je 78s
     TestInitializer init;
     ConvolutionLayer l(44, 7, 10, 5, init, 1);
-    vvd input(7, vd(48*48, 1));
+    vvf input(7, vf(48*48, 1));
     for (int i = 0; i < n * 10; i ++)
     {
         l.forwardPass(input);
@@ -70,28 +71,28 @@ void testForwardPassTime(int n)
 void testMaxPool()
 {
     MaxPoolLayer mpl(2, 1, 4);
-    vvd input(1);
+    vvf input(1);
     input.at(0) = { 2, 3, 4, 7,
                     9, 3, 4, 5,
                     11, 2, 1, 0,
                     2, 2, 4, 4
                    };
     mpl.forwardPass(input);
-    vd expectedPrevError = {0, 0, 0, 1,
+    vf expectedPrevError = {0, 0, 0, 1,
                             1, 0, 0, 0,
                             1, 0, 0, 0,
                             0, 0, 1, 0
                             };
-    vd expectedOutput = { 9, 7,
+    vf expectedOutput = { 9, 7,
                           11, 4 };
     
     assert(mpl.getPrevError().at(0) == expectedPrevError);
     assert(mpl.getOutput().at(0) == expectedOutput);
 
-    vvd error(1);
+    vvf error(1);
     error.at(0) = {2, 3,
                    -1, 0};
-    vd expectedPrevError2 ={0, 0, 0, 3,
+    vf expectedPrevError2 ={0, 0, 0, 3,
                             2, 0, 0, 0,
                             -1, 0, 0, 0,
                             0, 0, 0, 0
@@ -100,36 +101,36 @@ void testMaxPool()
     assert(mpl.getPrevError().at(0) == expectedPrevError2);
 }
 
-void testSigmoidLayer()
+void testTanhLayer()
 {
-    SigmoidLayer sl(1, 2);
-    vvd input(1);
+    TanhLayer tl(1, 2);
+    vvf input(1);
     input.at(0) = { 2, 3,
                     9, 3 };
-    sl.forwardPass(input);
-    vd expectedOutput = {1.49294, 1.65417, 1.71588, 1.65417};
-    vd expectedPrevError = {0.701763, 0.306059, 3.54885e-05, 0.20404};
-    for (int i = 0; i < sl.getOutput().size(); ++i)
+    tl.forwardPass(input);
+    vf expectedOutput = {1.49294, 1.65417, 1.71588, 1.65417};
+    vf expectedPrevError = {0.701763, 0.306059, 3.54885e-05, 0.20404};
+    for (int i = 0; i < tl.getOutput().size(); ++i)
     {
-        for (int j = 0; j < sl.getOutput().at(0).size(); ++j)
+        for (int j = 0; j < tl.getOutput().at(0).size(); ++j)
         {
-            double d = sl.getOutput().at(i).at(j); 
+            double d = tl.getOutput().at(i).at(j); 
             assert(d - expectedOutput.at(j) < 1e-5);
             //std::cout << d << " ";
         }
     }
     //std::cout << std::endl;
 
-    vvd error(1);
+    vvf error(1);
     error.at(0) = { 2, 3,
                     1, 2 };
-    sl.backPropagate(error);
+    tl.backPropagate(error);
 
-    for (int i = 0; i < sl.getPrevError().size(); ++i)
+    for (int i = 0; i < tl.getPrevError().size(); ++i)
     {
-        for (int j = 0; j < sl.getPrevError().at(0).size(); ++j)
+        for (int j = 0; j < tl.getPrevError().at(0).size(); ++j)
         {
-            double d = sl.getPrevError().at(i).at(j); 
+            double d = tl.getPrevError().at(i).at(j); 
             assert(d - expectedPrevError.at(j) < 1e-5);
             //std::cout << d << " ";
         }
@@ -140,25 +141,25 @@ void testSigmoidLayer()
 void testActivationLayerTime(int n)
 {
     //for n = 1000000 it took 54 seconds
-    vvd input(80, vd(1, 1));
-    vvd error(80, vd(1, 1));
-    SigmoidLayer sl(80, 1);
+    vvf input(80, vf(1, 1));
+    vvf error(80, vf(1, 1));
+    TanhLayer tl(80, 1);
     for (int i = 0; i < n; ++i)
     {
-        sl.forwardPass(input);
-        sl.backPropagate(error);
+        tl.forwardPass(input);
+        tl.backPropagate(error);
     }
 }
 
 void testSquareCost()
 {
     SquareCost sc(3);
-    vvd output(3);
+    vvf output(3);
     output.at(0).push_back(1);
     output.at(1).push_back(2);
     output.at(2).push_back(3);
-    vd expectedOutput = {2, 2.5, 2};
-    vvd expectedPrevError(3);
+    vf expectedOutput = {2, 2.5, 2};
+    vvf expectedPrevError(3);
     expectedPrevError.at(0).push_back(-1);
     expectedPrevError.at(1).push_back(-0.5);
     expectedPrevError.at(2).push_back(1);
@@ -173,34 +174,36 @@ void testCNN()
     std::vector<ConvolutionLayer*> convLayers;
     MnistSmallInputManager minstInput;
     SquareCost sc(2);
-    const float learningRate = 0.001;
+    const float learningRate = 0.002;
 
     //TestInitializer init;
-    SigmoidInitializer init;
+    TanhInitializer init;
     
     ConvolutionLayer conv1(28, 1, 6, 5, init, learningRate);
-    SigmoidLayer sigm1(6, 28);
+    TanhLayer tanh1(6, 28);
     MaxPoolLayer pool1(2, 6, 28);
     ConvolutionLayer conv2(10, 6, 16, 5, init, learningRate);
-    SigmoidLayer sigm2(16, 10);
+    TanhLayer tanh2(16, 10);
     MaxPoolLayer pool2(2, 16, 10);
     ConvolutionLayer conv3(1, 16, 100, 5, init, learningRate);
-    SigmoidLayer sigm3(100, 1);
+    TanhLayer tanh3(100, 1);
     FullyConnectedLayer full1(100, 80, init, learningRate);
-    SigmoidLayer sigmFC1(80);
+    TanhLayer tanhFC1(80);
     FullyConnectedLayer full2(80, 2, init, learningRate);
+    //TanhLayer tanhFC2(2);
     
     layers.push_back(&conv1);
-    layers.push_back(&sigm1);
+    layers.push_back(&tanh1);
     layers.push_back(&pool1);
     layers.push_back(&conv2);
-    layers.push_back(&sigm2);
+    layers.push_back(&tanh2);
     layers.push_back(&pool2);
     layers.push_back(&conv3);
-    layers.push_back(&sigm3);
+    layers.push_back(&tanh3);
     layers.push_back(&full1);
-    layers.push_back(&sigmFC1);
+    layers.push_back(&tanhFC1);
     layers.push_back(&full2);
+    //layers.push_back(&tanhFC2);
 
     ConvolutionNeuralNetwork cnn(layers, sc, minstInput);
     
@@ -220,7 +223,7 @@ void testCNN()
     cnn.registerSupervisor(&val);
     cnn.registerSupervisor(&wr);
 
-    cnn.train(20);
+    cnn.train(100);
 
     conv1.loadWeights("MNIST/Weights_E19_CL1");
     conv2.loadWeights("MNIST/Weights_E19_CL2");
@@ -242,31 +245,31 @@ void trainMnist()
     const float learningRate = 0.001;
 
     //TestInitializer init;
-    SigmoidInitializer init;
+    TanhInitializer init;
     
     ConvolutionLayer conv1(28, 1, 6, 5, init, learningRate);
-    SigmoidLayer sigm1(6, 28);
+    TanhLayer tanh1(6, 28);
     MaxPoolLayer pool1(2, 6, 28);
     ConvolutionLayer conv2(10, 6, 16, 5, init, learningRate);
-    SigmoidLayer sigm2(16, 10);
+    TanhLayer tanh2(16, 10);
     MaxPoolLayer pool2(2, 16, 10);
     ConvolutionLayer conv3(1, 16, 100, 5, init, learningRate);
-    SigmoidLayer sigm3(100, 1);
+    TanhLayer tanh3(100, 1);
     FullyConnectedLayer full1(100, 80, init, learningRate);
-    SigmoidLayer sigmFC1(80);
+    TanhLayer tanhFC1(80);
     FullyConnectedLayer full2(80, 10, init, learningRate);
-    //SigmoidLayer sigmFC2(10);
+    //TanhLayer sigmFC2(10);
     
     layers.push_back(&conv1);
-    layers.push_back(&sigm1);
+    layers.push_back(&tanh1);
     layers.push_back(&pool1);
     layers.push_back(&conv2);
-    layers.push_back(&sigm2);
+    layers.push_back(&tanh2);
     layers.push_back(&pool2);
     layers.push_back(&conv3);
-    layers.push_back(&sigm3);
+    layers.push_back(&tanh3);
     layers.push_back(&full1);
-    layers.push_back(&sigmFC1);
+    layers.push_back(&tanhFC1);
     layers.push_back(&full2);
     //layers.push_back(&sigmFC2);
 
@@ -305,11 +308,11 @@ void trainMnist()
     //}
     //trainVal.monitor(0);
     //valVal.monitor(0);
-    conv1.loadWeights("MNIST/Weights_E9_CL1");
-    conv2.loadWeights("MNIST/Weights_E9_CL2");
-    conv3.loadWeights("MNIST/Weights_E9_CL3");
-    full1.loadWeights("MNIST/Weights_E9_CL4");
-    full2.loadWeights("MNIST/Weights_E9_CL5");
+    conv1.loadWeights("MNIST/Weights_E10_CL1");
+    conv2.loadWeights("MNIST/Weights_E10_CL2");
+    conv3.loadWeights("MNIST/Weights_E10_CL3");
+    full1.loadWeights("MNIST/Weights_E10_CL4");
+    full2.loadWeights("MNIST/Weights_E10_CL5");
 
     cnn.train(10);
 }
@@ -320,7 +323,7 @@ int main(int argc, char *argv[])
     //testBackPropagation();
     //testForwardPassTime(100);
     //testMaxPool();
-    //testSigmoidLayer();
+    //testTanhLayer();
     //testActivationLayerTime(1000000);
     //testSquareCost();
     //testCNN();

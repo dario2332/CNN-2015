@@ -14,7 +14,7 @@ class ReLUInitializer : public Initializer
 {
 public:
     ReLUInitializer(int n) : n(n) {};
-    virtual void init(vd &weights, int n_in, int n_out) const;
+    virtual void init(vf &weights, int n_in, int n_out) const;
 private:
     int n;
 };
@@ -22,33 +22,33 @@ private:
 class TestInitializer : public Initializer
 {
 public:
-    virtual void init(vd &weights, int n_in, int n_out) const;
+    virtual void init(vf &weights, int n_in, int n_out) const;
 };
 
-class SigmoidInitializer : public Initializer
+class TanhInitializer : public Initializer
 {
 public:
-    virtual void init(vd &weights, int n_in, int n_out) const;
+    virtual void init(vf &weights, int n_in, int n_out) const;
 };
 
 class SquareCost : public CostFunction
 {
 public:
     SquareCost (int numOutputs) : CostFunction(numOutputs) {}
-    virtual vvd& calculate(const vvd &output, const vd& expectedOutput);
+    virtual vvf& calculate(const vvf &output, const vf& expectedOutput);
 };
 
 class MnistInputManager : public InputManager
 {
 public:
     MnistInputManager (int num, std::string path = "MNIST");    
-    virtual vvd& getInput(int i) { return inputs.at(indexes.at(i)); }
-    virtual vd& getExpectedOutput(int i) { return expectedOutputs.at(indexes.at(i)); }
+    virtual vvf& getInput(int i) { return inputs.at(indexes.at(i)); }
+    virtual vf& getExpectedOutput(int i) { return expectedOutputs.at(indexes.at(i)); }
     virtual void reset() { std::random_shuffle( indexes.begin(), indexes.end()); }
 
 protected:
-    vvvd inputs;
-    vvd expectedOutputs;
+    vvvf inputs;
+    vvf expectedOutputs;
     std::vector<int> indexes;
     virtual void preprocess();
 };
@@ -102,7 +102,7 @@ public:
 private:
     InputManager &im;
     ConvolutionNeuralNetwork &cnn;
-    vvd possibleOutputs;
+    vvf possibleOutputs;
 
 };
 

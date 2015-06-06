@@ -1,11 +1,11 @@
-\documentclass[times, utf8, zavrsni]{fer}
+\documentclass[times, utf8, zavrsni, numeric]{fer}
 \usepackage{booktabs}
-\usepackage{subfig}
-\usepackage{algorithm}
 \usepackage{listings}
-\usepackage{algpseudocode}
+\usepackage{algorithm}
+\usepackage{algorithmic}
 \usepackage{color}
 \usepackage{tikz}
+\usepackage{subcaption}
 
 \begin{document}
 
@@ -70,17 +70,55 @@ Postoje veliki izbor aktivacijskih funkcija no u praksi se koriste samo neke koj
 
 \begin{figure}
 \centering
+\begin{subfigure}[b]{0.5\textwidth}
+\centering
 \begin{tikzpicture}
-  \draw[->] (-3,0) -- (4.2,0) node[right] {$x$};
-  \draw[->] (0,-3) -- (0,4.2) node[above] {$y$};
-  \draw[scale=0.5,domain=-3:3,smooth,variable=\x,blue] plot ({\x},{\x*\x});
-  \draw[scale=0.5,domain=-3:3,smooth,variable=\y,red]  plot ({\y*\y},{\y});
+  \draw[->] (-2,0) -- (2,0) node[right] {$x$};
+  \draw[->] (0,-2) -- (0,2) node[above] {$f(x)$};
+  \draw[scale=0.5,domain=-3:3,smooth,variable=\x,blue] plot ({\x},{\x});
 \end{tikzpicture}
-\caption{Umjetni neuron}
+\caption{Linearna funkcija}
+\label{fig:linear}
+\end{subfigure}%
+\begin{subfigure}[b]{0.5\textwidth}
+\centering
+\begin{tikzpicture}
+  \draw[->] (-2,0) -- (2,0) node[right] {$x$};
+  \draw[->] (0,-2) -- (0,2) node[above] {$f(x)$};
+  \draw[scale=1,domain=-2:2,smooth,variable=\x,blue] plot ({\x},{tanh(\x*3)});
+\end{tikzpicture}
+\caption{Sigmoidalna funkcija}
+\label{fig:sigmoid}
+\end{subfigure}%
+
+\begin{subfigure}[b]{0.5\textwidth}
+\centering
+\begin{tikzpicture}
+  \draw[->] (-2,0) -- (2,0) node[right] {$x$};
+  \draw[->] (0,-2) -- (0,2) node[above] {$f(x)$};
+  \draw[scale=1,domain=-2:0,smooth,variable=\x,blue] plot ({\x},{-1});
+  \draw[scale=1,domain=-1:1,smooth,variable=\y,blue] plot ({0},{\y});
+  \draw[scale=1,domain=0:2,smooth,variable=\x,blue] plot ({\x},{1});
+\end{tikzpicture}
+\caption{Funkcija skoka}
+\label{fig:step}
+\end{subfigure}%
+\begin{subfigure}[b]{0.5\textwidth}
+\centering
+\begin{tikzpicture}
+  \draw[->] (-2,0) -- (2,0) node[right] {$x$};
+  \draw[->] (0,-2) -- (0,2) node[above] {$f(x)$};
+  \draw[scale=1,domain=-2:0,smooth,variable=\x,blue] plot ({\x},{0});
+  \draw[scale=1,domain=0:1.5,smooth,variable=\x,blue] plot ({\x},{\x});
+\end{tikzpicture}
+\caption{Linearna rektifikacijska funkcija}
+\label{fig:relu}
+\end{subfigure}%
+\caption{Različite aktivacijske funkcije}
 \label{fig:aktivacijske-funkcije}
 \end{figure}
 
-Najobičnija aktivacijska funkcija je linearna aktivacijska funkcija koja je preslikava svoj ulaz na izlaz. Ovakav tip aktivacijske funkcije ne koristimo u dubokim neuronskim mrežama zato što onemogućava učenje mreže. 
+Najobičnija aktivacijska funkcija je linearna aktivacijska funkcija koja je preslikava svoj ulaz pomnožen sa nekom konstantom na izlaz. Ovakav tip aktivacijske funkcije ne koristimo u dubokim neuronskim mrežama zato što onemogućava učenje mreže. 
 
 Step funkcije u neuronima funkcioniraju kao prekidači. Izlaz funkcije može poprimiti samo dvije različite vrijednosti ovisno o tome da li je ulaz manji ili veći od nekog praga. Primjer jedne ovakve funkcije je:
 \begin{equation}
@@ -95,7 +133,7 @@ Sigmoidalne aktivacijske funkcije se najčešće koriste u praksi kod dubokih ne
 \begin{equation}\label{eq:logistic}
 f(x) = \frac{1}{1-e^{-kx}}
 \end{equation}
-U ovom radu nećemo koristiti logističku funkcije već funkciju hiperbolnog tangensa. Po uzoru na DODATI REFERENCU NA ČLANAK koristiti ćemo skaliranu funkciju hiperbolnog tangensa prema izrazu ~\ref{eq:htan} čija je derivacija dana sa ~\ref{eq:htan-der}
+U ovom radu nećemo koristiti logističku funkcije već funkciju hiperbolnog tangensa koja se pokazala boljom u praksi \citep{lecun1998gradient}. Po uzoru na \citep{lecun1998gradient} koristiti ćemo skaliranu funkciju hiperbolnog tangensa prema izrazu ~\ref{eq:htan} čija je derivacija dana sa ~\ref{eq:htan-der}
 \begin{equation}\label{eq:htan}
 f(x) = 1.7159\tanh\left(\frac{2}{3}x\right)
 \end{equation}
@@ -104,22 +142,47 @@ f(x) = 1.7159\tanh\left(\frac{2}{3}x\right)
 \end{equation}
 
 Još jedna aktivacijska funkcija koja je u zadnje vrijeme davala jako dobre rezultate je linearna rektifikacijska funkcija definirana kao:
-\begin{equation}\label{eq:htan}
+\begin{equation}\label{eq:relu}
 f(x) = max(0, x)
 \end{equation}
-Prema REFERENCA NA ČLANAK korištenjem ove aktivacijske funkcije je postignuta čak 6 puta brža konvergencija mreže. Funkcija je po dijelovima derivabilna i nije linearna(objašnjeno u poglavlju REFERENCA NA POGLAVLJE) te je također vrlo jeftina za izračunat (dovoljan je jedan if uvjet u kodu).
+Prema \citep{krizhevsky2012imagenet} korištenjem ove aktivacijske funkcije je postignuta čak 6 puta brža konvergencija mreže. Funkcija je po dijelovima derivabilna i nije linearna te je također vrlo jeftina za izračunat (dovoljan je jedan if uvjet u kodu).
 
 \section{Arhitektura neuronske mreže}
-Povezivanjem velikog broja neurona nastaju neuronske mreže. Neuronske mreže su modelirane kao kolekcije neurona koje su povezane acikličkim grafom. Neuroni u neuronskim mrežama su najčešće organizirani po slojevima (slika ~\ref{fig:slojevi}). Razlikujemo ulazni, izlazni i skriveni sloj. U ulaznom sloju na ulaze neurona dovodimo podatke koje je potrebno klasificirati. Na primjer, za rukom pisane znamenke bi pojedini ulaz bio pisana znamenka. Izlazi neurona ulaznog sloja su spojeni sa ulazima neurona skrivenog sloja. Skrivenih slojeva može biti više pa su zato izlazi neurona skrivenih slojeva povezani sa ulazima neurona idućih skrivenih slojeva ili sa ulazima neurona izlaznog sloja. Izlaz iz neurona izlaznog sloja se interpretira kao klasa koju je mreža klasificirala. Na primjer, ako klasificiramo rukom pisane znamenke onda postoji 10 različitih klasa i deset neurona u izlaznom sloju. Na temelju tog izlaza (najčešće u obliku brojeva od 0 do 1) inerpretiramo rezultat klasifikacije neuronske mreže. Slojevi mogu ali i nemoraju biti u potpunosti povezani poput primjera na slici ~\ref{fig:slojevi}. To znači da su svi neuroni trenutnog sloja povezani sa svim neuronima sljedećeg sloja.
+Povezivanjem velikog broja neurona nastaju neuronske mreže. Neuronske mreže su modelirane kao kolekcije neurona koje su povezane acikličkim grafom. Neuroni u neuronskim mrežama su najčešće organizirani po slojevima (slika ~\ref{fig:neuronska-mreza}). Razlikujemo ulazni, izlazni i skriveni sloj. U ulaznom sloju na ulaze neurona dovodimo podatke koje je potrebno klasificirati. Na primjer, za rukom pisane znamenke bi pojedini ulaz bio pisana znamenka. Izlazi neurona ulaznog sloja su spojeni sa ulazima neurona skrivenog sloja. Skrivenih slojeva može biti više pa su zato izlazi neurona skrivenih slojeva povezani sa ulazima neurona idućih skrivenih slojeva ili sa ulazima neurona izlaznog sloja. Izlaz iz neurona izlaznog sloja se interpretira kao klasa koju je mreža klasificirala. Na primjer, ako klasificiramo rukom pisane znamenke onda postoji 10 različitih klasa i deset neurona u izlaznom sloju. Na temelju tog izlaza (najčešće u obliku brojeva od 0 do 1) inerpretiramo rezultat klasifikacije neuronske mreže. Slojevi su najčešće potpuno povezani poput primjera na slici ~\ref{fig:neuronska-mreza}. To znači da su svi neuroni trenutnog sloja povezani sa svim neuronima sljedećeg sloja.
 
-Dubokim neuronskim mrežama nazivamo mreže koje imaju dva ili više skrivenih slojeva. Ispostavilo se da su duboke neuronske mreže pogodnije za kompleksnije probleme klasifikacije i da ostvaruju dobre rezultate. Tu činjenicu možemo objasniti sa intuitivnim objašnjenjem svrhe skrivenih slojeva u mreži. Možemo reći da svaki sloj mreže obrađuje podatke na drugoj razini apstrakcije i na temelju tih podataka donosi neku odluku, odnosno daje neki izlaz. Uzmimo na primjer neuronsku mrežu napravljenu za svrhu raspoznavanja ljudskih lica na slici. Izlaz iz te mreže bi nam govorio da li se na slici nalazi ljudsko lice ili ne. Razmatrajmo prvo višu razinu apstrakcije. Sa ljudskog aspekta problem postojanja ljudskog lica na slici bismo mogli rastaviti na više manjih problema poput: da li su na slici dva oka? Da li se na slici nalazi nos, usta? Jesu li usta ispod nosa? U kontekstu neuronske mreže bismo mogli reći da odgovore na ta pitanja dobivamo od zadnjeg skrivenog sloja. U izlaznom sloju bismo onda odlučili ovisno o odgovorima da li je na slici ljudsko lice. Sljedeća razina bi bila dekompozicija trenutnih podproblema. Na primjer za pitanje da li se na slici nalazi oko se možemo pitati da li se vidi obrva, trepavice i zjenica. Za ovu razinu apstrakcije bi bio zadužen predzadnji skriveni sloj mreže. Daljnjom dekompozicijom problema bismo došli do podmreža koje daju odgovore na toliko jednostavna pitanja koja se mogu odgovoriti na temelju nekoliko piksela. Takva pitanja bi mogli odgovoriti neuroni u ulaznom sloju direktno povezani sa pikselima ulazne slike. Dekompozicija problema na manje i jednostavnije probleme se upravo odvija u slojevima neuronske mreže. Kretanjem od ulaznog sloja prema izlaznom razina apstrakcije se povećava te se grade kompleksniji i apstraktiniji koncepti odlučivanja. Ulazni sloj obrađuje podatke na razinama piksela dok izlazni sloj radi na najapstraktnijoj razini i daje nam rezultat klasifikacije. Sada je jasno da mreža sa više slojeva može donositi kompleksnije i sofisticiranije odluke od mreže sa manje slojeva.
+\begin{figure}
+    \centering
+    \includegraphics[width=8cm]{img/slojevi-neuronska-mreza.png}
+    \caption{Potpuno povezana neuronska mreža sa jednim skrivenim slojem}
+    \label{fig:neuronska-mreza}
+\end{figure}
+
+Dubokim neuronskim mrežama nazivamo mreže koje imaju dva ili više skrivenih slojeva. Ispostavilo se da su duboke neuronske mreže pogodnije za kompleksnije probleme klasifikacije i da ostvaruju dobre rezultate. Možemo reći da svaki sloj mreže obrađuje podatke na drugoj razini apstrakcije i na temelju tih podataka donosi neku odluku, odnosno daje neki izlaz. Kretanjem od ulaznog sloja prema izlaznom razina apstrakcije se povećava te se grade kompleksniji i apstraktiniji koncepti odlučivanja. Ulazni sloj obrađuje podatke na razinama piksela dok izlazni sloj radi na najapstraktnijoj razini i daje nam rezultat klasifikacije. Intuitivno bismo mogli reći da sa većim brojem slojeva možemo preciznije dekompozirati apstraktni problem klasifikacije na niz jednostavnih odluka koje se mogu donesti na razinama piksela. Sa većim brojem slojeva je ta dekompozicija finija i preciznija.
+
+Ono što u stvarnosti duboke neuronske mreže rade je simulirajnje nelinearne funkcije sa velikim brojem parametara. Kada je mreža "naučena", funkcija koju ona simulira je točno ta funkcija koja nam za dane ulaze daje takve izlaze koje interpretiramo kao točne rezultate klasifikacije. Intitivno je jasno da za probleme klasifikacije često trebamo složene funkcije koje nisu jednostavne. Veći broj slojeva duboke neuronske mreže povećava tu složenost i omogućuje pronalazak takvih funkcija.
 
 \section{Učenje neuronskih mreža}
 Pošto neuronske mreže imaju milijune parametara (težina) koje je potrebno odrediti kako bi mreža radila dobru klasifikaciju trebamo znati kako odrediti te parametre. Dva algoritma su ključna za rad neuronske mreže i za njezino učenje a to su: algoritam \textit{feedforward} i algoritam sa širenjem pogreške unatrag(engl. \textit{backpropagation}).
 
 \subsection{Algoritam feedforward}
-Algoritam feedforward omogućava rad neuronske mreže. Algoritam je vrlo jednostavan. Za svaki sloj računamo njegov izlaz krećući od ulaznog. Ulaz ulaznog sloja su podatci za klasifikaciju dok je njegov izlaz ulaz sljedećeg sloja. Jedino na što treba paziti je povezanost slojeva koja za svaki neuron određuje koji dio ulaza utječe na njegov izlaz. Primjer pseudokoda za poptpuno povezane slojeve je:
+Algoritam feedforward omogućava rad neuronske mreže. Algoritam je vrlo jednostavan. Za svaki sloj računamo njegov izlaz krećući od ulaznog. Ulaz ulaznog sloja su podatci za klasifikaciju dok je njegov izlaz ulaz sljedećeg sloja. Jedino na što treba paziti je povezanost slojeva koja za svaki neuron određuje koji dio ulaza utječe na njegov izlaz. Algoritam je opisan sa pseudokodom ~\ref{alg:feedforward}.
 
+\renewcommand{\algorithmicfor}{\textbf{za}}
+\renewcommand{\algorithmicend}{\textbf{kraj}}
+\renewcommand{\algorithmicwhile}{\textbf{dok}}
+\renewcommand{\algorithmicdo}{\textbf{radi}}
+\floatname{algorithm}{Pseudokod}
+\begin{algorithm}
+\caption{Feedforward}
+\label{alg:feedforward}
+\begin{algorithmic}
+\STATE \textbf{Ulaz:} $x$
+\FOR{svaki sloj od ulaznog do izlaznog}
+\STATE{Izračunaj izlaz sloja za ulaz $x$}
+\STATE{$x \leftarrow$ izlaz trenutnog sloja}
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
 \subsection{Algoritam backpropagation}
 Neuronsku mrežu možemo shvatiti kao funkciju više varijabli. Varijable su težine na prijelazima neurona a izlaz iz funkcije je pogreška mreže. U našem promatranju smatramo da je ulaz konstantan i da nije varijabla. Naš cilj je minimizirati pogrešku što se svodi na pretraživanje \textit{n}-dimenzionalnog prostora gdje je \textit{n} ukupan broj težina u mreži. Pogreška u takvom prostoru se može vizualizirati kao hiper-površina sa više lokalnih minimuma.
 
@@ -182,34 +245,29 @@ b_{j} \leftarrow b_{j} - \eta\dfrac{\partial E}{\partial b_{j}} = b_{j} - \eta \
 
 Stopa učenja $\eta$ je mali pozitivni broj koji nam govori koliko brzo ćemo se kretati u smijeru negativnog gradijenta. Gradijent pokazuje u smijeru rasta funkcije pa je zato kod ažuriranja težina i pragova potrebno dodati negativan predznak jer pokušavamo minimizirati funkciju.
 
-Pseudokod algoritma backpropagation dan je u nastavku:
-
 \begin{algorithm}
 \caption{Backpropagation}
 \label{alg:backpropagation}
-Ulaz: D(skup za učenje), $\eta$ stopa učenja
-
-Inicijaliziraj težine na male slučajno generirane vrijednosti\;
-
-Dok nije ispunjen uvjet zaustavljanja:\;
-
-Za svaki (x, t) iz D:
-
-Izračunaj izlaz svakog sloja mreže za ulaz x
-
-Izračunaj pogrešku izlaznog sloja prema formulama ~\ref{eq:error} i ~\ref{eq:sr-kv-pogr-der}
-
-Izračunaj pogrešku prethodnog sloja prema formulama ~\ref{eq:error-prethodni} i ~\ref{eq:dE/yi2}
-
-Izračunaj parcijalne derivacije pogreške po težinama i pragovima prema formulama ~\ref{eq:der-w} i ~\ref{eq:der-b}
-
-Ažuriraj težine i pragove prema formulama ~\ref{eq:azuriraj-w} i ~\ref{eq:azuriraj-b}
- 	
+\begin{algorithmic}
+\STATE \textbf{Ulaz:} D (skup za učenje), $\eta$ (stopa učenja)
+\STATE{Inicijaliziraj težine na male slučajno generirane vrijednosti}
+\WHILE{nije ispunjen uvjet zaustavljanja}
+\FOR{svaki (x, t) iz D}
+\STATE{Izračunaj izlaz svakog sloja mreže za ulaz x}
+\STATE{Izračunaj pogrešku izlaznog sloja prema formulama ~\ref{eq:error} i ~\ref{eq:sr-kv-pogr-der}}
+\FOR{svaki sloj od izlaznog do ulaznog}
+\STATE{Izračunaj pogrešku prethodnog sloja prema formulama ~\ref{eq:error-prethodni} i ~\ref{eq:dE/yi2}}
+\STATE{Izračunaj parcijalne derivacije pogreške po težinama i pragovima prema formulama ~\ref{eq:der-w} i ~\ref{eq:der-b}}
+\STATE{Ažuriraj težine i pragove prema formulama ~\ref{eq:azuriraj-w} i ~\ref{eq:azuriraj-b}}
+\ENDFOR
+\ENDFOR
+\ENDWHILE
+\end{algorithmic}
 \end{algorithm}
 
-Uvjet zaustavljanja algoritma je najčešće unaprijed zadan broj iteracija. Svaku iteraciju algoritma nazivamo epohom. Uvjet nemora nužno biti zadan brojem epoha, također je moguće da se kao uvjet postavi minimalna pogreška izlaza tj, da algoritam staje kad je pogreška dovoljno mala.
+Algoritam backpropagation je opisan sa pseudokodom ~\ref{alg:backpropagation}. Uvjet zaustavljanja algoritma je najčešće unaprijed zadan broj iteracija. Svaku iteraciju algoritma nazivamo epohom. Uvjet nemora nužno biti zadan brojem epoha, također je moguće da se kao uvjet postavi minimalna pogreška izlaza tj, da algoritam staje kad je pogreška dovoljno mala.
 
-Prethodno opisani algoritam koristi stohastički gradijentni spust što znači da se težine ažuriraju nakon svakog ulaza. To znači da nije nužno da se uvijek krećemo u smijeru negativnog gradijenta na razini cijelog skupa za učenje. Ovakva varijanta gradijentnog spusta više oscilira te je upravo zbog tog svojstva otpornija na zapinjanje u lokalnim minimumima. Standardna varijanta gradijentnog spusta ažurira težine ili nakon nekog određenog broja ulaza (engl. batch) ili nakon svake epohe. U obzir se uzima prosjek gradijenata na svim obrađenim ulazima te je zato ova varijanta stabilnija i ima manje oscilacije ali zato ima veće šanse zapinjanja u lokalnim minimumima. Mi ćemo koristiti navedeni stohastički gradijentni spust pošto se u praksi pokazao veoma efikasnim a ujedno je računski puno manje zahtjevan od standardnog.
+Prethodno opisani algoritam koristi stohastički gradijentni spust što znači da se težine ažuriraju nakon svakog ulaza. To znači da nije nužno da se uvijek krećemo u smijeru negativnog gradijenta na razini cijelog skupa za učenje. Ovakva varijanta gradijentnog spusta više oscilira te je upravo zbog tog svojstva otpornija na zapinjanje u lokalnim minimumima. Standardna varijanta gradijentnog spusta ažurira težine ili nakon nekog određenog broja ulaza (engl. batch) ili nakon svake epohe. U obzir se uzima prosjek gradijenata na svim obrađenim ulazima te je zato ova varijanta stabilnija i ima manje oscilacije ali zato ima veće šanse zapinjanja u lokalnim minimumima te je puno sporija. Mi ćemo koristiti navedeni stohastički gradijentni spust pošto se u praksi pokazao veoma efikasnim a ujedno je računski puno manje zahtjevan od standardnog.
 
 \chapter{Konvolucijske neuronske mreže}
 Konvolucijske neuronske mreže možemo smatrati proširenjima standardnih neuronskih mreža koje su se pokazale učinkovitijima prilikom klasifikacija slika. Neuroni u konvolucijskim neuronskim mrežama su dvodimenzionalni i nazivamo ih mapama značajki (engl. \textit{feature maps}). Ulaz je također dvodimenzionalan a umjesto težina se koriste jezgre (engl. \textit{kernels}).

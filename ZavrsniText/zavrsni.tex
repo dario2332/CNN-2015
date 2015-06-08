@@ -32,16 +32,16 @@
 \chapter{Uvod}
 Računalni vid je područje koje uključuje metode za dohvaćanje, obrađivanje i shvaćanje slika i općenito podataka velikih dimenzija te je zanimljivo područje računalne znanosti zbog mogućnosti široke primjene u današnjem svijetu. Jedna od podgrana ovog područja je raspoznavanje objekata.
 
-Ljudi su sposobni prepoznati mnoštvo različitih objekata sa jako malo truda no za računala je to složen proces koji ima brojna ograničenja koja ljudi nemaju. Uzmimo u obzir da se slika u računalu reprezentira kao višedimenzionalni niz jačina svjetlosti. Promjene u prikazu objekta poput različite orijentacije, skaliranja, i osvijetljenja objekta su u digitalnim slikama prestavljene sa različitim podatcima. Objekt također može biti i zaklonjen. Dobar model raspoznavanja mora biti otporan na ove varijacije te je zato problem raspoznavanja objekata još uvijek neriješen i u zadnjih nekoliko desetljeća su razvijene brojne metode kojima se pokušava riješiti ovaj problem.
-Za razliku od pisanja klasičnih algoritama poput sortiranja brojeva za problem klasifikacije objekata nije očito kako bi se mogao napisati takav algoritam gdje su sve varijacije ulaza posebno obrađene u kodu. Zato se za klasifikaciju objekata koristi pristup usmjeren na podatke (engl. \textit{data-driven approach}). Programu se da veliki broj ulaza sa velikom količinom primjera za svaku klasu te se razvije algoritam učenja koji učitava date primjere te uči o vizualnom prikazu svake klase. Takve programe nazivamo klasifikatorima.
+Ljudi su sposobni prepoznati mnoštvo različitih objekata s jako malo truda no za računala je to složen proces koji ima brojna ograničenja koja ljudi nemaju. Uzmimo u obzir da se slika u računalu reprezentira kao višedimenzionalni niz jačina svjetlosti. Promjene u prikazu objekta poput različite orijentacije, skaliranja, i osvjetljenja objekta su u digitalnim slikama predstavljene s različitim podatcima. Objekt također može biti i zaklonjen. Dobar model raspoznavanja mora biti otporan na ove varijacije te je zato problem raspoznavanja objekata još uvijek neriješen i u zadnjih nekoliko desetljeća su razvijene brojne metode kojima se pokušava riješiti ovaj problem.
+Za razliku od pisanja klasičnih algoritama poput sortiranja brojeva za problem klasifikacije objekata nije očito kako bi se mogao napisati takav algoritam gdje su sve varijacije ulaza posebno obrađene u kodu. Zato se za klasifikaciju objekata koristi pristup usmjeren na podatke (engl. \textit{data-driven approach}). Programu se da veliki broj ulaza s velikom količinom primjera za svaku klasu te se razvije algoritam učenja koji učitava date primjere te uči o vizualnom prikazu svake klase. Takve programe nazivamo klasifikatorima.
 
-U zadnjih nekoliko desetljeća su razvijeni različiti klasifikatori za što točnije prepoznavanje objekata. Među tim klasifikatorima su i umjetne neuronske mreže. Ispostavilo se da se sa dubokim neuronskim mrežama trenutno dobivaju najbolji rezultati za problem klasifikacije. Najkorišteniji oblik dubokih neuronskih mreža u račnunalnom vidu su konvolucijske neuronske mreže.
+U zadnjih nekoliko desetljeća su razvijeni različiti klasifikatori za što točnije prepoznavanje objekata. Među tim klasifikatorima su i umjetne neuronske mreže. Ispostavilo se da se s dubokim neuronskim mrežama trenutno dobivaju najbolji rezultati za problem klasifikacije. Najkorišteniji oblik dubokih neuronskih mreža u računalnom vidu su konvolucijske neuronske mreže.
 
 Cilj ovog rada je razviti implementaciju konvolucijske neuronske mreže za primjenu na osobnim računalima, optimirati hiperparametre mreže te vrednovati učinak naučene mreže. Razvijena mreža će se testirati na skupu MNIST rukom pisanih znamenki.
 \chapter{Neuronske mreže}
 Područje umjetnih neuronskih mreža (engl. \textit{Artificial Neural Networks - ANN}) je prvotno bilo inspirirano sa modeliranjem biološkog živčanog sustava, a tek kasnije se počelo koristiti u sklopu strojnog učenja. 
 \section{Neuron}
-Radi razumijevanja neuronske mreže potrebno je prvo razumijeti funkcioniranje jednog neurona. Ljudski živčani sustav se sastoji od otprilike 86 bilijona neurona koji su povezani sa $10^{14}$ do $10^{15}$ sinapsi. Svaki neuron dobiva svoje ulazne signale kroz dendrite i šalje izlazni signal kroz akson. Akson je sa sinapsama spojen sa dendritima drugih neurona. Na slici ~\ref{fig:bio-neuron} možemo vidjeti izgled biloškog neurona.
+Radi razumijevanja neuronske mreže potrebno je prvo razumjeti funkcioniranje jednog neurona. Ljudski živčani sustav se sastoji od otprilike 86 bilijuna neurona koji su povezani sa $10^{14}$ do $10^{15}$ sinapsi. Svaki neuron dobiva svoje ulazne signale kroz dendrite i šalje izlazni signal kroz akson. Akson je sa sinapsama spojen s dendritima drugih neurona. Na slici ~\ref{fig:bio-neuron} možemo vidjeti izgled biološkog neurona.
 \begin{figure}
     \centering
     \includegraphics[width=12cm]{img/bio-neuron.png}
@@ -49,7 +49,7 @@ Radi razumijevanja neuronske mreže potrebno je prvo razumijeti funkcioniranje j
     \label{fig:bio-neuron}
 \end{figure}
 
-U modelu umjetnog neurona signali koji putuju aksonom (npr. \textbf{$x_{0}$}) se množe sa sinaptičkim snagama dendrita(težinama) drugih neurona (npr. \textbf{$w_{0}$}). Ideja je da se sinaptičke snage mogu mijenjati sa učenjem te određuju utjecaj jednog neurona na drugi. Svaki neuron ima aktivacijsku funkciju koja uzima sumu umnoška ulaza neurona sa pripadnim težinama i praga ($\theta$) te ih preslikava na izlaz neurona koji modelira signal na aksonu($y$). Na slici ~\ref{fig:umj-neuron} možemo vidjeti model umjetnog neurona. 
+U modelu umjetnog neurona signali koji putuju aksonom (npr. \textbf{$x_{0}$}) se množe sa sinaptičkim snagama dendrita(težinama) drugih neurona (npr. \textbf{$w_{0}$}). Ideja je da se sinaptičke snage mogu mijenjati s učenjem te određuju utjecaj jednog neurona na drugi. Svaki neuron ima aktivacijsku funkciju koja uzima sumu umnoška ulaza neurona s pripadnim težinama i praga ($\theta$) te ih preslikava na izlaz neurona koji modelira signal na aksonu($y$). Na slici ~\ref{fig:umj-neuron} možemo vidjeti model umjetnog neurona. 
 \begin{figure}
     \centering
     \includegraphics[width=12cm]{img/umj-neuron.png}
@@ -57,12 +57,12 @@ U modelu umjetnog neurona signali koji putuju aksonom (npr. \textbf{$x_{0}$}) se
     \label{fig:umj-neuron}
 \end{figure}
 
-Označimo ulaze sa $x_{1},x_{2},...,x_{n}$ te njihove pripadne težine sa $w_{1},w_{2},...,w_{n}$, i prag sa $\theta$. Onda možemo izlaz neurona zapisati kao:
+Neka su ulazi označeni sa $x_{1},x_{2},...,x_{n}$ a njihove pripadne težine sa $w_{1},w_{2},...,w_{n}$, i prag sa $\theta$. Onda se izlaz neurona može zapisati kao:
 \begin{equation}
 y = f(\displaystyle\sum_{i=1}^{n}x_iw_i + \theta)
 \end{equation}
 
-Radi pojednostavljenja se često uzima oznaka $w_0$ umjesto $\theta$ te se dodaje jedan ulaz $x_0$ koji je stalno jednak 1. Sa ovom modifikacijom izlaz neurona se može izraziti kao:
+Radi pojednostavljenja se često uzima oznaka $w_0$ umjesto $\theta$ te se dodaje jedan ulaz $x_0$ koji je stalno jednak 1. S ovom modifikacijom izlaz neurona se može izraziti kao:
 \begin{equation}
 y = f(\displaystyle\sum_{i=0}^{n}x_iw_i)
 \end{equation}
@@ -119,7 +119,7 @@ Postoje veliki izbor aktivacijskih funkcija no u praksi se koriste samo neke koj
 \label{fig:aktivacijske-funkcije}
 \end{figure}
 
-Najobičnija aktivacijska funkcija je linearna aktivacijska funkcija koja je preslikava svoj ulaz pomnožen sa nekom konstantom na izlaz. Ovakav tip aktivacijske funkcije se ne koristi u dubokim neuronskim mrežama zato što onemogućava učenje mreže. 
+Najobičnija aktivacijska funkcija je linearna aktivacijska funkcija koja je preslikava svoj ulaz pomnožen s nekom konstantom na izlaz. Ovakav tip aktivacijske funkcije se ne koristi u dubokim neuronskim mrežama zato što onemogućava učenje mreže. 
 
 Step funkcije u neuronima funkcioniraju kao prekidači. Izlaz funkcije može poprimiti samo dvije različite vrijednosti ovisno o tome da li je ulaz manji ili veći od nekog praga. Primjer jedne ovakve funkcije je:
 \begin{equation}
@@ -128,13 +128,13 @@ Step funkcije u neuronima funkcioniraju kao prekidači. Izlaz funkcije može pop
     1, & \text{$x\geq0$}
   \end{cases}
 \end{equation}
-Ovakva funkcija je korisna za binarne klasifikatore ali se ne koristi u dubokim neuronskim mrežama. Jedan od razloga je to što je za algoritam unazadne propagacije (kasnije ojašnjen) potrebna derivabilna ili po dijelovima derivabilna funkcija. Također zbog same definicije funkcije mala promjena ulaza može dovesti do potpuno suprotne aktivacije neurona čak iako su ulazi jako slični što je nepoželjno svojstvo za našu primjenu.
+Ovakva funkcija je korisna za binarne klasifikatore ali se ne koristi u dubokim neuronskim mrežama. Jedan od razloga je to što je za algoritam unazadne propagacije (kasnije objašnjen) potrebna derivabilna ili po dijelovima derivabilna funkcija. Također zbog same definicije funkcije mala promjena ulaza može dovesti do potpuno suprotne aktivacije neurona čak iako su ulazi jako slični što je nepoželjno svojstvo za našu primjenu.
 
 Sigmoidalne aktivacijske funkcije se najčešće koriste u praksi kod dubokih neuronskih mreža. Ovakve funkcije su derivabilne na cijeloj domeni i ograničene su što su dobra svojstva za algoritam unazadne propagacije i učenje mreže. Dvije najčešće korištene sigmoidalne funkcije su logistička funkcija i funkcija hiperbolnog tangensa. Primjer logističke funkcije dan je u izrazu ~\ref{eq:logistic}. 
 \begin{equation}\label{eq:logistic}
 f(x) = \frac{1}{1-e^{-kx}}
 \end{equation}
-U ovom radu se neće koristiti logistička funkcija već funkcija hiperbolnog tangensa koja se pokazala boljom u praksi \citep{lecun1998gradient}. Po uzoru na \citep{lecun1998gradient} koristiti ćemo skaliranu funkciju hiperbolnog tangensa prema izrazu ~\ref{eq:htan} čija je derivacija dana sa ~\ref{eq:htan-der}
+U ovom radu se neće koristiti logistička funkcija već funkcija hiperbolnog tangensa koja se pokazala boljom u praksi \citep{lecun1998gradient}. Po uzoru na \citep{lecun1998gradient} koristit će se skalirana funkcija hiperbolnog tangensa prema izrazu ~\ref{eq:htan} čija je derivacija dana sa ~\ref{eq:htan-der}
 \begin{equation}\label{eq:htan}
 f(x) = 1.7159\tanh\left(\frac{2}{3}x\right)
 \end{equation}
@@ -149,7 +149,7 @@ f(x) = max(0, x)
 Prema \citep{krizhevsky2012imagenet} korištenjem ove aktivacijske funkcije je postignuta čak 6 puta brža konvergencija mreže. Funkcija je po dijelovima derivabilna i nije linearna te je također vrlo jeftina za izračunat (dovoljan je jedan if uvjet u kodu).
 
 \section{Arhitektura neuronske mreže}
-Povezivanjem velikog broja neurona nastaju neuronske mreže. Neuronske mreže su modelirane kao kolekcije neurona koje su povezane acikličkim grafom. Neuroni u neuronskim mrežama su najčešće organizirani po slojevima (slika ~\ref{fig:neuronska-mreza}). Razlikujemo ulazni, izlazni i skriveni sloj. U ulaznom sloju se na ulaze neurona dovode podatci koje je potrebno klasificirati. Na primjer, za rukom pisane znamenke bi pojedini ulaz bio pisana znamenka. Izlazi neurona ulaznog sloja su spojeni sa ulazima neurona skrivenog sloja. Skrivenih slojeva može biti više pa su zato izlazi neurona skrivenih slojeva povezani sa ulazima neurona idućih skrivenih slojeva ili sa ulazima neurona izlaznog sloja. Izlaz iz neurona izlaznog sloja se interpretira kao klasa koju je mreža klasificirala. Na primjer, ako se klasificiraju rukom pisane znamenke onda postoji 10 različitih klasa i deset neurona u izlaznom sloju. Na temelju tog izlaza (najčešće u obliku brojeva od 0 do 1) se inerpretira rezultat klasifikacije neuronske mreže. Slojevi su najčešće potpuno povezani poput primjera na slici ~\ref{fig:neuronska-mreza}. To znači da su svi neuroni trenutnog sloja povezani sa svim neuronima sljedećeg sloja.
+Povezivanjem velikog broja neurona nastaju neuronske mreže. Neuronske mreže su modelirane kao kolekcije neurona koje su povezane acikličkim grafom. Neuroni u neuronskim mrežama su najčešće organizirani po slojevima (slika ~\ref{fig:neuronska-mreza}). Razlikujemo ulazni, izlazni i skriveni sloj. U ulaznom sloju se na ulaze neurona dovode podatci koje je potrebno klasificirati. Na primjer, za rukom pisane znamenke bi pojedini ulaz bio pisana znamenka. Izlazi neurona ulaznog sloja su spojeni s ulazima neurona skrivenog sloja. Skrivenih slojeva može biti više pa su zato izlazi neurona skrivenih slojeva povezani s ulazima neurona idućih skrivenih slojeva ili s ulazima neurona izlaznog sloja. Izlaz iz neurona izlaznog sloja se interpretira kao klasa koju je mreža klasificirala. Na primjer, ako se klasificiraju rukom pisane znamenke onda postoji 10 različitih klasa i deset neurona u izlaznom sloju. Na temelju tog izlaza (najčešće u obliku brojeva od 0 do 1) se inerpretira rezultat klasifikacije neuronske mreže. Slojevi su najčešće potpuno povezani poput primjera na slici ~\ref{fig:neuronska-mreza}. To znači da su svi neuroni trenutnog sloja povezani sa svim neuronima sljedećeg sloja.
 
 \begin{figure}
     \centering
@@ -158,15 +158,15 @@ Povezivanjem velikog broja neurona nastaju neuronske mreže. Neuronske mreže su
     \label{fig:neuronska-mreza}
 \end{figure}
 
-Dubokim neuronskim mrežama nazivamo mreže koje imaju dva ili više skrivenih slojeva. Ispostavilo se da su duboke neuronske mreže pogodnije za kompleksnije probleme klasifikacije i da ostvaruju dobre rezultate. Možemo reći da svaki sloj mreže obrađuje podatke na drugoj razini apstrakcije i na temelju tih podataka donosi neku odluku, odnosno daje neki izlaz. Kretanjem od ulaznog sloja prema izlaznom razina apstrakcije se povećava te se grade kompleksniji i apstraktiniji koncepti odlučivanja. Ulazni sloj obrađuje podatke na razinama piksela dok izlazni sloj radi na najapstraktnijoj razini i daje rezultat klasifikacije. Intuitivno bismo mogli reći da sa većim brojem slojeva možemo preciznije dekompozirati apstraktni problem klasifikacije na niz jednostavnih odluka koje se mogu donijeti na razinama piksela. Sa većim brojem slojeva je ta dekompozicija finija i preciznija.
+Dubokim neuronskim mrežama nazivamo mreže koje imaju dva ili više skrivenih slojeva. Ispostavilo se da su duboke neuronske mreže pogodnije za kompleksnije probleme klasifikacije i da ostvaruju dobre rezultate. Možemo reći da svaki sloj mreže obrađuje podatke na drugoj razini apstrakcije i na temelju tih podataka donosi neku odluku, odnosno daje neki izlaz. Kretanjem od ulaznog sloja prema izlaznom razina apstrakcije se povećava te se grade kompleksniji i apstraktniji koncepti odlučivanja. Ulazni sloj obrađuje podatke na razinama piksela dok izlazni sloj radi na najapstraktnijoj razini i daje rezultat klasifikacije. Intuitivno bismo mogli reći da s većim brojem slojeva možemo preciznije dekomponirati apstraktni problem klasifikacije na niz jednostavnih odluka koje se mogu donijeti na razinama piksela. S većim brojem slojeva je ta dekompozicija finija i preciznija.
 
-Ono što u stvarnosti duboke neuronske mreže rade je simulirajnje nelinearne funkcije sa velikim brojem parametara. Kada je mreža "naučena", funkcija koju ona simulira je točno ta funkcija koja za dane ulaze daje takve izlaze koji se interpretiraju kao točni rezultati klasifikacije. Intitivno je jasno da su za probleme klasifikacije često potrebne složene funkcije koje nisu jednostavne. Veći broj slojeva duboke neuronske mreže povećava tu složenost i omogućuje pronalazak takvih funkcija.
+Ono što u stvarnosti duboke neuronske mreže rade je simuliranje nelinearne funkcije s velikim brojem parametara. Kada je mreža "naučena", funkcija koju ona simulira je točno ta funkcija koja za dane ulaze daje takve izlaze koji se interpretiraju kao točni rezultati klasifikacije. Intuitivno je jasno da su za probleme klasifikacije često potrebne složene funkcije koje nisu jednostavne. Veći broj slojeva duboke neuronske mreže povećava tu složenost i omogućuje pronalazak takvih funkcija.
 
 \section{Učenje neuronskih mreža}
 Pošto neuronske mreže imaju milijune parametara (težina) koje je potrebno odrediti kako bi mreža radila dobru klasifikaciju potrebno je znati kako odrediti te parametre. Dva algoritma su ključna za rad neuronske mreže i za njezino učenje a to su: algoritam \textit{feedforward} i algoritam sa širenjem pogreške unatrag(engl. \textit{backpropagation}).
 
 \subsection{Algoritam feedforward}
-Algoritam feedforward omogućava rad neuronske mreže. Algoritam je vrlo jednostavan. Za svaki sloj se  računa njegov izlaz krećući od ulaznog. Ulaz ulaznog sloja su podatci za klasifikaciju dok je njegov izlaz ulaz sljedećeg sloja. Jedino na što treba obratiti pažnju je povezanost slojeva koja za svaki neuron određuje njegovu povezanost sa neuronima prethodnog sloja. Algoritam je opisan sa pseudokodom ~\ref{alg:feedforward}.
+Algoritam feedforward omogućava rad neuronske mreže. Algoritam je vrlo jednostavan. Za svaki sloj se  računa njegov izlaz krećući od ulaznog. Ulaz ulaznog sloja su podatci za klasifikaciju dok je njegov izlaz ulaz sljedećeg sloja. Jedino na što treba obratiti pažnju je povezanost slojeva koja za svaki neuron određuje njegovu povezanost s neuronima prethodnog sloja. Algoritam je opisan sa pseudokodom ~\ref{alg:feedforward}.
 
 \renewcommand{\algorithmicfor}{\textbf{za}}
 \renewcommand{\algorithmicend}{\textbf{kraj}}
@@ -211,7 +211,7 @@ Parcijalna derivacija pogreške po izlazu neurona $y_j$ za srednju kvadratnu pog
 
 Druga parcijalna derivacija u izrazu ~\ref{eq:error} je jednaka derivaciji aktivacijske funkcije. Derivacija aktivacijske funkcije skaliranog hiperbolnog tangensa je već dana u izrazu ~\ref{eq:htan-der}.
 
-Nakon računanja greške trenutnog sloja računa se greška prethodnog sloja koja je dana sa izrazom:
+Nakon računanja greške trenutnog sloja računa se greška prethodnog sloja koja je dana s izrazom:
 \begin{equation}\label{eq:error-prethodni}
 \dfrac{\partial E}{\partial z_i} = \dfrac{\partial E}{\partial y_i} \dfrac{\partial y_i}{\partial z_i} 
 \end{equation}
@@ -247,7 +247,7 @@ w_{ij} \leftarrow w_{ij} - \eta\dfrac{\partial E}{\partial w_{ij}} = w_{ij} - \e
 b_{j} \leftarrow b_{j} - \eta\dfrac{\partial E}{\partial b_{j}} = b_{j} - \eta \dfrac{\partial E}{\partial z_j}
 \end{equation}
 
-Stopa učenja $\eta$ je mali pozitivni broj koji nam govori koliko brzo ćemo se kretati u smijeru negativnog gradijenta. Gradijent pokazuje u smijeru rasta funkcije pa je zato kod ažuriranja težina i pragova potrebno dodati negativan predznak jer pokušavamo minimizirati funkciju.
+Stopa učenja $\eta$ je mali pozitivni broj koji nam govori koliko brzo ćemo se kretati u smjeru negativnog gradijenta. Gradijent pokazuje u smjeru rasta funkcije pa je zato kod ažuriranja težina i pragova potrebno dodati negativan predznak jer pokušavamo minimizirati funkciju.
 
 \begin{algorithm}
 \caption{Backpropagation}
@@ -269,15 +269,15 @@ Stopa učenja $\eta$ je mali pozitivni broj koji nam govori koliko brzo ćemo se
 \end{algorithmic}
 \end{algorithm}
 
-Algoritam backpropagation je opisan sa pseudokodom ~\ref{alg:backpropagation}. Uvjet zaustavljanja algoritma je najčešće unaprijed zadan broj iteracija. Jedan prolaz algoritma kroz cijeli skup za učenje nazivamo epohom. Uvjet nemora nužno biti zadan brojem epoha ili iteracija, također je moguće da se kao uvjet postavi minimalna pogreška izlaza tj, da algoritam staje kad je pogreška dovoljno mala.
+Algoritam backpropagation je opisan sa pseudokodom ~\ref{alg:backpropagation}. Uvjet zaustavljanja algoritma je najčešće unaprijed zadan broj iteracija. Jedan prolaz algoritma kroz cijeli skup za učenje nazivamo epohom. Uvjet ne mora nužno biti zadan brojem epoha ili iteracija, također je moguće da se kao uvjet postavi minimalna pogreška izlaza tj, da algoritam staje kad je pogreška dovoljno mala.
 
-Prethodno opisani algoritam koristi stohastički gradijentni spust što znači da se težine ažuriraju nakon svakog ulaza. To znači da nije nužno da se uvijek kreće u smijeru negativnog gradijenta na razini cijelog skupa za učenje. Ovakva varijanta gradijentnog spusta više oscilira te je upravo zbog tog svojstva otpornija na zapinjanje u lokalnim minimumima. Standardna varijanta gradijentnog spusta ažurira težine ili nakon nekog određenog broja ulaza (engl. batch) ili nakon svake epohe. U obzir se uzima prosjek gradijenata na svim obrađenim ulazima te je zato ova varijanta stabilnija i ima manje oscilacije ali zato ima veće šanse zapinjanja u lokalnim minimumima te je puno sporija. U ovom radu će se koristiti navedeni stohastički gradijentni spust pošto se u praksi pokazao veoma efikasnim a ujedno je računski puno manje zahtjevan od standardnog.
+Prethodno opisani algoritam koristi stohastički gradijentni spust što znači da se težine ažuriraju nakon svakog ulaza. To znači da nije nužno da se uvijek kreće u smjeru negativnog gradijenta na razini cijelog skupa za učenje. Ovakva varijanta gradijentnog spusta više oscilira te je upravo zbog tog svojstva otpornija na zapinjanje u lokalnim minimumima. Standardna varijanta gradijentnog spusta ažurira težine ili nakon nekog određenog broja ulaza (engl. batch) ili nakon svake epohe. U obzir se uzima prosjek gradijenata na svim obrađenim ulazima te je zato ova varijanta stabilnija i ima manje oscilacije ali zato ima veće šanse zapinjanja u lokalnim minimumima te je puno sporija. U ovom radu će se koristiti navedeni stohastički gradijentni spust pošto se u praksi pokazao veoma efikasnim a ujedno je računski puno manje zahtjevan od standardnog.
 
 \chapter{Konvolucijske neuronske mreže}
 Konvolucijske neuronske mreže se mogu smatrati proširenjima standardnih neuronskih mreža koje su se pokazale učinkovitijima prilikom klasifikacija slika. Neuroni u konvolucijskim neuronskim mrežama su dvodimenzionalni i nazivamo ih mapama značajki (engl. \textit{feature maps}). Ulaz je također dvodimenzionalan a umjesto težina se koriste jezgre (engl. \textit{kernels}).
 
 \section{Struktura mreže}
-Konvolucijske neuronske mreže su građene od tri različite vrste slojeva: konvolucijski slojevi, slojevi sažimanja i potpuno povezani slojevi. Na ulazu mreže se nalazi jedna monokromatska ili višekanalna slika u boji. Zatim slijede naizmjence konvolucijski slojevi i slojevi sažimanja. Mape značajki u tim slojevima u svakom sloju postaju sve manjih dimenzija krećući se od ulaznog sloja. Zadnji takav sloj je dimenzija 1 $\times$ 1. Na takav sloj se vežu potpuno povezani slojevi koji su jednodiemnzionalni te se ponašaju kao obične neuronske mreže opisane u prethodnom poglavlju. Primjer ovakve strukture vidimo na slici ~\ref{fig:konvolucijska-mreza}.
+Konvolucijske neuronske mreže su građene od tri različite vrste slojeva: konvolucijski slojevi, slojevi sažimanja i potpuno povezani slojevi. Na ulazu mreže se nalazi jedna monokromatska ili višekanalna slika u boji. Zatim slijede naizmjence konvolucijski slojevi i slojevi sažimanja. Mape značajki u tim slojevima u svakom sloju postaju sve manjih dimenzija krećući se od ulaznog sloja. Zadnji takav sloj je dimenzija 1 $\times$ 1. Na takav sloj se vežu potpuno povezani slojevi koji su jednodimenzionalni te se ponašaju kao obične neuronske mreže opisane u prethodnom poglavlju. Primjer ovakve strukture vidimo na slici ~\ref{fig:konvolucijska-mreza}.
 
 \begin{figure}
     \centering
@@ -287,14 +287,14 @@ Konvolucijske neuronske mreže su građene od tri različite vrste slojeva: konv
 \end{figure}
 
 \subsection{Konvolucijski slojevi}
-Konvolucijski slojevi uzimaju mape na ulazu sloja te rade 2D kovoluciju sa jezgrama. Sa $M^j$ su označene dimenzije mapa j-tog sloja, te sa $K^j$ dimenzije jezgri koje povezuju mape prethodnog sloja sa mapama trenutnog sloja. Radi jednostavnosti će se koristiti kvadratne mape značajki i kvadratne jezgre te kada se govori o dimenziji $M^j$ misli se na $M^j \times M^j$ (ekvivalentno i sa dimenzijama jezgri). Također je sa $S$ označen korak pomaka jezgre po širini i visini prilikom konvolucije. Veličine mapi značajki u nekom sloju dana je sa izrazom:
+Konvolucijski slojevi uzimaju mape na ulazu sloja te rade 2D konvoluciju s jezgrama. Sa $M^j$ su označene dimenzije mapa j-tog sloja, te sa $K^j$ dimenzije jezgri koje povezuju mape prethodnog sloja s mapama trenutnog sloja. Radi jednostavnosti će se koristiti kvadratne mape značajki i kvadratne jezgre te kada se govori o dimenziji $M^j$ misli se na $M^j \times M^j$ (ekvivalentno i s dimenzijama jezgri). Također je sa $S$ označen korak pomaka jezgre po širini i visini prilikom konvolucije. Veličine mapi značajki u nekom sloju dana je s izrazom:
 \begin{equation}
 M^j = \frac{M^{j-1} - K^j}{S} + 1
 \end{equation}
 
-Konvolucija se tvori prolazom kroz ulaznu mapu sa prozorom jednake veličine kao i jezgra te se množe vrijednosti ulazne mape unutar prozora sa korespodentnim vrijednostima jezgre (može se zamisliti kao da se preklopi jezgra preko dijela ulazne mape te se množe vrijednosti koje su jedna na drugoj). Sumiraju se dobiveni umnošci za sve ulazne mape značajki i dodaje se prag te se računa izlaz aktivacijske funkcije koji se zapisuje u odgovarajući neuron izlazne mape značajki. Pod pojmom neuron u ovom kontekstu se misli na jednu jedinicu mape značajki. Dakle jedna mapa značajki dimenzije $M^j$ ima $M^j \times M^j$ neurona. Nakon toga se okvir pomiče za $S$ vodoravno, ili okomito ako se nalazi na kraju reda te se cijeli proces ponavlja za sljedeći neuron.
+Konvolucija se tvori prolazom kroz ulaznu mapu s prozorom jednake veličine kao i jezgra te se množe vrijednosti ulazne mape unutar prozora sa korespondentnim vrijednostima jezgre (može se zamisliti kao da se preklopi jezgra preko dijela ulazne mape te se množe vrijednosti koje su jedna na drugoj). Sumiraju se dobiveni umnošci za sve ulazne mape značajki i dodaje se prag te se računa izlaz aktivacijske funkcije koji se zapisuje u odgovarajući neuron izlazne mape značajki. Pod pojmom neuron u ovom kontekstu se misli na jednu jedinicu mape značajki. Dakle jedna mapa značajki dimenzije $M^j$ ima $M^j \times M^j$ neurona. Nakon toga se okvir pomiče za $S$ vodoravno, ili okomito ako se nalazi na kraju reda te se cijeli proces ponavlja za sljedeći neuron.
 
-Vidljivo je da na jedan neuron izlazne mape značajki utječu samo dijelovi ulaznih mapi značajki koji su unutar okvira koji je potreban za taj neuron. To područje ulazne mape značajki "vidljivo" neuronu se naziva vizualnim ili receptivnim poljem neurona. Ako se neuron u izlaznoj mapi nalazi na kordinatama $(x, y)$ onda je njegovo vizualno polje definirano sa kvadratom dimenzija jednakih dimenzijama jezgre $K^j$, a kordinate gornjeg lijevog kuta vizualnog polja $(x', y')$ u kordinatnom sustavu ulaznih mapi značajki su definirane kao:
+Vidljivo je da na jedan neuron izlazne mape značajki utječu samo dijelovi ulaznih mapi značajki koji su unutar okvira koji je potreban za taj neuron. To područje ulazne mape značajki "vidljivo" neuronu se naziva vizualnim ili receptivnim poljem neurona. Ako se neuron u izlaznoj mapi nalazi na koordinatama $(x, y)$ onda je njegovo vizualno polje definirano s kvadratom dimenzija jednakih dimenzijama jezgre $K^j$, a koordinate gornjeg lijevog kuta vizualnog polja $(x', y')$ u koordinatnom sustavu ulaznih mapi značajki su definirane kao:
 \begin{equation}
 x' = x*S
 \end{equation}
@@ -309,17 +309,17 @@ y' = y*S
     \label{fig:konvolucija}
 \end{figure}
 
-Neka je $M^j_k$ k-ta mapa j-tog sloja te $w^j_{ik}$ jezgra koja povezuje k-tu mapu j-tog sloja sa i-tom mapom prethodnog sloja. Svaka mapa značajki ima po jedan prag $b^j_k$. Pošto su mape značajki i njihove jezgre dvodimenzionalne njihovi elementi su indeksirani sa zagradama. Tako će vrijednost mape značajki na lokaciji $(x, y)$ biti jednaka $M^j_k (x, y)$ a jezgre $w^j_{ik} (x, y)$. Uz ovaj sustav oznaka vrijednost mape k u sloju j na lokaciji $(x, y)$ možemo prikazati sa sljedećim izrazom:
+Neka je $M^j_k$ k-ta mapa j-tog sloja te $w^j_{ik}$ jezgra koja povezuje k-tu mapu j-tog sloja s i-tom mapom prethodnog sloja. Svaka mapa značajki ima po jedan prag $b^j_k$. Pošto su mape značajki i njihove jezgre dvodimenzionalne njihovi elementi su indeksirani sa zagradama. Tako će vrijednost mape značajki na lokaciji $(x, y)$ biti jednaka $M^j_k (x, y)$ a jezgre $w^j_{ik} (x, y)$. Uz ovaj sustav oznaka vrijednost mape k u sloju j na lokaciji $(x, y)$ možemo prikazati sa sljedećim izrazom:
 \begin{equation}\label{eq:neuron-conv}
 M^j_k (x, y) = f(\sum_i \sum_{x'=0}^{K-1} \sum_{y'=0}^{K-1} M^{j-1}_i (x' + x, y' + y) w^j_{ik} (x', y') + b^j_k )
 \end{equation}
 
-Funkcija u jednadžbi je aktivacijska funkcija te je podrazumijevani pomak okvira $S$ jednak 1. Razmatrati će se samo potpuno povezani slojevi gdje je svaka mapa značajki trenutnog sloja povezana sa svim mapama značajki prethodnog sloja. Vrijednosti mapa značajki prilikom unaprijedne propagacije (algoritam feedforward) se računaju prema formuli ~\ref{eq:neuron-conv}.
+Funkcija u jednadžbi je aktivacijska funkcija te je podrazumijevani pomak okvira $S$ jednak 1. Razmatrat će se samo potpuno povezani slojevi gdje je svaka mapa značajki trenutnog sloja povezana sa svim mapama značajki prethodnog sloja. Vrijednosti mapa značajki prilikom unaprijedne propagacije (algoritam feedforward) se računaju prema formuli ~\ref{eq:neuron-conv}.
 
 \subsection{Slojevi sažimanja}\label{Slojevi sažimanja}
-Slojevi sažimanja (engl. \textit{pooling}) nemaju parametre koji se mogu učiti i služe za smanjenje dimenzija mapi značajki i uklanjanje varijance što znači da će se slični izlazi dobiti za male translacije ulaza. U ovim slojevima također postoje okviri sa kojima prolazimo po ulaznoj mapi značajki. Mapa se sažima na taj način da se okvir predstavi sa jednom vrijednošću. Na primjer, okvir veličine $2 \times 2$ (najčešća veličina okvira koja će se koristiti i u ovom radu) se reprezentira sa jednom vrijednoću dobivenom iz 4 vrijednosti unutar okvira čime se mapa značajki smanjuje 4 puta. Okvir se najčešće pomiče na način da se svaka vrijednost iz mape značajki koristi u samo jednom sažimanju. Pomak okvira bi za navedeni primjer bio jednak 2 u horizontalnom i vertikalnom smijeru.
+Slojevi sažimanja (engl. \textit{pooling}) nemaju parametre koji se mogu učiti i služe za smanjenje dimenzija mapi značajki i uklanjanje varijance što znači da će se slični izlazi dobiti za male translacije ulaza. U ovim slojevima također postoje okviri s kojima prolazimo po ulaznoj mapi značajki. Mapa se sažima tako da se okvir predstavi s jednom vrijednošću. Na primjer, okvir veličine $2 \times 2$ (najčešća veličina okvira koja će se koristiti i u ovom radu) se reprezentira s jednom vrijednošću dobivenom iz 4 vrijednosti unutar okvira čime se mapa značajki smanjuje 4 puta. Okvir se najčešće pomiče tako da se svaka vrijednost iz mape značajki koristi u samo jednom sažimanju. Pomak okvira bi za navedeni primjer bio jednak 2 u horizontalnom i vertikalnom smjeru.
 \subsubsection{Sažimanje usrednjavanjem}
-Sažimanje usrednjavanjem (engl. \textit{mean pooling}) se ostvarije uzimanjem aritmetičke sredine vrijednosti unutar okvira sažimanja. Na primjer, neka je zadana mapa $M = \left[
+Sažimanje usrednjavanjem (engl. \textit{mean pooling}) se ostvaruje uzimanjem aritmetičke sredine vrijednosti unutar okvira sažimanja. Na primjer, neka je zadana mapa $M = \left[
 \begin{matrix}
 1 & 2 & 3 & 4 \\
 5 & 6 & 7 & 8 \\ 
@@ -327,7 +327,7 @@ Sažimanje usrednjavanjem (engl. \textit{mean pooling}) se ostvarije uzimanjem a
 13 & 14 & 15 & 16
 \end{matrix} \right]
 $.
-Sažimanjem usrednjavanjem sa okvirom veličine $2 \times 2$ i pomakom 2 po horizontali i vertikali dobiti će se 4 puta manja mapa značajki $M' = \left[
+Sažimanjem usrednjavanjem s okvirom veličine $2 \times 2$ i pomakom 2 po horizontali i vertikali dobiti će se 4 puta manja mapa značajki $M' = \left[
 \begin{matrix}
 3.5 & 5.5 \\
 11.5 & 13.5
@@ -355,7 +355,7 @@ Potrebno je definirati izmijenjeni algoritam backpropagation za primjenu u konvo
   \item $\dfrac{\partial E}{z^j_k (x, y)}$ - pogreška k-te mape značajki u sloju j na lokaciji $(x, y)$
 \end{itemize}
 
-Radi kompatibilnosti sa programskom implementacijom indeksiranje lokacija $(x, y)$ započinje sa 0 a ne sa 1 što znači da se gornji lijevi kut indeksira sa $(0, 0)$.
+Radi kompatibilnosti s programskom implementacijom indeksiranje lokacija $(x, y)$ započinje s 0 a ne s 1 što znači da se gornji lijevi kut indeksira sa $(0, 0)$.
 Za svaki će se sloj posebno objasniti računanje greške izlaza prethodnog sloja pod uvjetom da je poznata greška izlaza trenutnog sloja (postoji razlika u definiciji greške izlaza sloja i greške sloja).
 
 \subsubsection{Konvolucijski slojevi}
@@ -379,7 +379,7 @@ Uvrštavanjem ~\ref{eq:m=z} dobiva se sljedeći izraz:
 \dfrac{\partial E}{z^j_k (x, y)} = \dfrac{\partial E}{\partial M^j_k (x, y)} \dfrac{\partial z^j_k (x, y)}{\partial z^j_k (x, y)} = \dfrac{\partial E}{\partial M^j_k (x, y)}
 \end{equation}
 
-Potrebno je izračunati  grešku izlaza prethondog sloja tako da se sumira utjecaj neurona prethodnog sloja na sve neurone trenutnog sloja. Sumiranje se obavlja po mapama značajki trenutnog sloja i po lokacijama u tim mapama na koje utječe izlaz neurona $M^{j-1}_k (x, y)$:
+Potrebno je izračunati  grešku izlaza prethodnog sloja tako da se sumira utjecaj neurona prethodnog sloja na sve neurone trenutnog sloja. Sumiranje se obavlja po mapama značajki trenutnog sloja i po lokacijama u tim mapama na koje utječe izlaz neurona $M^{j-1}_k (x, y)$:
 \begin{equation}\label{eq:conv-sloj-err}
 \begin{split}
 \dfrac{\partial E}{\partial M^{j-1}_k (x, y)} &= \sum_i \sum_{x'=0}^{K^j-1} \sum_{y'=0}^{K^j-1} \dfrac{\partial E}{\partial z^j_{i} (x - x',y - y')} \dfrac{\partial z^j_{i} (x - x',y - y')}{\partial M^{j-1}_k (x, y)} \\
@@ -410,7 +410,7 @@ b^j_k \leftarrow b^j_k - \eta\dfrac{\partial E}{\partial b^j_k}
 \end{equation}
 
 \subsubsection{Slojevi sažimanja}
-Pošto u slojevima sažimanja ne postoje težine ni pragovi koje treba ažurirati potrebno je samo odrediti pogrešku izlaza prethodnog sloja. Neka je zadana mapa veličine $2 \times 2$ u sloju j sa poznatom pogreškom izlaza $\delta^j$:
+Pošto u slojevima sažimanja ne postoje težine ni pragovi koje treba ažurirati potrebno je samo odrediti pogrešku izlaza prethodnog sloja. Neka je zadana mapa veličine $2 \times 2$ u sloju j s poznatom pogreškom izlaza $\delta^j$:
 \begin{equation}
 \delta^j = \left[
 \begin{matrix}
@@ -441,7 +441,7 @@ Parcijalne derivacije funkcija sažimanja su definirane sa:
 \dfrac{\partial f_{med}}{\partial x_{ij}} = \frac{1}{4}
 \end{equation}
 
-Sada se pogreška izlaza prethodnog sloja može dobiti umnoškom parcijalne derivacije funkcije sažimanja sa odgovarajućom pogreškom izlaza trenutnog sloja. Rezultati tih operacija za sloj sažimanja maksimumom i sloj sažimanja aritmetičkom sredinom su:
+Sada se pogreška izlaza prethodnog sloja može dobiti umnoškom parcijalne derivacije funkcije sažimanja s odgovarajućom pogreškom izlaza trenutnog sloja. Rezultati tih operacija za sloj sažimanja maksimumom i sloj sažimanja aritmetičkom sredinom su:
 \begin{equation}
 \delta^{j-1}_{max} = \left[
 \begin{matrix}
@@ -469,7 +469,7 @@ Za sloj sažimanja maksimumom se pretpostavlja da se na mjestima različitima od
 \end{align}  
 
 \subsubsection{Aktivacijski slojevi}
-Kao i za slojeve sažimanja u aktivacijskim slojevima je isto samo potrebno odrediti pogrešku izlaza prethednog sloja. Neka je aktivacijska funkcija označena sa $f(x)$. Sada se pogreška izlaza prethodnog sloja može pisati kao umnožak greške izlaza trenutnog sloja i derivacije aktivacijske funkcije:
+Kao i za slojeve sažimanja u aktivacijskim slojevima je isto samo potrebno odrediti pogrešku izlaza prethodnog sloja. Neka je aktivacijska funkcija označena sa $f(x)$. Sada se pogreška izlaza prethodnog sloja može pisati kao umnožak greške izlaza trenutnog sloja i derivacije aktivacijske funkcije:
 \begin{equation}\label{eq:act-sloj-err}
 \dfrac{\partial E}{\partial M^{j-1}_k (x, y)} = \dfrac{\partial E}{\partial M^j_k (x, y)} \dfrac{\partial M^j_k (x, y)}{\partial M^{j-1}_k (x, y)} = \dfrac{\partial E}{\partial M^j_k (x, y)} f'(M^{j-1}_k (x, y))
 \end{equation}
@@ -487,7 +487,7 @@ Slijedi pseudokod izmijenjenog algoritma backpropagation za konvolucijske neuron
 \STATE{Izračunaj izlaz svakog sloja mreže za ulaz x}
 \STATE{Izračunaj pogrešku izlaznog sloja prema formulama ~\ref{eq:error} i ~\ref{eq:sr-kv-pogr-der}}
 \FOR{svaki sloj od izlaznog do ulaznog}
-\IF{je sloj poptuno povezan}
+\IF{je sloj potpuno povezan}
 \STATE{Izračunaj pogrešku izlaza prethodnog sloja prema formulama ~\ref{eq:error-prethodni} i ~\ref{eq:dE/yi2}}
 \ELSIF{je sloj aktivacijski}
 \STATE{Izračunaj pogrešku izlaza prethodnog sloja prema formuli ~\ref{eq:act-sloj-err}}
@@ -517,9 +517,9 @@ dimenzije jezgri u konvolucijskim slojevima i dimenzije okvira sažimanja u sloj
 
 \item \textbf{Aktivacijska funkcija} je najčešće ista za cijelu neuronsku mrežu. Aktivacijske funkcije su već obrađene u poglavlju ~\ref{Aktivacijske funkcije}. 
 
-\item \textbf{Inicijalizacija težina}. Pragovi se mogu inicijalizirati na 0 ali se težine moraju inicijalizirati oprezno kako se ne bi usporila konvergencija mreže odmah na početku. Preporučena incijalizacija u \citep{glorot2010understanding} je da se uzimaju vrijednosti iz uniformne distribucije u rasponu $(-r, r)$ gdje je $r = 4\sqrt{6/(n_{in} + n_{out})}$ za aktivacijsku funkciju hiperbolnog tangensa odnosno $r = \sqrt{6/(n_{in} + n_{out})}$ za logističku funkciju gdje $n_{in}$ i $n_{out}$ predstavljaju broj ulaznih i izlaznih neurona za određeni sloj.
+\item \textbf{Inicijalizacija težina}. Pragovi se mogu inicijalizirati na 0 ali se težine moraju inicijalizirati oprezno kako se ne bi usporila konvergencija mreže odmah na početku. Preporučena inicijalizacija u \citep{glorot2010understanding} je da se uzimaju vrijednosti iz uniformne distribucije u rasponu $(-r, r)$ gdje je $r = 4\sqrt{6/(n_{in} + n_{out})}$ za aktivacijsku funkciju hiperbolnog tangensa odnosno $r = \sqrt{6/(n_{in} + n_{out})}$ za logističku funkciju gdje $n_{in}$ i $n_{out}$ predstavljaju broj ulaznih i izlaznih neurona za određeni sloj.
 
-\item \textbf{Predobrada ulaza} se često koristi jer pospješuje i ubrzava konvergenciju mreže. Najčešći oblici predobrade ulaza su standardizacija i dodavanje okvira. Standardizacija se radi tako da se od svakog piksela oduzme srednja vrijednost cijele slike te se dobivena vrijednost podijeli sa standardnom devijacijom svih piksela u slici. Dodavanjem okvira slici se slika proširi za nekoliko piksela sa svake strane a ova predobrada se koristi kako konvolucijska mreža nebi zanemarila i rubne podatke slike (tj. da ih uzima sa jednakim značajem).
+\item \textbf{Predobrada ulaza} se često koristi jer pospješuje i ubrzava konvergenciju mreže. Najčešći oblici predobrade ulaza su standardizacija i dodavanje okvira. Standardizacija se radi tako da se od svakog piksela oduzme srednja vrijednost cijele slike te se dobivena vrijednost podijeli sa standardnom devijacijom svih piksela u slici. Dodavanjem okvira slici se slika proširi za nekoliko piksela sa svake strane a ova predobrada se koristi kako konvolucijska mreža ne bi zanemarila i rubne podatke slike (tj. da ih uzima sa jednakim značajem).
 
 \item \textbf{Slojevi sažimanja} su već obrađeni u poglavlju ~\ref{Slojevi sažimanja}.
 
@@ -528,7 +528,7 @@ dimenzije jezgri u konvolucijskim slojevima i dimenzije okvira sažimanja u sloj
 \end{itemize}
 
 \chapter{Programska izvedba}
-Za programsku izvedbu odabran je programski jezik C++. Izbor se temeljio na tome što je jezik pogodan za pisanje brzih programa (što je potrebno zbog dugotranog treniranja mreže), a također je pogodan za oblikovanje složenijih sustava i ovisnosti među elementima. 
+Za programsku izvedbu odabran je programski jezik C++. Izbor se temeljio na tome što je jezik pogodan za pisanje brzih programa (što je potrebno zbog dugotrajnog treniranja mreže), a također je pogodan za oblikovanje složenijih sustava i ovisnosti među elementima. 
 
 \section{Slojevi konvolucijske neuronske mreže}
 Programski je mreža organizirana po slojevima kao što je navedeno u poglavlju o algoritmu backpropagation (aktivacijska funkcija je u posebnom sloju). Sljedeći programski kod pokazuje apstraktni razred Layer koji modelira jedan općeniti sloj konvolucijske neuronske mreže:
@@ -577,10 +577,10 @@ Konstruktoru razreda Layer potrebno je specificirati sljedeće parametre:
 \item \textbf{numFM} - broj mapi značajki trenutnog sloja
 \end{itemize}
 
-Svaki sloj je zadužen za stvaranje svog izlaza$^*$ (\textbf{output}) kao i za stvaranje greške izlaza prethodnog sloja (\textbf{prevError}) dok za potrebe algoritma backpropagation čuva pokazivač na zadnji primljeni ulaz (\textbf{input}). Također je određeno da svaki sloj mora definirati dvije metode koje su različite za različite tipove slojeva a to su:
+Svaki sloj je zadužen za stvaranje svog izlaza (\textbf{output}) kao i za stvaranje greške izlaza prethodnog sloja (\textbf{prevError}) dok za potrebe algoritma backpropagation čuva pokazivač na zadnji primljeni ulaz (\textbf{input}). Također je određeno da svaki sloj mora definirati dvije metode koje su različite za različite tipove slojeva a to su:
 \begin{itemize}
 \item \textbf{forwardPass} - metoda koja računa izlaz (output) sloja za zadani ulaz (input)
-\item \textbf{backPropagate} - metoda koja obavlja algortiam backpropagation na tom sloju (računa grešku prethodnog sloja i ažurira težine ako one postoje)
+\item \textbf{backPropagate} - metoda koja obavlja algoritam backpropagation na tom sloju (računa grešku prethodnog sloja i ažurira težine ako one postoje)
 \end{itemize}
 
 \subsection{Konvolucijski sloj}
@@ -615,7 +615,7 @@ private:
 
 Konstruktoru predajemo sljedeće parametre:
 \begin{itemize}
-\item \textbf{mapSize} - veličina mapi značajki trunutnog sloja
+\item \textbf{mapSize} - veličina mapi značajki trenutnog sloja
 \item \textbf{prevFM} - broj mapi značajki prethodnog sloja
 \item \textbf{numFM} - broj mapi značajki trenutnog sloja
 \item \textbf{kernelSize} - veličina jezgri
@@ -623,17 +623,17 @@ Konstruktoru predajemo sljedeće parametre:
 \item \textbf{learningRate} - stopa učenja $\eta$
 \end{itemize}
 
-Konvolucijski slojevi su dodatno zaduženi za stvaranje jezgri koje povezuju trenutni sloj sa prethodnim (\textbf{kernelW}) i pragova (\textbf{bias}). Dodatne metode koje je potrebno objasniti su:
+Konvolucijski slojevi su dodatno zaduženi za stvaranje jezgri koje povezuju trenutni sloj s prethodnim (\textbf{kernelW}) i pragova (\textbf{bias}). Dodatne metode koje je potrebno objasniti su:
 \begin{itemize}
 \item \textbf{update} - metoda koja ažurira težine i pragove, a poziva se iz metode backpropagate
-\item \textbf{convolve} - metoda koja obavlja konvolucija ulaza (input) i jezgri te sprema rezultat u mapu značajki numeriranu sa \textit{numFM} na kordinatama $(w, h)$, ova metoda se poziva iz metode forwardPass
+\item \textbf{convolve} - metoda koja obavlja konvolucija ulaza (input) i jezgri te sprema rezultat u mapu značajki numeriranu sa \textit{numFM} na koordinatama $(w, h)$, ova metoda se poziva iz metode forwardPass
 \item \textbf{printKernel} - ispisuje jezgre na standardni izlaz
 \item \textbf{writeKernel} - iscrtava jezgre u .jpg formatu u zadanu lokaciju (path)
 \item \textbf{loadWeights} - učitava težine i pragove iz datoteke (file), koristi se za učitavanje naučenih parametara
 \end{itemize}
 
 \subsection{Potpuno povezani slojevi}
-Potpuno povezani slojevi se mogu promatrati kao specijalni tipovi konvolucijskih slojeva gdje su sve mape značajki i sve jezgre veličine $1 \times 1$. Sa obzirom na veličinu mreže mali postotak operacija se obavlja u potpuno povezanim slojevima (najveći postotak je u konvolucijskim slojevima) pa nije bilo potrebno posebno modelirati potpuno povezane slojeve već su oni napravljeni kao podtip konvolucijskih slojeva modelirani sa razredom FullyConnectedLayer:
+Potpuno povezani slojevi se mogu promatrati kao specijalni tipovi konvolucijskih slojeva gdje su sve mape značajki i sve jezgre veličine $1 \times 1$. S obzirom na veličinu mreže mali postotak operacija se obavlja u potpuno povezanim slojevima (najveći postotak je u konvolucijskim slojevima) pa nije bilo potrebno posebno modelirati potpuno povezane slojeve već su oni napravljeni kao podtip konvolucijskih slojeva modelirani s razredom FullyConnectedLayer:
 \begin{lstlisting}[caption=Razred FullyConnectedLayer,
   label=FullLayer]
 class FullyConnectedLayer : public ConvolutionLayer
@@ -647,7 +647,7 @@ public:
 Parametri u konstruktoru su istih naziva i značenja kao i kod konvolucijskih slojeva.
 
 \subsection{Aktivacijski slojevi}
-Aktivacijski slojevi su modelirani sa razredom ActivationLayer:
+Aktivacijski slojevi su modelirani s razredom ActivationLayer:
 \begin{lstlisting}[caption=Razred ActivationLayer,
   label=ActivationLayer]
 class ActivationLayer : public Layer
@@ -663,7 +663,7 @@ protected:
 };
 \end{lstlisting}
 
-Konstruktor razreda prima dva parametra: broj mapi značajki (numFM) i veličinu mapi značajki (mapSize). Pošto su aktivacijske funkcije samo izdvojene u poseban sloj broj prethodnih mapi značajki i veličine prethodnih mapi značajki su jednake trenutnima. ActivationLayer je i dalje apstraktni razred jer ima dvije čiste virtualne funkcije koje zahtjevaju implementaciju od razreda koji ga nasljeđuju:
+Konstruktor razreda prima dva parametra: broj mapi značajki (numFM) i veličinu mapi značajki (mapSize). Pošto su aktivacijske funkcije samo izdvojene u poseban sloj broj prethodnih mapi značajki i veličine prethodnih mapi značajki su jednake trenutnima. ActivationLayer je i dalje apstraktni razred jer ima dvije čiste virtualne funkcije koje zahtijevaju implementaciju od razreda koji ga nasljeđuju:
 \begin{itemize}
 \item \textbf{activationFunction} - aktivacijska funkcija u točki x
 \item \textbf{activationFunctionDerivative} - derivacija aktivacijske funkcije u točki x
@@ -672,7 +672,7 @@ Na ovaj način je lako dodavati različite aktivacijske funkcije. Potrebno je sa
 
 
 \subsection{Slojevi sažimanja}
-Slojevi sažimanja su modelirani sa razredom PoolLayer:
+Slojevi sažimanja su modelirani s razredom PoolLayer:
 \begin{lstlisting}[caption=Razred PoolLayer,
   label=PoolLayer]
 class PoolLayer : public Layer
@@ -689,13 +689,13 @@ Konstruktor razreda prima sljedeće parametre:
 \begin{itemize}
 \item \textbf{frameSize} - veličina okvira sažimanja
 \item \textbf{numFm} - broj mapi značajki
-\item \textbf{prevMapSize} - veličina mapi značakji prethodnog sloja (veličina mapi značajki trenutnog sloja se računa kao prevMapSize/frameSize)
+\item \textbf{prevMapSize} - veličina mapi značajki prethodnog sloja (veličina mapi značajki trenutnog sloja se računa kao prevMapSize/frameSize)
 \end{itemize}
 
 Razred je i dalje apstraktan a od razreda koji ga nasljeđuju se očekuje da implementiraju funkcije forwardPass i backPropagate.
 
 \section{Konvolucijska neuronska mreža}
-Cijela konvolucijska neuronska mreže enkapsulirana je sa razredom ConvolutionNeuralNetwork:
+Cijela konvolucijska neuronska mreže enkapsulirana je s razredom ConvolutionNeuralNetwork:
 \begin{lstlisting}[caption=Razred ConvolutionNeuralNetwork,
   label=CNN]
 class ConvolutionNeuralNetwork
@@ -730,9 +730,9 @@ Metode razreda su:
 \item \textbf{feedForward} - za određeni ulaz (input) računa izlaze svih slojeva
 \item \textbf{backPropagate} - propagira grešku unazad po svim slojevima
 \item \textbf{train} - trenira mrežu određeni broj epoha (epoch), ulaze dohvaća pomoću inputManagera a pogrešku izlaza računa pomoću costFunctiona
-\item \textbf{registerSupervisor} - ova metoda omogućuje da se registriraju promatrači (izvedeni iz razreda TrainingSupervisor) prema oblikovnom obrascu promatrač koji nakon svake epohe obavljaju različite analize i na taj način omogućuju nadziranje procesa učenja mreže
-\item \textbf{notifySupervisors} - obaviještava sve promatrače da je kraj određene epohe (epoch)
-\item \textbf{getCost} - računa pogrešku za zadani očekivani izlaz, očekuje se da se prije poziva ove metode pozove metoda feedForward sa odgovarajućim ulazom
+\item \textbf{registerSupervisor} - ova metoda omogućuje da se registriraju promatrači (izvedeni iz razreda TrainingSupervisor) prema oblikovnom obrascu promatrač koji nakon svake epohe obavljaju različite analize i tako omogućuju nadziranje procesa učenja mreže
+\item \textbf{notifySupervisors} - obavještava sve promatrače da je kraj određene epohe (epoch)
+\item \textbf{getCost} - računa pogrešku za zadani očekivani izlaz, očekuje se da se prije poziva ove metode pozove metoda feedForward s odgovarajućim ulazom
 \end{itemize}
 
 \section{Pomoćni razredi}
@@ -741,7 +741,7 @@ Postoje četiri osnovna pomoćna razreda iz kojih se izvode ostali:
 \item \textbf{Initializer} određuje način na koji inicijalizira težine u konvolucijskim slojevima. Predaje se konstruktoru konvolucijskog sloja. Razredi koji nasljeđuju Initializer moraju implementirati jednu metodu \textbf{init} koja kao parametre prima težine (weights) te broj ulaznih (n\_in) i broj izlaznih (n\_out) neurona.
 \item \textbf{CostFunction} modelira funkciju pogreške izlaza neuronske mreže. Ovaj razred je zadužen za stvaranje i pohranjivanje greške izlaza neurona izlaznog sloja (prevError) kao i greške klasifikacije (error). Razredi koji nasljeđuju ovaj razred moraju implementirati metodu \textbf{calculate} koja kao parametre prima izlaz mreže (output) i očekivani izlaz (expectedOutput) te računa pogrešku izlaza izlaznog sloja i pogrešku klasifikacije.
 \item \textbf{InputManager} je zadužen za upravljanjem ulaznim podatcima za mrežu. Razredi koji ga nasljeđuju trebaju implementirati tri metode a to su \textbf{getInput} koja dohvaća ulaz na zadanom indeksu (i), \textbf{getExpectedOutput} koja dohvaća očekivani izlaz za ulaz označen sa zadanim indeksom (i), i funkcija \textbf{reset} koja se poziva na kraju svake epohe. U metodi reset se obično očekuje nasumično miješanje podataka radi veće generalizacije tijekom učenja.
-\item \textbf{TrainingSupervisor} je osnovni razred zadužen za razrede koji nam pomažu u praćenju procesa učenja mreže. Razredi koji nasljeđuju ovaj razred trebaji implementirati metodu \textbf{monitor} koja se poziva na kraju svake epohe. Primjeri konkretnih razreda koji nasljeđuju TrainingSupervisor su razredi \textbf{WeightRecorder} (sprema trenutne težine i pragove na disk), \textbf{Validator} (provjerava točnost klasifikacije na proizvoljnom skupu), \textbf{ActivationVariance} (računa varijancu aktivacija i sprema ju u datoteku na disku), \textbf{GradientVariance} (računa varijancu gradijenata i sprema ju u datoteku na disku).
+\item \textbf{TrainingSupervisor} je osnovni razred zadužen za razrede koji nam pomažu u praćenju procesa učenja mreže. Razredi koji nasljeđuju ovaj razred trebaju implementirati metodu \textbf{monitor} koja se poziva na kraju svake epohe. Primjeri konkretnih razreda koji nasljeđuju TrainingSupervisor su razredi \textbf{WeightRecorder} (sprema trenutne težine i pragove na disk), \textbf{Validator} (provjerava točnost klasifikacije na proizvoljnom skupu), \textbf{ActivationVariance} (računa varijancu aktivacija i sprema ju u datoteku na disku), \textbf{GradientVariance} (računa varijancu gradijenata i sprema ju u datoteku na disku).
 \end{itemize}
 
 \begin{lstlisting}[caption=Pomoćni razredi,
@@ -809,7 +809,7 @@ prepoznavanja rukom pisanih brojki kod bankovnih čekova. Slike su monokromatske
     \label{fig:MNIST}
 \end{figure}
 
-Radi mogućnosti praćenja učenja te praćenja generalizacije mreže tijekom učenja potreban nam je jedan skup koji nije u skupu za učenje. Ispitni skup nemožemo uzeti u obzir zato što on služi za konačno ispitivanje kvalitete mreže i nesmije se koristiti tijekom učenja, čak ni za praćenje pogreške jer može utjecati na konačne rezultate, tj. moglo bi se dogoditi da podešavamo hiperparametre mreže na taj način da pogodoju baš tom skupu a da mreža ne generalizira općenito. Zato ćemo podijeliti originalni skup za treniranje u dva skupa, jedan za treniranje a drugi za validaciju. Skup za validaciju se neće koristiti za učenje ali će biti od koristi prilikom praćenja učenja i generalizacije mreže. Dakle prema našoj podjeli skup MNIST je podijeljen u:
+Radi mogućnosti praćenja učenja te praćenja generalizacije mreže tijekom učenja potreban je jedan skup koji nije u skupu za učenje. Ispitni skup se ne može uzeti u obzir zato što on služi za konačno ispitivanje kvalitete mreže i ne smije se koristiti tijekom učenja, čak ni za praćenje pogreške jer može utjecati na konačne rezultate, tj. moglo bi se dogoditi da se podešavaju hiperparametre mreže tako da pogoduju baš tom skupu a da mreža ne generalizira općenito. Zato će se originalni skup za treniranje podijeliti u dva skupa, jedan za treniranje a drugi za validaciju. Skup za validaciju se neće koristiti za učenje ali će biti od koristi prilikom praćenja učenja i generalizacije mreže. Dakle prema novoj podjeli skup MNIST je podijeljen u:
 \begin{itemize}
 \item \textbf{skup za treniranje} - sadrži prvih 50 000 znakova originalnog skupa za treniranje
 \item \textbf{skup za validaciju} - sadrži zadnjih 10 000 znakova originalnog skupa za treniranje
@@ -818,10 +818,10 @@ Radi mogućnosti praćenja učenja te praćenja generalizacije mreže tijekom u�
 
 \subsection{Predobrada ulaza}
 Za uspješno učenje mreže, važno je da je aritmetička sredina skupa približno nula (da
-bi učenje težina moglo krenuti u zahtjevanom smjeru) te da varijanca bude
+bi učenje težina moglo krenuti u zahtijevanom smjeru) te da varijanca bude
 približno jednaka jedan (da bi se zadržao opseg u sredini aktivacijske funkcije).
 Za izvorni skup ne vrijedi ovo svojstvo. Stoga je svaki uzorak obrađen oduzimanjem 
-aritmetičke sredine (samog uzorka) i normaliziranjem njegove varijance. Ujedno je i svakom uzorku dodan rub širine 2 te je time veličina ulaza proširena na dimenzije $32 \times 32$. Ova predobrada se mora raditi i na ulazima iz skupa za testiranje.
+aritmetičke sredine (samog uzorka) i normaliziranjem njegove varijance. Ujedno je i svakom uzorku dodan rub širine 2 te je time veličina ulaza proširena na dimenzije $32 \times 32$. Ova predobrada se mora raditi i na uzorcima iz skupa za testiranje.
 
 \subsection{Minimalni skup za testiranje}
 Prije nego što se započelo treniranje mreže na cijelom skupu za treniranje određen je minimalni skup za testiranje konvergencije mreže i ispravnosti implementacije. Taj skup se sastojao od svega 20 ulaza izdvojenih iz skupa MNIST te je sadržavao samo dvije klase (brojeve nule i jedinice). Mreža je prvo pokrenuta na ovom minimalnom skupu i kad je dobivena 100\%-tna točnost klasifikacije onda se tek počela trenirati na punom skupu.
@@ -840,12 +840,12 @@ Odabrana je arhitektura slična arhitekturi \textit{LeNet} \citep{lecun1995convo
 \item \textbf{Treći aktivacijski sloj} - 100 mapi veličine $28 \times 28$
 \item \textbf{Prvi skriveni sloj} - 80 neurona
 \item \textbf{Četvrti aktivacijski sloj} - 80 neurona
-\item \textbf{Izlazni sloj} - drugi skriveni sloj sa 10 neurona
+\item \textbf{Izlazni sloj} - drugi skriveni sloj s 10 neurona
 \end{itemize}
 
-Svi slojevi sažimanja imaju okvire veličine $2 \times 2$. Svi slojevi su potpuno povezani te se koristio stohastički gradijentni spust. Kao funkcija pogreške se koristila srednja kvadratna pogreška sa time da se izlaz interpretirao kao vektor od 10 brojeva. Recimo očekivani izlaz za znamenku 7 bi bio ${0,0,0,0,0,0,0,1,0,0}$.
+Svi slojevi sažimanja imaju okvire veličine $2 \times 2$. Svi slojevi su potpuno povezani te se koristio stohastički gradijentni spust. Kao funkcija pogreške se koristila srednja kvadratna pogreška s time da se izlaz interpretirao kao vektor od 10 brojeva. Recimo očekivani izlaz za znamenku 7 bi bio $\{0,0,0,0,0,0,0,1,0,0\}$.
 
-Mreža je trenirana sa 41 prolaz kroZ skup za učenje sa stalnom stopom učenja $\eta=0.001$. Tijekom cijelog učenja se nakon svake epohe pratila prosječna pogreška te točnost klasifikacije na skupu za treniranje i validacijskom skupu. Na slici ~\ref{fig:graf-greska} možemo vidjeti promjenu prosiječne pogreške tijekom učenja a na slici ~\ref{fig:graf-tocnost} možemo vidjeti promjenu točnosti na skupu za treniranje i validacijskom skupu. Vidimo da su na oba grafa linije za validacijski skup i skup za treniranje jako blizu jedna drugoj. To opažanje nam govori da istrenirana mreža jako dobro generalizira te da nije došlo do prevelikog prilagođavanja skupu za učenje (engl. \textit{overfitting}).
+Mreža je trenirana sa 41 prolazom kroz skup za učenje sa stalnom stopom učenja $\eta=0.001$. Tijekom cijelog učenja se nakon svake epohe pratila prosječna pogreška te točnost klasifikacije na skupu za treniranje i validacijskom skupu. Na slici ~\ref{fig:graf-greska} se može vidjeti promjena prosječne pogreške tijekom učenja a na slici ~\ref{fig:graf-tocnost} promjena točnosti na skupu za treniranje i validacijskom skupu. Vidimo da su na oba grafa linije za validacijski skup i skup za treniranje jako blizu jedna drugoj. To znači da naučena mreža jako dobro generalizira te da nije došlo do prevelikog prilagođavanja skupu za učenje (engl. \textit{overfitting}).
 
 \begin{figure}[h]
     \centering
@@ -860,13 +860,6 @@ Mreža je trenirana sa 41 prolaz kroZ skup za učenje sa stalnom stopom učenja 
     \caption{Promijena točnosti klasifikacije na validacijskom skupu i skupu za treniranje tijekom učenja}
     \label{fig:graf-tocnost}
 \end{figure}
-
-
-
-
-
-
-
 
 Ovako istrenirana mreža ima točnost (broj ispravno klasificiranih uzoraka) na ispitnom skupu od 95.21\%. Detaljni rezultati su dani matricom zabune u tablici ~\ref{tbl:matrica-zabune}.
  
@@ -899,16 +892,16 @@ Iz tablice možemo očitati najčešće greške, a to su:
 \item Broj 9 klasificiran kao broj 8 (20 krivih klasifikacija)
 \end{itemize}
 
-Vidimo da mreža ima najviše problema sa klasifikacijom broja 9 zato što ga često klasificira kada su na ulazu drugi brojevi, a također ga često krivo klasificira (miješa ga sa 4, 7, i 8).
+Vidljivo je da mreža ima najviše problema s klasifikacijom broja 9 zato što ga često klasificira kada su na ulazu drugi brojevi, a također ga često krivo klasificira (miješa ga sa 4, 7, i 8).
 
 \chapter{Zaključak}
-Kroz ovaj rad je prikazan način rada dubokih neuronskih mreža sa naglaskom na konvolucijske neuronske mreže. Proučene su specifičnosti konvolucijskih neuronskih mreža i razrađeni su detalji algoritma backpropagation. Također je razvijena implementacija konvolucijske neuronske mreže u programskom jeziku C++-u. Mreža je razvijena bez korištenja vanjskih biblioteka za konvolucijske neuronske mreže. 
+Kroz ovaj rad je prikazan način rada dubokih neuronskih mreža s naglaskom na konvolucijske neuronske mreže. Proučene su specifičnosti konvolucijskih neuronskih mreža i razrađeni su detalji algoritma backpropagation. Također je razvijena implementacija konvolucijske neuronske mreže u programskom jeziku C++-u. Mreža je razvijena bez korištenja vanjskih biblioteka za konvolucijske neuronske mreže. 
 
-Mreža je najprije zasebno testirana na minimalnom primjeru pomoću kojeg je provjereno ispravno funkcioniranje slojeva mreže, algoritma backpropagation i općenito svih ostalih dijelova implementacije. Nakon toga je mreža trenirana za klasifikaciju rukom pisanih znamenki iz skupa MNIST. Cijeli proces učenja mreže je pomno praćen i analiziran. Iz analize učenja mreže je zaključeno da je generalizacija mreže vrhunska jer je razlika između klasifikacije na skupu za učenje i validacijskom skupu minimalna kroz cijeli proces učenja. Sa takvom mrežom je postignut rezultat od 95.21\% ispravno klasificiranih uzoraka na skupu za ispitivanje. Ako uzmemo u obzir da su se sa konvolucijskim neuronskim mrežama postizale točnosti i preko 98\% za skup MNIST, ovaj rezultat, iako izvrstan, je malo ispod očekivanja za konvolucijsku neuronsku mrežu. Moguće objašnjenje ovog rezultata je to što nismo koristili cijeli skup za učenje tijekom treniranja mreže.
+Mreža je najprije zasebno testirana na minimalnom primjeru pomoću kojeg je provjereno ispravno funkcioniranje slojeva mreže, algoritma backpropagation i općenito svih ostalih dijelova implementacije. Nakon toga je mreža trenirana za klasifikaciju rukom pisanih znamenki iz skupa MNIST. Cijeli proces učenja mreže je pomno praćen i analiziran. Iz analize učenja mreže je zaključeno da je generalizacija mreže vrhunska jer je razlika između klasifikacije na skupu za učenje i validacijskom skupu minimalna kroz cijeli proces učenja. S takvom mrežom je postignut rezultat od 95.21\% ispravno klasificiranih uzoraka na skupu za ispitivanje. Ako uzmemo u obzir da su se s konvolucijskim neuronskim mrežama postizale točnosti i preko 98\% za skup MNIST, ovaj rezultat, iako izvrstan, je malo ispod očekivanja za konvolucijsku neuronsku mrežu. Moguće objašnjenje ovog rezultata je to što nismo koristili cijeli skup za učenje tijekom treniranja mreže.
 
-Pošto je ovaj rad izgrađen za primjenu na osobnim računalima opće namjene cijeli program se izvodio na jednoj jezgri CPU-a. Brzina programa je iznenađujuće dobra sa čak i preko 50 klasifikacija u sekundi što je i više nego zadovoljavajuće za primjenu na računalima opće namjene.
+Pošto je ovaj rad izrađen za primjenu na osobnim računalima opće namjene cijeli program se izvodio na jednoj jezgri CPU-a. Brzina programa je iznenađujuće dobra s čak i preko 50 klasifikacija u sekundi što je i više nego zadovoljavajuće za primjenu na računalima opće namjene.
 
-Pošto u ovom radu nije bilo puno vremena za optimizaciju svih hiperparametara u daljnjem radu se preporuča testiranje mreže sa drugačijom arhitekturom, aktivacijskim funkcijama i funkcijama pogreške. Također se preporuča razvijanje dodatnih metoda koje pospješuju učenje i generalizaciju mreže.
+Pošto u ovom radu nije bilo puno vremena za optimizaciju svih hiperparametara u daljnjem radu se preporučuje testiranje mreže s drugačijom arhitekturom, aktivacijskim funkcijama i funkcijama pogreške. Također se preporučuje razvijanje dodatnih metoda koje pospješuju učenje i konvergenciju mreže.
 
 \bibliography{literatura}
 \bibliographystyle{fer}

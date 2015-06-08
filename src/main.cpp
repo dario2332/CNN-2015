@@ -242,7 +242,7 @@ void trainMnist()
     MnistTrainInputManager minstInput;
     MnistValidateInputManager validateMnist;
     SquareCost sc(10);
-    const float learningRate = 0.001;
+    const float learningRate = 0.004;
 
     //TestInitializer init;
     TanhInitializer init;
@@ -307,15 +307,73 @@ void trainMnist()
     //    cnn.forwardPass(minstInput.getInput(0));
     //}
     //trainVal.monitor(0);
-    //valVal.monitor(0);
-    conv1.loadWeights("MNIST/Weights_E10_CL1");
-    conv2.loadWeights("MNIST/Weights_E10_CL2");
-    conv3.loadWeights("MNIST/Weights_E10_CL3");
-    full1.loadWeights("MNIST/Weights_E10_CL4");
-    full2.loadWeights("MNIST/Weights_E10_CL5");
+    conv1.loadWeights("MNIST/Weights_E2_CL1");
+    conv2.loadWeights("MNIST/Weights_E2_CL2");
+    conv3.loadWeights("MNIST/Weights_E2_CL3");
+    full1.loadWeights("MNIST/Weights_E2_CL4");
+    full2.loadWeights("MNIST/Weights_E2_CL5");
+    valVal.monitor(0);
 
     cnn.train(10);
 }
+
+void testMnist()
+{
+    std::vector<Layer*> layers;
+    std::vector<ConvolutionLayer*> convLayers;
+    MnistTrainInputManager minstInput;
+    MnistValidateInputManager validateMnist;
+    MnistTestInputManager testMnist;
+    SquareCost sc(10);
+    const float learningRate = 0.001;
+
+    //TestInitializer init;
+    TanhInitializer init;
+    
+    ConvolutionLayer conv1(28, 1, 6, 5, init, learningRate);
+    TanhLayer tanh1(6, 28);
+    MaxPoolLayer pool1(2, 6, 28);
+    ConvolutionLayer conv2(10, 6, 16, 5, init, learningRate);
+    TanhLayer tanh2(16, 10);
+    MaxPoolLayer pool2(2, 16, 10);
+    ConvolutionLayer conv3(1, 16, 100, 5, init, learningRate);
+    TanhLayer tanh3(100, 1);
+    FullyConnectedLayer full1(100, 80, init, learningRate);
+    TanhLayer tanhFC1(80);
+    FullyConnectedLayer full2(80, 10, init, learningRate);
+    
+    layers.push_back(&conv1);
+    layers.push_back(&tanh1);
+    layers.push_back(&pool1);
+    layers.push_back(&conv2);
+    layers.push_back(&tanh2);
+    layers.push_back(&pool2);
+    layers.push_back(&conv3);
+    layers.push_back(&tanh3);
+    layers.push_back(&full1);
+    layers.push_back(&tanhFC1);
+    layers.push_back(&full2);
+
+    ConvolutionNeuralNetwork cnn(layers, sc, minstInput);
+    
+    convLayers.push_back(&conv1);
+    convLayers.push_back(&conv2);
+    convLayers.push_back(&conv3);
+    convLayers.push_back(&full1);
+    convLayers.push_back(&full2);
+
+    Validator test(cnn, testMnist, "MNIST/test", 10);
+
+
+    conv1.loadWeights("MNIST/Weights_E0_CL1");
+    conv2.loadWeights("MNIST/Weights_E0_CL2");
+    conv3.loadWeights("MNIST/Weights_E0_CL3");
+    full1.loadWeights("MNIST/Weights_E0_CL4");
+    full2.loadWeights("MNIST/Weights_E0_CL5");
+    test.monitor(0);
+
+}
+
 
 int main(int argc, char *argv[])
 {
@@ -327,6 +385,7 @@ int main(int argc, char *argv[])
     //testActivationLayerTime(1000000);
     //testSquareCost();
     //testCNN();
-    trainMnist();
+    //trainMnist();
+    testMnist();
     return 0;
 }

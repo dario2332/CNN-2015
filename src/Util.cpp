@@ -252,6 +252,47 @@ MnistValidateInputManager::MnistValidateInputManager(std::string path) : MnistIn
     preprocess();
 }
 
+MnistTestInputManager::MnistTestInputManager(std::string path) : MnistInputManager(10000) 
+{
+    std::ifstream inImages, inLabels;
+    inImages.open(path + "/t10k-images.idx3-ubyte", std::fstream::binary | std::fstream::in);
+    inLabels.open(path + "/t10k-labels.idx1-ubyte", std::fstream::binary | std::fstream::in);
+
+    assert(inLabels.is_open());
+    assert(inImages.is_open());
+
+    inImages.ignore(4*sizeof(int));
+    inLabels.ignore(2*sizeof(int));
+    
+    for (int i = 0; i < numOfInputs; ++i)
+    {
+        int label = 0;
+        inLabels.read((char*)&label, sizeof(char));
+        //static int a = 0;
+        //cv::Mat image(32, 32, CV_8UC1);
+        for (int j = 0; j < 32; ++j)
+        {
+            for (int k = 0; k < 32; ++k)
+            {
+                int x = 0;
+                if (j > 1 && j < 30 && k > 1 && k < 30)
+                {
+                    inImages.read((char*)&x, sizeof(char));
+
+                }
+                //image.at<unsigned char>(j, k) = x;
+                inputs.at(i).at(0).at(j*32+k) = x;
+            }
+        }
+        expectedOutputs.at(i).at(label) = 1;
+        //if (a < 10) cv::imwrite(path + "/image" + std::to_string(a++) + ".jpg", image);
+        //else exit(1);
+    }
+    inImages.close();
+    inLabels.close();
+    preprocess();
+}
+
 void WeightRecorder::monitor(int epoch)
 {
     std::string file = path + "/Weights_E" + std::to_string(epoch);
@@ -301,6 +342,7 @@ void Validator::monitor(int epoch)
 {
     float error = 0;
     int correct = 0;
+    std::vector<std::vector<int> > confusionMatrix(10, std::vector<int>(10, 0));
     
     for (int i = 0, n = im.getInputNum(); i < n; ++i)
     {
@@ -322,13 +364,31 @@ void Validator::monitor(int epoch)
         { 
             correct ++;
         }
+        int expected = 0;
+        for (int j = 0; j < im.getExpectedOutput(i).size(); ++j)
+        {
+            if (im.getExpectedOutput(i).at(j) != 0) {expected = j; break;}
+        }
+        confusionMatrix.at(expected).at(result)++;
+
     }
     error /= im.getInputNum();
     std::ofstream os(path + "cost", std::ofstream::app); 
+    std::ofstream cm(path + "confusionmatrix");
 
+    for (int i = 0; i < confusionMatrix.size(); ++i)
+    {
+        for (int j = 0; j < confusionMatrix.at(0).size(); ++j)
+        {
+            cm << confusionMatrix.at(i).at(j) << " ";
+        }
+        cm << std::endl;
+    }
     os << epoch << " " << error << " " << correct << "/" << im.getInputNum() << std::endl;
     std::cout << epoch << " " << error << " " << correct << "/" << im.getInputNum() << std::endl;
     os.close();
+    cm.close();
+
 }
 
 

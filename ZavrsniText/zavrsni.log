@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.5.25)  6 JUN 2015 19:09
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2015.5.25)  8 JUN 2015 07:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -766,6 +766,16 @@ File: tikzlibrarytopaths.code.tex 2008/06/17 v2.10 (rcs-revision 1.2)
 Package: subcaption 2013/02/03 v1.1-62 Sub-captions (AR)
 \c@subfigure=\count145
 \c@subtable=\count146
+) (/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
+Package: array 2008/09/09 v2.4c Tabular extension package (FMi)
+\col@sep=\dimen192
+\extrarowheight=\dimen193
+\NC@list=\toks38
+\extratabsurround=\skip51
+\backup@length=\skip52
+)
+(/usr/share/texlive/texmf-dist/tex/latex/multirow/multirow.sty
+\bigstrutjot=\dimen194
 ) (./zavrsni.aux
 
 LaTeX Warning: Label `alg:backpropagation' multiply defined.
@@ -773,19 +783,19 @@ LaTeX Warning: Label `alg:backpropagation' multiply defined.
 )
 \openout1 = `zavrsni.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 10.
-LaTeX Font Info:    ... okay on input line 10.
-LaTeX Font Info:    Try loading font information for T1+ptm on input line 10.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
+LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    Try loading font information for T1+ptm on input line 11.
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 )
@@ -826,16 +836,16 @@ File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count147
-\scratchdimen=\dimen192
+\scratchdimen=\dimen195
 \scratchbox=\box42
 \nofMPsegments=\count148
 \nofMParguments=\count149
-\everyMPshowfont=\toks38
+\everyMPshowfont=\toks39
 \MPscratchCnt=\count150
-\MPscratchDim=\dimen193
+\MPscratchDim=\dimen196
 \MPnumerator=\count151
 \makeMPintoPDFobject=\count152
-\everyMPtoPDFconversion=\toks39
+\everyMPtoPDFconversion=\toks40
 ) (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
 )
@@ -887,32 +897,32 @@ Package caption Info: End \AtBeginDocument code.
 \c@lstlisting=\count153
 
 ABD: EveryShipout initializing macros
-LaTeX Font Info:    Try loading font information for T1+phv on input line 21.
+LaTeX Font Info:    Try loading font information for T1+phv on input line 22.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2001/06/04 scalable font definitions for T1/phv.
 )
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 21.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 22.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <14.4> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 21.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 22.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <24.88> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 21.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 22.
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <24.88> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 21.
-LaTeX Font Info:    Try loading font information for U+msa on input line 21.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 22.
+LaTeX Font Info:    Try loading font information for U+msa on input line 22.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 21.
+LaTeX Font Info:    Try loading font information for U+msb on input line 22.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-LaTeX Font Info:    Try loading font information for T1+pcr on input line 24.
+LaTeX Font Info:    Try loading font information for T1+pcr on input line 25.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
@@ -933,20 +943,20 @@ Poglavlje 1.
 ]
 Poglavlje 2.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <17.28> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 42.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 43.
 <img/bio-neuron.png, id=31, 707.64375pt x 335.2525pt>
 File: img/bio-neuron.png Graphic file (type png)
  <use img/bio-neuron.png>
-Package pdftex.def Info: img/bio-neuron.png used on input line 46.
+Package pdftex.def Info: img/bio-neuron.png used on input line 47.
 (pdftex.def)             Requested size: 341.43306pt x 161.75832pt.
 LaTeX Font Info:    Font shape `T1/ptm/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/ptm/b/n' tried instead on input line 47.
+(Font)              Font shape `T1/ptm/b/n' tried instead on input line 48.
 
 <img/umj-neuron.png, id=32, 695.59875pt x 340.27126pt>
 File: img/umj-neuron.png Graphic file (type png)
 
 <use img/umj-neuron.png>
-Package pdftex.def Info: img/umj-neuron.png used on input line 54.
+Package pdftex.def Info: img/umj-neuron.png used on input line 55.
 (pdftex.def)             Requested size: 341.43306pt x 167.01993pt.
  [2
 
@@ -954,46 +964,71 @@ Package pdftex.def Info: img/umj-neuron.png used on input line 54.
 [4]
 
 Package natbib Warning: Citation `lecun1998gradient' on page 5 undefined on inp
-ut line 136.
+ut line 137.
 
 
 Package natbib Warning: Citation `lecun1998gradient' on page 5 undefined on inp
-ut line 136.
+ut line 137.
 
 
 Package natbib Warning: Citation `krizhevsky2012imagenet' on page 5 undefined o
-n input line 148.
+n input line 149.
 
 [5] <img/slojevi-neuronska-mreza.png, id=53, 345.29pt x 327.2225pt>
 File: img/slojevi-neuronska-mreza.png Graphic file (type png)
 
 <use img/slojevi-neuronska-mreza.png>
-Package pdftex.def Info: img/slojevi-neuronska-mreza.png used on input line 155
+Package pdftex.def Info: img/slojevi-neuronska-mreza.png used on input line 156
 .
 (pdftex.def)             Requested size: 227.62204pt x 215.71286pt.
  [6 <./img/slojevi-neuronska-mreza.png>]
 [7] [8] [9] [10]
 Poglavlje 3.
+<img/konvolucijska-mreza.png, id=70, 798.985pt x 198.7425pt>
+File: img/konvolucijska-mreza.png Graphic file (type png)
 
-LaTeX Warning: Reference `fig:konvolucijska-mreza' on page 11 undefined on inpu
-t line 276.
+<use img/konvolucijska-mreza.png>
+Package pdftex.def Info: img/konvolucijska-mreza.png used on input line 284.
+(pdftex.def)             Requested size: 398.33858pt x 99.08594pt.
+ [11
 
-[11
+ <./img/konvolucijska-mreza.png>]
+<img/konvolucija.png, id=74, 332.24126pt x 363.3575pt>
+File: img/konvolucija.png Graphic file (type png)
 
-] [12]
-Overfull \hbox (24.74568pt too wide) in paragraph at lines 303--317
+<use img/konvolucija.png>
+Package pdftex.def Info: img/konvolucija.png used on input line 307.
+(pdftex.def)             Requested size: 199.16928pt x 217.82211pt.
+ [12]
+Overfull \hbox (24.74568pt too wide) in paragraph at lines 322--336
 \T1/ptm/m/n/12 sre-dine vri-jed-nosti unu-tar ok-vira sa-ºi-ma-nja. Npr ako ima
 mo mapu $\OML/cmm/m/it/12 M \OT1/cmr/m/n/12 = []$
  []
 
-[13]
-Overfull \hbox (3.33469pt too wide) in paragraph at lines 339--341
+[13 <./img/konvolucija.png>] [14]
+Overfull \hbox (3.33469pt too wide) in paragraph at lines 358--360
 []\T1/ptm/m/n/12 Radi kom-pa-ti-bil-nosti sa pro-gram-skom im-ple-men-ta-ci-jom
  in-dek-si-ra-nje lo-ka-cija $\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 x; y\OT1/cmr/m/
 n/12 )$
  []
 
-[14] [15] [16] [17] [18] [19]
+[15] [16]
+
+Package natbib Warning: Citation `bengio2012practical' on page 17 undefined on 
+input line 508.
+
+[17] [18]
+
+Package natbib Warning: Citation `glorot2010understanding' on page 19 undefined
+ on input line 520.
+
+
+Overfull \hbox (3.20514pt too wide) in paragraph at lines 522--523
+[]\T1/ptm/b/n/12 Predobrada ulaza \T1/ptm/m/n/12 se £esto ko-risti jer pos-pje-
+²uje i ubr-zava ko-nver-gen-ciju mreºe.
+ []
+
+[19] [20]
 Poglavlje 4.
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2013/08/26 1.5b listings language file
@@ -1002,84 +1037,94 @@ File: lstlang1.sty 2013/08/26 1.5b listings language file
 File: lstmisc.sty 2013/08/26 1.5b (Carsten Heinz)
 )
 LaTeX Font Info:    Font shape `T1/phv/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/phv/b/n' tried instead on input line 538.
+(Font)              Font shape `T1/phv/b/n' tried instead on input line 548.
 LaTeX Font Info:    Font shape `T1/phv/m/it' in size <10.95> not available
-(Font)              Font shape `T1/phv/m/sl' tried instead on input line 554.
-LaTeX Font Info:    Try loading font information for OMS+phv on input line 557.
+(Font)              Font shape `T1/phv/m/sl' tried instead on input line 564.
+LaTeX Font Info:    Try loading font information for OMS+phv on input line 567.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/omsphv.fd
 File: omsphv.fd 
 )
 LaTeX Font Info:    Font shape `OMS/phv/m/n' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 557.
- [20
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 567.
+ [21
 
 ]
-Overfull \hbox (30.4931pt too wide) in paragraph at lines 573--574
-[]\T1/ptm/b/n/12 backPropagate \T1/ptm/m/n/12 - me-toda koja obav-lja al-gor-ti
-am bac-k-pro-pa-ga-tion na tom sloju(ra£una
- []
-
-
-Overfull \hbox (120.87935pt too wide) in paragraph at lines 583--584
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
 LaTeX Font Info:    Font shape `OMS/phv/m/it' in size <10.95> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 595.
-[21]
-Overfull \hbox (7.25258pt too wide) in paragraph at lines 631--632
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 606.
+ [22] [23]
+Overfull \hbox (7.25258pt too wide) in paragraph at lines 642--643
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
  []
 
 
-Overfull \hbox (0.24509pt too wide) in paragraph at lines 632--633
+Overfull \hbox (0.24509pt too wide) in paragraph at lines 643--644
 [][][][][][][][][][][][][][][][][][][][][][] 
  []
 
-[22] [23]
-Overfull \hbox (210.74496pt too wide) in paragraph at lines 693--694
-[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
- []
-
-[24] [25] [26] [27]
+[24] [25] [26] [27] [28]
 Poglavlje 5.
+<img/mnist-digits.png, id=133, 42.1575pt x 31.61812pt>
+File: img/mnist-digits.png Graphic file (type png)
 
-LaTeX Warning: Reference `fig:MNIST' on page 28 undefined on input line 782.
+<use img/mnist-digits.png>
+Package pdftex.def Info: img/mnist-digits.png used on input line 807.
+(pdftex.def)             Requested size: 199.16928pt x 149.38089pt.
+ [29
 
-[28
+ <./img/mnist-digits.png>]
 
-] [29]
+Package natbib Warning: Citation `lecun1995convolutional' on page 30 undefined 
+on input line 830.
+
+[30] <img/graf-greska.png, id=142, 659.1024pt x 441.5697pt>
+File: img/graf-greska.png Graphic file (type png)
+
+<use img/graf-greska.png>
+Package pdftex.def Info: img/graf-greska.png used on input line 852.
+(pdftex.def)             Requested size: 398.33858pt x 266.87086pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<img/graf-tocnost.png, id=143, 667.0521pt x 445.1832pt>
+File: img/graf-tocnost.png Graphic file (type png)
+
+<use img/graf-tocnost.png>
+Package pdftex.def Info: img/graf-tocnost.png used on input line 859.
+(pdftex.def)             Requested size: 398.33858pt x 265.8485pt.
+
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[31] [32 <./img/graf-greska.png> <./img/graf-tocnost.png>] [33]
 Poglavlje 6.
-(./zavrsni.bbl [30
+(./zavrsni.bbl [34
 
 ]
 
 Package natbib Warning: Empty `thebibliography' environment on input line 8.
 
-) [31
+) [35
 
 ]
 
 Package natbib Warning: There were undefined citations.
 
-[32] (./zavrsni.aux)
-
-LaTeX Warning: There were undefined references.
-
+[36] (./zavrsni.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 16561 strings out of 493304
- 280065 string characters out of 6139871
- 352183 words of memory out of 5000000
- 19637 multiletter control sequences out of 15000+600000
+ 16646 strings out of 493304
+ 281601 string characters out of 6139871
+ 350362 words of memory out of 5000000
+ 19710 multiletter control sequences out of 15000+600000
  71617 words of font info for 89 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 56i,17n,55p,1250b,1633s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 56i,17n,55p,1255b,1637s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist
@@ -1097,10 +1142,10 @@ rw/helvetic/uhvro8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/ut
 mb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/
 share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/t
 exmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on zavrsni.pdf (37 pages, 375006 bytes).
+Output written on zavrsni.pdf (41 pages, 677427 bytes).
 PDF statistics:
- 205 PDF objects out of 1000 (max. 8388607)
- 143 compressed objects within 2 object streams
+ 226 PDF objects out of 1000 (max. 8388607)
+ 152 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 28 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 53 words of extra memory for PDF output out of 10000 (max. 10000000)
 

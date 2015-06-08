@@ -9,25 +9,29 @@
 \contentsline {subsection}{\numberline {2.3.2}Algoritam backpropagation}{7}
 \contentsline {chapter}{\numberline {3}Konvolucijske neuronske mre\IeC {\v z}e}{11}
 \contentsline {section}{\numberline {3.1}Struktura mre\IeC {\v z}e}{11}
-\contentsline {subsection}{\numberline {3.1.1}Konvolucijski slojevi}{11}
+\contentsline {subsection}{\numberline {3.1.1}Konvolucijski slojevi}{12}
 \contentsline {subsection}{\numberline {3.1.2}Slojevi sa\IeC {\v z}imanja}{13}
-\contentsline {subsubsection}{Sa\IeC {\v z}imanje usrednjavanjem}{13}
-\contentsline {subsubsection}{Sa\IeC {\v z}imanje maksimalnom vrijedno\IeC {\v s}\IeC {\'c}u}{13}
-\contentsline {subsection}{\numberline {3.1.3}Backpropagation u konvolucijskim mre\IeC {\v z}ama}{13}
-\contentsline {subsubsection}{Konvolucijski slojevi}{14}
-\contentsline {subsubsection}{Slojevi sa\IeC {\v z}imanja}{15}
+\contentsline {subsubsection}{Sa\IeC {\v z}imanje usrednjavanjem}{14}
+\contentsline {subsubsection}{Sa\IeC {\v z}imanje maksimalnom vrijedno\IeC {\v s}\IeC {\'c}u}{14}
+\contentsline {subsection}{\numberline {3.1.3}Backpropagation u konvolucijskim mre\IeC {\v z}ama}{14}
+\contentsline {subsubsection}{Konvolucijski slojevi}{15}
+\contentsline {subsubsection}{Slojevi sa\IeC {\v z}imanja}{16}
 \contentsline {subsubsection}{Aktivacijski slojevi}{17}
 \contentsline {subsubsection}{Pseudokod algoritma backpropagation}{17}
-\contentsline {subsection}{\numberline {3.1.4}Hiperparametri mre\IeC {\v z}e}{18}
-\contentsline {chapter}{\numberline {4}Programska izvedba}{20}
-\contentsline {subsection}{\numberline {4.0.5}Konvolucijski sloj}{21}
-\contentsline {subsection}{\numberline {4.0.6}Potpuno povezani slojevi}{22}
-\contentsline {subsection}{\numberline {4.0.7}Aktivacijski slojevi}{23}
-\contentsline {subsection}{\numberline {4.0.8}Slojevi sa\IeC {\v z}imanja}{23}
-\contentsline {subsection}{\numberline {4.0.9}Konvolucijska neuronska mre\IeC {\v z}a}{24}
-\contentsline {subsection}{\numberline {4.0.10}Pomo\IeC {\'c}ni razredi}{25}
-\contentsline {chapter}{\numberline {5}Eksperimentalni rezultati}{28}
-\contentsline {section}{\numberline {5.1}Ispitni skup MNIST}{28}
-\contentsline {subsection}{\numberline {5.1.1}Predobrada ulaza}{29}
-\contentsline {chapter}{\numberline {6}Zaklju\IeC {\v c}ak}{30}
-\contentsline {chapter}{Literatura}{31}
+\contentsline {subsection}{\numberline {3.1.4}Hiperparametri mre\IeC {\v z}e}{19}
+\contentsline {chapter}{\numberline {4}Programska izvedba}{21}
+\contentsline {section}{\numberline {4.1}Slojevi konvolucijske neuronske mre\IeC {\v z}e}{21}
+\contentsline {subsection}{\numberline {4.1.1}Konvolucijski sloj}{22}
+\contentsline {subsection}{\numberline {4.1.2}Potpuno povezani slojevi}{23}
+\contentsline {subsection}{\numberline {4.1.3}Aktivacijski slojevi}{24}
+\contentsline {subsection}{\numberline {4.1.4}Slojevi sa\IeC {\v z}imanja}{24}
+\contentsline {section}{\numberline {4.2}Konvolucijska neuronska mre\IeC {\v z}a}{25}
+\contentsline {section}{\numberline {4.3}Pomo\IeC {\'c}ni razredi}{26}
+\contentsline {section}{\numberline {4.4}Struktura programske podr\IeC {\v s}ke}{28}
+\contentsline {chapter}{\numberline {5}Eksperimentalni rezultati}{29}
+\contentsline {section}{\numberline {5.1}Ispitni skup MNIST}{29}
+\contentsline {subsection}{\numberline {5.1.1}Predobrada ulaza}{30}
+\contentsline {subsection}{\numberline {5.1.2}Minimalni skup za testiranje}{30}
+\contentsline {section}{\numberline {5.2}Odabrana arhitektura i hiperparametri mre\IeC {\v z}e}{30}
+\contentsline {chapter}{\numberline {6}Zaklju\IeC {\v c}ak}{34}
+\contentsline {chapter}{Literatura}{35}

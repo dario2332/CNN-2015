@@ -788,6 +788,39 @@ protected:
 \end{lstlisting}
 
 \section{Struktura programske podrške}
+Programska podrška je podijeljena u sljedeće direktorije:
+\begin{itemize}
+\item \textbf{src} - svi izvorni kodovi programa
+\item \textbf{MNIST} - ispitni skup MNIST i datoteke vezane uz skup, spremljene jezgre i pragovi naučene mreže
+\item \textbf{build} - izvršne datoteke
+\end{itemize}
+
+Izvorni kod programa se nalazi u sljedećim datotekama:
+\begin{itemize}
+\item \textbf{CNN.hpp, CNN.cpp} - razred ConvolutionNeuralNetwork
+\item \textbf{layer.hpp, layer.cpp} - razred Layer
+\item \textbf{ConvolutionLayer.hpp, ConvolutionLayer.cpp} - razredi ConvolutionLayer i FullyConnectedLayer
+\item \textbf{PoolLayer.hpp, PoolLayer.cpp} - slojevi sažimanja (razred PoolLayer i razredi izvedeni iz njega)
+\item \textbf{ActivationLayer.hpp, ActivationLayer.cpp} - aktivacijski slojevi (razred ActivationLayer i razredi izvedeni iz njega)
+\item \textbf{UtilI.hpp} - osnovni pomoćni razredi
+\item \textbf{Util.hpp, Util.cpp} - ostali pomoćni razredi izvedeni iz osnovnih
+\item \textbf{train.cpp} - program za treniranje mreže
+\item \textbf{test.cpp} - program za testiranje mreže
+\end{itemize}
+
+\section{Upute za instalaciju}
+Potrebno je imati instalirano:
+\begin{itemize}
+\item GCC 4.9.2 ili MSVC 2013
+\item OpenCV 2.4.10
+\item OpenBLAS
+\end{itemize}
+
+Na početku je potrebno kreirati izvršne datoteke pomoću alata make i priložene Makefile datoteke izvršavanjem naredbe {\tt make all} kojom se generiraju dvije izvršne datoteke u direktoriju build:
+\begin{itemize}
+\item \textbf{train} - program za treniranje mreže. Pokreće se sa naredbom {\tt build/train epoch} gdje se umjesto epoch upisuje broj epoha. 
+\item \textbf{test} - program za testiranje mreže. Pokreće se naredbom {\tt build/test}.
+\end{itemize}
 
 \chapter{Eksperimentalni rezultati}
 
@@ -903,21 +936,22 @@ Pošto je ovaj rad izrađen za primjenu na osobnim računalima opće namjene cij
 
 Pošto u ovom radu nije bilo puno vremena za optimizaciju svih hiperparametara u daljnjem radu se preporučuje testiranje mreže s drugačijom arhitekturom, aktivacijskim funkcijama i funkcijama pogreške. Također se preporučuje razvijanje dodatnih metoda koje pospješuju učenje i konvergenciju mreže.
 
-\bibliography{literatura}
 \bibliographystyle{fer}
+\bibliography{literatura}
+
 
 \begin{sazetak}
-Sažetak na hrvatskom jeziku.
+U ovom radu je prikazan način rada dubokih neuronskih mreža sa naglaskom na konvolucijske mreže. Razvijena je implementacija konvolucijske neuronske mreže za računala opće namjene i opisan je postupak učenja mreže algoritmom backpropagation. Mreža je trenirana i vrednovana na skupu rukom pisanih znamenki MNIST. Na kraju su prikazani i opisani dobiveni rezultati te su analizirane karakteristike i učinak naučene mreže.
 
-\kljucnerijeci{Ključne riječi, odvojene zarezima.}
+\kljucnerijeci{umjetne neuronske mreže, duboke neuronske mreže, konvolucijske neuronske mreže, klasifikacija, gradijentni spust, strojno učenje, računalni vid, raspoznavanje objekata}
 \end{sazetak}
 
 % TODO: Navedite naslov na engleskom jeziku.
-\engtitle{Title}
+\engtitle{Object recognition with convolutional neural networks}
 \begin{abstract}
-Abstract.
+In this work an overview of deep neural networks was made with emphasis on convolutional neural networks. Program implementation of convolutional neural network was developed for general purpose computers. Learning algorithm backpropagation was explained and developed. The network was trained and evaluated on the MNIST database of handwritten digits. In the end evaluation results were shown and networks characteristics and performance was analyzed.
 
-\keywords{Keywords.}
+\keywords{artificial neural networks, deep neural networks, convolutional neural networks, classification, gradient descent, machine learning, computer vision, object recognition}
 \end{abstract}
 
 \end{document}

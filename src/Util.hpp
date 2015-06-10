@@ -41,7 +41,7 @@ public:
 class MnistInputManager : public InputManager
 {
 public:
-    MnistInputManager (int num, std::string path = "../MNIST");    
+    MnistInputManager (int num, std::string path = "MNIST");    
     virtual vvf& getInput(int i) { return inputs.at(indexes.at(i)); }
     virtual vf& getExpectedOutput(int i) { return expectedOutputs.at(indexes.at(i)); }
     virtual void reset() { std::random_shuffle( indexes.begin(), indexes.end()); }
@@ -56,28 +56,28 @@ protected:
 class MnistSmallInputManager : public MnistInputManager
 {
 public:
-    MnistSmallInputManager(std::string path = "../MNIST");
+    MnistSmallInputManager(std::string path = "MNIST");
 
 };
 
 class MnistTrainInputManager : public MnistInputManager
 {
 public:
-    MnistTrainInputManager(std::string path = "../MNIST");
+    MnistTrainInputManager(std::string path = "MNIST");
 
 };
 
 class MnistValidateInputManager : public MnistInputManager
 {
 public:
-    MnistValidateInputManager(std::string path = "../MNIST");
+    MnistValidateInputManager(std::string path = "MNIST");
 
 };
 
 class MnistTestInputManager : public MnistInputManager
 {
 public:
-    MnistTestInputManager(std::string path = "../MNIST");
+    MnistTestInputManager(std::string path = "MNIST");
 };
 
 /*****************

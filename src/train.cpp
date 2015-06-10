@@ -10,7 +10,7 @@
 #include "ActivationLayer.hpp"
 
 
-void trainMnist()
+void trainMnist(int epoch)
 {
     std::vector<Layer*> layers;
     std::vector<ConvolutionLayer*> convLayers;
@@ -54,16 +54,16 @@ void trainMnist()
     convLayers.push_back(&full1);
     convLayers.push_back(&full2);
 
-    WeightRecorder wr(convLayers, "../MNIST");
+    WeightRecorder wr(convLayers, "MNIST");
 
 
     /********************************
      * Supervisors for training
      *********************************
-    Validator trainVal(cnn, minstInput, "../MNIST/train", 10);
-    Validator valVal(cnn, validateMnist, "../MNIST/validate", 10);
-    ActivationVariance avar(layers, "../MNIST/");
-    GradientVariance gvar(layers, "../MNIST/");
+    Validator trainVal(cnn, minstInput, "MNIST/train", 10);
+    Validator valVal(cnn, validateMnist, "MNIST/validate", 10);
+    ActivationVariance avar(layers, "MNIST/");
+    GradientVariance gvar(layers, "MNIST/");
 
     cnn.registerSupervisor(&avar);
     cnn.registerSupervisor(&gvar);
@@ -73,7 +73,7 @@ void trainMnist()
     ********************************************/
     
     //train for 10 epochs
-    cnn.train(10);
+    cnn.train(epoch);
     //for recording weights
     wr.monitor(0);
 }
@@ -81,6 +81,6 @@ void trainMnist()
 
 int main(int argc, char *argv[])
 {
-    trainMnist();
+    trainMnist(std::atoi(argv[1]));
     return 0;
 }

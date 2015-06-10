@@ -1,8 +1,41 @@
-\begin{thebibliography}{0}
+\begin{thebibliography}{5}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bengio(2012)]{bengio2012practical}
+Yoshua Bengio.
+\newblock Practical recommendations for gradient-based training of deep
+  architectures.
+\newblock U \emph{Neural Networks: Tricks of the Trade}, stranice 437--478.
+  Springer, 2012.
+
+\bibitem[Glorot i Bengio(2010)]{glorot2010understanding}
+Xavier Glorot i Yoshua Bengio.
+\newblock Understanding the difficulty of training deep feedforward neural
+  networks.
+\newblock U \emph{International conference on artificial intelligence and
+  statistics}, stranice 249--256, 2010.
+
+\bibitem[Krizhevsky et~al.(2012)Krizhevsky, Sutskever, i
+  Hinton]{krizhevsky2012imagenet}
+Alex Krizhevsky, Ilya Sutskever, i Geoffrey~E Hinton.
+\newblock Imagenet classification with deep convolutional neural networks.
+\newblock U \emph{Advances in neural information processing systems}, stranice
+  1097--1105, 2012.
+
+\bibitem[LeCun i Bengio(1995)]{lecun1995convolutional}
+Yann LeCun i Yoshua Bengio.
+\newblock Convolutional networks for images, speech, and time series.
+\newblock \emph{The handbook of brain theory and neural networks},
+  3361:\penalty0 310, 1995.
+
+\bibitem[LeCun et~al.(1998)LeCun, Bottou, Bengio, i Haffner]{lecun1998gradient}
+Yann LeCun, L{\'e}on Bottou, Yoshua Bengio, i Patrick Haffner.
+\newblock Gradient-based learning applied to document recognition.
+\newblock \emph{Proceedings of the IEEE}, 86\penalty0 (11):\penalty0
+  2278--2324, 1998.
 
 \end{thebibliography}

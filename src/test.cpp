@@ -12,7 +12,6 @@
 void testMnist()
 {
     std::vector<Layer*> layers;
-    MnistTrainInputManager minstInput;
     MnistValidateInputManager validateMnist;
     MnistTestInputManager testMnist;
     SquareCost sc(10);
@@ -44,17 +43,16 @@ void testMnist()
     layers.push_back(&tanhFC1);
     layers.push_back(&full2);
 
-    ConvolutionNeuralNetwork cnn(layers, sc, minstInput);
+    ConvolutionNeuralNetwork cnn(layers, sc, testMnist);
     
-    Validator test(cnn, testMnist, "../MNIST/test", 10);
+    Validator test(cnn, testMnist, "MNIST/test", 10);
 
-    conv1.loadWeights("../MNIST/Weights_E0_CL1");
-    conv2.loadWeights("../MNIST/Weights_E0_CL2");
-    conv3.loadWeights("../MNIST/Weights_E0_CL3");
-    full1.loadWeights("../MNIST/Weights_E0_CL4");
-    full2.loadWeights("../MNIST/Weights_E0_CL5");
+    conv1.loadWeights("MNIST/Weights_E0_CL1");
+    conv2.loadWeights("MNIST/Weights_E0_CL2");
+    conv3.loadWeights("MNIST/Weights_E0_CL3");
+    full1.loadWeights("MNIST/Weights_E0_CL4");
+    full2.loadWeights("MNIST/Weights_E0_CL5");
     test.monitor(0);
-
 }
 
 int main(int argc, char *argv[])

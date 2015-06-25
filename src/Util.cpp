@@ -57,7 +57,7 @@ vvf& SquareCost::calculate(const vvf &output, const vf& expectedOutput)
     return prevError;
 }
 
-
+// This class was only build for testing purposes
 MnistSmallInputManager::MnistSmallInputManager(std::string path) : MnistInputManager(20)
 {
     expectedOutputs = vvf(20, vf(2));
@@ -126,6 +126,37 @@ MnistInputManager::MnistInputManager (int num, std::string path) : InputManager(
     }
 }
 
+void MnistInputManager::readData(std::ifstream &inImages, std::ifstream &inLabels)
+{
+    for (int i = 0; i < numOfInputs; ++i)
+    {
+        int label = 0;
+        inLabels.read((char*)&label, sizeof(char));
+        //static int a = 0;
+        //cv::Mat image(32, 32, CV_8UC1);
+        for (int j = 0; j < 32; ++j)
+        {
+            for (int k = 0; k < 32; ++k)
+            {
+                int x = 0;
+                if (j > 1 && j < 30 && k > 1 && k < 30)
+                {
+                    inImages.read((char*)&x, sizeof(char));
+
+                }
+                //image.at<unsigned char>(j, k) = x;
+                inputs.at(i).at(0).at(j*32+k) = x;
+            }
+        }
+        expectedOutputs.at(i).at(label) = 1;
+        //if (a < 10) cv::imwrite(path + "/image" + std::to_string(a++) + ".jpg", image);
+        //else exit(1);
+    }
+    inImages.close();
+    inLabels.close();
+    preprocess();
+}
+
 void MnistInputManager::preprocess()
 {
     for (int image = 0; image < inputs.size(); ++image)
@@ -179,34 +210,8 @@ MnistTrainInputManager::MnistTrainInputManager(std::string path) : MnistInputMan
 
     inImages.ignore(4*sizeof(int));
     inLabels.ignore(2*sizeof(int));
-    
-    for (int i = 0; i < numOfInputs; ++i)
-    {
-        int label = 0;
-        inLabels.read((char*)&label, sizeof(char));
-        //static int a = 0;
-        //cv::Mat image(32, 32, CV_8UC1);
-        for (int j = 0; j < 32; ++j)
-        {
-            for (int k = 0; k < 32; ++k)
-            {
-                int x = 0;
-                if (j > 1 && j < 30 && k > 1 && k < 30)
-                {
-                    inImages.read((char*)&x, sizeof(char));
 
-                }
-                //image.at<unsigned char>(j, k) = x;
-                inputs.at(i).at(0).at(j*32+k) = x;
-            }
-        }
-        expectedOutputs.at(i).at(label) = 1;
-        //if (a < 10) cv::imwrite(path + "/image" + std::to_string(a++) + ".jpg", image);
-        //else exit(1);
-    }
-    inImages.close();
-    inLabels.close();
-    preprocess();
+    readData(inImages, inLabels);
 }
 
 MnistValidateInputManager::MnistValidateInputManager(std::string path) : MnistInputManager(10000) 
@@ -223,33 +228,7 @@ MnistValidateInputManager::MnistValidateInputManager(std::string path) : MnistIn
     inLabels.ignore(50000*sizeof(char));
     inImages.ignore(28*28*50000*sizeof(char));
     
-    for (int i = 0; i < numOfInputs; ++i)
-    {
-        int label = 0;
-        inLabels.read((char*)&label, sizeof(char));
-        //static int a = 0;
-        //cv::Mat image(32, 32, CV_8UC1);
-        for (int j = 0; j < 32; ++j)
-        {
-            for (int k = 0; k < 32; ++k)
-            {
-                int x = 0;
-                if (j > 1 && j < 30 && k > 1 && k < 30)
-                {
-                    inImages.read((char*)&x, sizeof(char));
-
-                }
-                //image.at<unsigned char>(j, k) = x;
-                inputs.at(i).at(0).at(j*32+k) = x;
-            }
-        }
-        expectedOutputs.at(i).at(label) = 1;
-        //if (a < 10) cv::imwrite(path + "/image" + std::to_string(a++) + ".jpg", image);
-        //else exit(1);
-    }
-    inImages.close();
-    inLabels.close();
-    preprocess();
+    readData(inImages, inLabels);
 }
 
 MnistTestInputManager::MnistTestInputManager(std::string path) : MnistInputManager(10000) 
@@ -264,33 +243,7 @@ MnistTestInputManager::MnistTestInputManager(std::string path) : MnistInputManag
     inImages.ignore(4*sizeof(int));
     inLabels.ignore(2*sizeof(int));
     
-    for (int i = 0; i < numOfInputs; ++i)
-    {
-        int label = 0;
-        inLabels.read((char*)&label, sizeof(char));
-        //static int a = 0;
-        //cv::Mat image(32, 32, CV_8UC1);
-        for (int j = 0; j < 32; ++j)
-        {
-            for (int k = 0; k < 32; ++k)
-            {
-                int x = 0;
-                if (j > 1 && j < 30 && k > 1 && k < 30)
-                {
-                    inImages.read((char*)&x, sizeof(char));
-
-                }
-                //image.at<unsigned char>(j, k) = x;
-                inputs.at(i).at(0).at(j*32+k) = x;
-            }
-        }
-        expectedOutputs.at(i).at(label) = 1;
-        //if (a < 10) cv::imwrite(path + "/image" + std::to_string(a++) + ".jpg", image);
-        //else exit(1);
-    }
-    inImages.close();
-    inLabels.close();
-    preprocess();
+    readData(inImages, inLabels);
 }
 
 void WeightRecorder::monitor(int epoch)
@@ -335,7 +288,6 @@ Validator::Validator (ConvolutionNeuralNetwork &cnn, InputManager& im, std::stri
     {
         possibleOutputs.at(i).at(i) = 1;
     }
-
 }
 
 void Validator::monitor(int epoch)
@@ -343,6 +295,7 @@ void Validator::monitor(int epoch)
     float error = 0;
     int correct = 0;
     std::vector<std::vector<int> > confusionMatrix(10, std::vector<int>(10, 0));
+    std::vector<int> rank(10, 0);
     
     for (int i = 0, n = im.getInputNum(); i < n; ++i)
     {
@@ -350,20 +303,36 @@ void Validator::monitor(int epoch)
         error += cnn.getCost(im.getExpectedOutput(i));
         float min = cnn.getCost(possibleOutputs.at(0));
         int result = 0;
+        std::vector<float> costs;
+        costs.push_back(min);
         
         for (int j = 1; j < possibleOutputs.size(); ++j)
         {
             float x = cnn.getCost(possibleOutputs.at(j));
+            costs.push_back(x);
             if (x < min)
             {
                 min = x;
                 result = j;
             }
         }
+
+        // Rank
+        float correctCost;
+        for (int j = 0; j < im.getExpectedOutput(i).size(); ++j)
+        {
+            if (im.getExpectedOutput(i).at(j) == 1) correctCost = costs.at(j);
+        }
+        std::sort(costs.begin(), costs.end());
+        rank.at(std::find(costs.begin(), costs.end(), correctCost) - costs.begin())++;
+        
+        // Cost
         if (possibleOutputs.at(result) == im.getExpectedOutput(i))
         { 
             correct ++;
         }
+
+        // Confusion matrix
         int expected = 0;
         for (int j = 0; j < im.getExpectedOutput(i).size(); ++j)
         {
@@ -375,6 +344,11 @@ void Validator::monitor(int epoch)
     error /= im.getInputNum();
     std::ofstream os(path + "cost", std::ofstream::app); 
     std::ofstream cm(path + "confusionmatrix");
+    std::ofstream score(path + "rank");
+    for (int i = 0; i < rank.size(); ++i)
+    {
+        score << rank.at(i) << " ";
+    }
 
     for (int i = 0; i < confusionMatrix.size(); ++i)
     {
@@ -388,7 +362,7 @@ void Validator::monitor(int epoch)
     std::cout << epoch << " " << error << " " << correct << "/" << im.getInputNum() << std::endl;
     os.close();
     cm.close();
-
+    score.close();
 }
 
 

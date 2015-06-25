@@ -13,6 +13,7 @@ public:
     void registerSupervisor(TrainingSupervisor *s) { supervisers.push_back(s); }
     void notifySupervisors(int epoch);
     float getCost(vf &expectedOutput);
+    vf getOutput();
     InputManager& getInputManager() { return inputManager; }
     
 private:

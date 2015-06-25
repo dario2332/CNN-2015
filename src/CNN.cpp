@@ -35,7 +35,7 @@ void ConvolutionNeuralNetwork::train(int numEpochs)
         for (int i = 0, n = inputManager.getInputNum(); i < n; ++i)
         {
             feedForward(inputManager.getInput(i));
-            backPropagate(costFunction.calculate(layers.at(layers.size()-1)->getOutput(), inputManager.getExpectedOutput(i)));
+                backPropagate(costFunction.calculate(layers.at(layers.size()-1)->getOutput(), inputManager.getExpectedOutput(i)));
         }
         notifySupervisors(epoch);
         inputManager.reset();
@@ -54,5 +54,15 @@ void ConvolutionNeuralNetwork::notifySupervisors(int epoch)
     {
         supervisers.at(i) -> monitor(epoch);
     }
+}
+
+vf ConvolutionNeuralNetwork::getOutput()
+{
+    vf output;
+    for (int i = 0; i < layers.at(layers.size()-1)->getOutput().size(); ++i)
+    {
+        output.push_back(layers.at(layers.size()-1)->getOutput().at(i).at(0));
+    }
+    return output;
 }
 

@@ -3,6 +3,7 @@
 #include <string>
 #include <algorithm>
 #include <vector>
+#include <iostream>
 #include "layer.hpp"
 #include "UtilI.hpp"
 #include "ConvolutionLayer.hpp"
@@ -50,7 +51,8 @@ protected:
     vvvf inputs;
     vvf expectedOutputs;
     std::vector<int> indexes;
-    virtual void preprocess();
+    void preprocess();
+    void readData(std::ifstream &inImages, std::ifstream &inLabels);  
 };
 
 class MnistSmallInputManager : public MnistInputManager

@@ -5,5 +5,6 @@ This library allows easy creation, training and testing of different CNN archite
 
 This project depends on OpenCV 2.4 and OpenBLAS.
 
-Build: make all \
+Build: make all
+
 Clean: make clean

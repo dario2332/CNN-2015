@@ -5,11 +5,11 @@ all: build/test build/train
 
 build/test:
 	mkdir -p build
-	${CC} ${CFLAGS}  src/test.cpp src/CNN.cpp src/ConvolutionLayer.cpp src/ActivationLayer.cpp src/PoolLayer.cpp src/Util.cpp src/layer.cpp -o build/test -lopenblas `pkg-config opencv --libs`
+	${CC} ${CFLAGS}  src/test.cc src/convolution_neural_network.cc src/convolution_layer.cc src/activation_layer.cc src/pool_layer.cc src/util.cc src/layer.cc -o build/test -lopenblas `pkg-config opencv --libs`
 
 build/train:
 	mkdir -p build
-	${CC} ${CFLAGS}  src/train.cpp src/CNN.cpp src/ConvolutionLayer.cpp src/ActivationLayer.cpp src/PoolLayer.cpp src/Util.cpp src/layer.cpp -o build/train -lopenblas `pkg-config opencv --libs`
+	${CC} ${CFLAGS}  src/train.cc src/convolution_neural_network.cc src/convolution_layer.cc src/activation_layer.cc src/pool_layer.cc src/util.cc src/layer.cc  -o build/train -lopenblas `pkg-config opencv --libs`
 
 clean:
 	rm -f build/*
